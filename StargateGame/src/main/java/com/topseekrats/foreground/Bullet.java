@@ -7,4 +7,11 @@ public class Bullet extends Foreground {
         System.out.println("Bullet.getType() returned");
         return null;
     }
+
+    @Override
+    public void move() {
+        System.out.println("Bullet.move() called");
+
+        System.out.println("Bullet.move() returned");
+    }
 }

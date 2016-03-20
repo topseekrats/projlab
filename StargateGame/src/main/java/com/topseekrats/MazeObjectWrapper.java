@@ -4,10 +4,10 @@ import com.topseekrats.background.Background;
 import com.topseekrats.foreground.Foreground;
 
 public class MazeObjectWrapper {
-    public Background getBackground() {
-        System.out.println("MazeObjectWrapper.getBackground() called");
+    public Actor getActor() {
+        System.out.println("MazeObjectWrapper.getActor() called");
 
-        System.out.println("MazeObjectWrapper.getBackground() returned");
+        System.out.println("MazeObjectWrapper.getActor() returned");
         return null;
     }
 
@@ -16,6 +16,19 @@ public class MazeObjectWrapper {
 
         System.out.println("MazeObjectWrapper.getBackground() returned");
         return null;
+    }
+
+    public Background getBackground() {
+        System.out.println("MazeObjectWrapper.getBackground() called");
+
+        System.out.println("MazeObjectWrapper.getBackground() returned");
+        return null;
+    }
+
+    public void setActor() {
+        System.out.println("MazeObjectWrapper.setActor() called");
+
+        System.out.println("MazeObjectWrapper.setActor() returned");
     }
 
     public void setForeground() {
