@@ -16,12 +16,15 @@
 
 1. Git nevű mappa létrehozáse egy tetszőleges helyen.
 
-2. Git Bash nyitása a mappában
+2. Git Bash nyitása a mappában.
 
 3. Git konfigurálása:
-     git config --global user.email "loveszglab4@gmail.com"
-     git config --global user.name "topseekrats"
-     git config --global push.default simple
+
+	git config --global user.email "loveszglab4@gmail.com"
+
+	git config --global user.name "topseekrats"
+	
+	git config --global push.default simple
 
 4. Repo klónozása:
 	git clone https://github.com/topseekrats/projlab
