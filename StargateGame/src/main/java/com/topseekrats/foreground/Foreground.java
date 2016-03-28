@@ -24,4 +24,7 @@ public abstract class Foreground implements MazeObject {
 
     @Override
     public void pickUp() {}
+
+    @Override
+    public void dispose() {}
 }

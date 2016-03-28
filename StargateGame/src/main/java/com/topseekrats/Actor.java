@@ -37,6 +37,13 @@ public class Actor implements MazeObject {
     }
 
     @Override
+    public void dispose() {
+        System.out.println("Actor.dispose() called");
+
+        System.out.println("Actor.dispose() returned");
+    }
+
+    @Override
     public boolean isForeground() {
         System.out.println("Actor.isForeground() called");
         System.out.println("Actor.isForeground() returned");
