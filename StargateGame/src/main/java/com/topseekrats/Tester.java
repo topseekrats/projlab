@@ -11,11 +11,14 @@ import com.topseekrats.foreground.Item;
 import com.topseekrats.foreground.Stargate;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.ArrayList;
 
-public class ConsoleApplication
+import static com.sun.corba.se.spi.activation.IIOP_CLEAR_TEXT.value;
+
+public class Tester
 {
     private static Engine engine = null;
     private static Maze dummyMaze = null;
@@ -34,8 +37,106 @@ public class ConsoleApplication
     private static Foreground fg = null;
     private static Background bg = null;
 
-    private static int testNum01() {
-        System.out.println("Test #1: Game initialization --- started.");
+    public static void main(String[] args) throws IOException {
+        menu();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String temp = br.readLine();
+        int testCase = 0;
+        if (tryParse(temp)) testCase = Integer.parseInt(temp);
+        while (testCase != -1) {
+            System.out.println("############################### TEST CASE STARTED ##############################");
+            runTest(testCase);
+            System.out.println("################################ TEST CASE ENDED ###############################");
+            System.out.println("Press ENTER to continue...");
+            System.in.read();
+            menu();
+            temp = br.readLine();
+            if (tryParse(temp)) testCase = Integer.parseInt(temp);
+            else testCase = 0;
+        }
+    }
+
+    private static void menu() {
+        StringBuffer sb = new StringBuffer();
+        sb.append("################################################################################\n");
+        sb.append("############################ TOPSEEKRATS - SKELETON ############################\n");
+        sb.append("################################################################################\n\n");
+        sb.append("Test cases:\n\n");
+        sb.append("#1: Game initialization\n");
+        sb.append("#2: The player picks up a box from a switch, door closes\n");
+        sb.append("#3: The player drops a box onto a switch, door opens\n");
+        sb.append("#4: The player drops a box into a cleft\n");
+        sb.append("#5: The player picks up the last ZPM and wins\n");
+        sb.append("#6: The player steps on a switch and steps off from it\n");
+        sb.append("#7: The player steps on a cleft and dies. Game over!\n");
+        sb.append("#8: The player opens a stargate\n");
+        sb.append("#9: The player modify one of the stargate's endpoints\n");
+        sb.append("#10: The player tries to place the stargate's both ends on the same wall causing stargate destroyed\n");
+        sb.append("#11: The player steps next to a box and picks it up\n");
+        sb.append("#12: The player steps next to a ZPM and picks it up\n");
+        sb.append("#13: The player teleports\n\n");
+        sb.append("Pick test case:");
+        System.out.println(sb);
+    }
+
+    private static boolean tryParse(String val) {
+        try {
+            Integer.parseInt(val);
+            return true;
+        } catch (NumberFormatException ex) {
+            return false;
+        }
+    }
+
+    private static void runTest(int testCase) {
+        switch (testCase) {
+            case 1:
+                testNum01();
+                break;
+            case 2:
+                testNum02();
+                break;
+            case 3:
+                testNum03();
+                break;
+            case 4:
+                testNum04();
+                break;
+            case 5:
+                testNum05();
+                break;
+            case 6:
+                testNum06();
+                break;
+            case 7:
+                testNum07();
+                break;
+            case 8:
+                testNum08();
+                break;
+            case 9:
+                testNum09();
+                break;
+            case 10:
+                testNum10();
+                break;
+            case 11:
+                testNum11();
+                break;
+            case 12:
+                testNum12();
+                break;
+            case 13:
+                testNum13();
+                break;
+            default:
+                System.out.println("Invalid test case.");
+                break;
+        }
+    }
+
+    private static void testNum01() {
+        System.out.println("Test #1: Game initialization.");
         //Create engine
         engine = new Engine();
         //Start new game
@@ -64,14 +165,10 @@ public class ConsoleApplication
         door = new Door();
 
         //init for other tests END
-
-        System.out.println("Test #1: done. Init for other tests: done.\n\n");
-
-        return 0;
     }
 
-    private static int testNum02() {
-        System.out.println("Test #2: The player picks up a box from a switch, door closes --- started.");
+    private static void testNum02() {
+        System.out.println("Test #2: The player picks up a box from a switch, door closes.");
         //Create an actor
         actor = new Actor();
         //This will return the box
@@ -87,12 +184,10 @@ public class ConsoleApplication
         door = new Door();
         door.changeOpened();
         // System.out.println("Test #2: done. Press a key to continue.");
-
-        return 0;
     }
 
-    private static int testNum03() {
-        System.out.println("Test #3: The player drops a box onto a switch, door opens --- started.");
+    private static void testNum03() {
+        System.out.println("Test #3: The player drops a box onto a switch, door opens.");
         actor.dropBox();
         mow1.setForeground();
         //This will return the switch
@@ -104,12 +199,10 @@ public class ConsoleApplication
         door = new Door();
         door.changeOpened();
         // System.out.println("Test #3: done. Press a key to continue.");
-
-        return 0;
     }
 
-    private static int testNum04() {
-        System.out.println("Test #4: The player drops a box into a cleft --- started.");
+    private static void testNum04() {
+        System.out.println("Test #4: The player drops a box into a cleft.");
         actor.dropBox();
         //This will return the cleft
         bg = mow1.getBackground();
@@ -121,12 +214,10 @@ public class ConsoleApplication
         boxItem = null;
         System.out.println("Box destructor returned");
         // System.out.println("Test #4: done. Press a key to continue.");
-
-        return 0;
     }
 
-    private static int testNum05() {
-        System.out.println("Test #5: The player picks up the last ZPM and wins --- started.");
+    private static void testNum05() {
+        System.out.println("Test #5: The player picks up the last ZPM and wins.");
         fg = mow1.getForeground();
         actor.pickUp();
         mow1.setForeground();
@@ -136,15 +227,11 @@ public class ConsoleApplication
         System.out.println("ZPM destructor returned");
         //If Actor.ZPMCount == allZPMs
         System.out.println("if Actor.ZPMCount == allZPMs is true, then:");
-        if(true)
-            engine.victory();
-        // System.out.println("Test #5: done. Press a key to continue.");
-
-        return 0;
+        if(true) engine.victory();
     }
 
-    private static int testNum06() {
-        System.out.println("Test #6: The player steps on a switch and steps off from it --- started.");
+    private static void testNum06() {
+        System.out.println("Test #6: The player steps on a switch and steps off from it.");
         //Step on
         bg = mow1.getBackground();
         actor.move();
@@ -158,22 +245,18 @@ public class ConsoleApplication
         mow1.setActor();
         sw.changeDoorState();
         door.changeOpened();
-        // System.out.println("Test #6: done. Press a key to continue.");
-
-        return 0;
     }
 
-    private static int testNum07() {
+    private static void testNum07() {
         System.out.println("Test #7: The player steps on a cleft and dies. Game over!");
         actor.move();
         bg = mow1.getBackground();
         cleft.destroy(); // destroy actor
         engine.death();
-        return 0;
     }
 
-    private static int testNum08() {
-        System.out.println("Test #8: The player opens a stargate\n");
+    private static void testNum08() {
+        System.out.println("Test #8: The player opens a stargate.\n");
 
         // init START
         Wall wy = new Wall();
@@ -196,12 +279,10 @@ public class ConsoleApplication
         wb.isPortalCompatible();
 
         Stargate s = new Stargate();
-
-        return 0;
     }
 
-    private static int testNum09() {
-        System.out.println("Test #9: The player modify one of the stargate's endpoints");
+    private static void testNum09() {
+        System.out.println("Test #9: The player modify one of the stargate's endpoints.");
 
         // init START
         Stargate so = new Stargate();
@@ -221,12 +302,10 @@ public class ConsoleApplication
         so.dispose();
 
         Stargate sn = new Stargate();
-
-        return 0;
     }
 
-    private static int testNum10() {
-        System.out.println("Test #10: The player tries to place the stargate's both ends on the same wall causing stargate destroy");
+    private static void testNum10() {
+        System.out.println("Test #10: The player tries to place the stargate's both ends on the same wall causing stargate destroy.");
 
         // init START
         Stargate s = new Stargate();
@@ -242,25 +321,19 @@ public class ConsoleApplication
 
         boolean hasStargate = true;
 
-        if(hasStargate) {
-            s.dispose();
-        }
-
-        return 0;
+        if(hasStargate) s.dispose();
     }
 
-    private static int testNum11() {
-        System.out.println("Test #11: The player steps next to a box and picks it up");
+    private static void testNum11() {
+        System.out.println("Test #11: The player steps next to a box and picks it up.");
         actor.move();
         fg = mow1.getForeground();
         // fg is box
         actor.pickUp();
-
-        return 0;
     }
 
-    private static int testNum12() {
-        System.out.println("Test #12: The player steps next to a ZPM and picks it up");
+    private static void testNum12() {
+        System.out.println("Test #12: The player steps next to a ZPM and picks it up.");
 
         actor.move();
         fg = mow1.getForeground();
@@ -272,14 +345,11 @@ public class ConsoleApplication
         System.out.println("ZPM destructor returned");
         //If Actor.ZPMCount == allZPMs
         System.out.println("if Actor.ZPMCount == allZPMs is true, then:");
-        if(true)
-            engine.victory();
-
-        return 0;
+        if(true) engine.victory();
     }
 
-    private static int testNum13() {
-        System.out.println("Test #13: The player teleports --- started.");
+    private static void testNum13() {
+        System.out.println("Test #13: The player teleports.");
         //Step on
         actor.move();
         bg = mow1.getBackground();
@@ -292,85 +362,5 @@ public class ConsoleApplication
         //Teleports the player from a maze field to another
         mow1.setActor();
         mow2.setActor();
-        // System.out.println("Test #13: done. Press a key to continue.");
-
-        return 0;
-    }
-
-    private static int testCase(int caseNumber) {
-        testNum01();
-        switch (caseNumber) {
-            case 1:
-                return testNum01();
-            case 2:
-                return testNum02();
-            case 3:
-                return testNum03();
-            case 4:
-                return testNum04();
-            case 5:
-                return testNum05();
-            case 6:
-                return testNum06();
-            case 7:
-                return testNum07();
-            case 8:
-                return testNum08();
-            case 9:
-                return testNum09();
-            case 10:
-                return testNum10();
-            case 11:
-                return testNum11();
-            case 12:
-                return testNum12();
-            case 13:
-                return testNum13();
-
-            default:
-                return -1;
-        }
-    }
-
-    public static void main(String [] args)
-    {
-        int testCaseInt = -2;
-
-        StringBuffer sb = new StringBuffer("Skeleton tests - TopSeekRats\n");
-        sb.append("Test #1: Game initialization\n");
-        sb.append("Test #2: The player picks up a box from a switch, door closes\n");
-        sb.append("Test #3: The player drops a box onto a switch, door opens\n");
-        sb.append("Test #4: The player drops a box into a cleft\n");
-        sb.append("Test #5: The player picks up the last ZPM and wins\n");
-        sb.append("Test #6: The player steps on a switch and steps off from it\n");
-        sb.append("Test #7: The player steps on a cleft and dies. Game over!\n");
-        sb.append("Test #8: The player opens a stargate\n");
-        sb.append("Test #9: The player modify one of the stargate's endpoints\n");
-        sb.append("Test #10: The player tries to place the stargate's both ends on the same wall causing stargate destroyed\n");
-        sb.append("Test #11: The player steps next to a box and picks it up\n");
-        sb.append("Test #12: The player steps next to a ZPM and picks it up\n");
-        sb.append("Test #13: The player teleports\n");
-        System.out.println(sb);
-
-        do {
-        System.out.println("Choose test from 1 to 13");
-        // String testCaseString = System.console().readLine();
-
-            try {
-                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-                testCaseInt = Integer.parseInt(br.readLine());
-            }
-            catch (Exception e) {
-                System.err.println(e.toString());
-            }
-
-        } while (testCaseInt < 1 || testCaseInt > 13);
-
-        int result = testCase(testCaseInt);
-        System.out.println(result);
-
-
-
-       // String waitForContinue = System.console().readLine();
     }
 }
