@@ -5,6 +5,7 @@ import com.topseekrats.background.Cleft;
 import com.topseekrats.background.Door;
 import com.topseekrats.background.Switch;
 import com.topseekrats.background.Wall;
+import com.topseekrats.foreground.Bullet;
 import com.topseekrats.foreground.Foreground;
 import com.topseekrats.foreground.Item;
 import com.topseekrats.foreground.Stargate;
@@ -29,6 +30,11 @@ public class ConsoleApplication
     private static Cleft cleft = null;
     private static Stargate sg = null;
     private static Wall wallWithPortal = null;
+    private static Bullet bullet1 = null;
+    private static Bullet bullet2 = null;
+    private static Wall wall1 = null;
+    private static Wall wall2 = null;
+    private static Stargate sg2 = null;
 
     private static Foreground fg = null;
     private static Background bg = null;
@@ -39,6 +45,8 @@ public class ConsoleApplication
         engine = new Engine();
         //Start new game
         engine.newGame();
+        //Create an actor
+        actor = new Actor();
         //Create maze for game
         System.out.println("Maze constructor called");
         dummyMaze = new Maze();
@@ -134,6 +142,8 @@ public class ConsoleApplication
 
     private static int testNum06() {
         System.out.println("Test #6: The player steps on a switch and steps off from it --- started.");
+        sw = new Switch();
+        door = new Door();
         //Step on
         bg = mow1.getBackground();
         actor.move();
@@ -153,31 +163,113 @@ public class ConsoleApplication
     }
 
     private static int testNum07() {
+        System.out.println("Test #7: The player steps into a cleft");
+        actor.move();
+        bg = mow1.getBackground();
+        cleft = new Cleft();
+        cleft.destroy();
+        //Disposing Actor
+        System.out.println("Actor destructor called");
+        actor = null;
+        System.out.println("Actor destructor returned");
+        engine.death();
+        System.out.println("Test #7: done. Press a key to continue.");
 
         return 0;
     }
 
     private static int testNum08() {
+        wall1 = new Wall();
+        wall2 = new Wall();
 
+        System.out.println("Test #8: .");
+        actor.shoot();
+        System.out.println("Bullet constructor called");
+        bullet1 = new Bullet();
+        bullet1.move();
+        wall1.changeHasStargete();
+        wall1.isPortalCompatible();
+        actor.changeBullet();
+        actor.shoot();
+        System.out.println("Bullet constructor called");
+        bullet2 = new Bullet();
+        bullet2.move();
+        wall2.changeHasStargete();
+        wall2.isPortalCompatible();
+        System.out.println("Stargate constructor called");
+        sg = new Stargate();
+
+
+        System.out.println("Test #9: done. Press a key to continue.");
         return 0;
     }
 
     private static int testNum09() {
+        System.out.println("Test #9:");
+        wall1 = new Wall();
+        wall2 = new Wall();
 
+        actor.shoot();
+        System.out.println("Bullet constructor called");
+        bullet1 = new Bullet();
+        bullet1.move();
+        wall1.changeHasStargete();
+        wall1.isPortalCompatible();
+        wall2.changeHasStargete();
+        wall2.isPortalCompatible();
+        //Disposing Stargate
+        System.out.println("Stargate destructor called");
+        sg = null;
+        System.out.println("Stargate destructor returned");
+        System.out.println("Stargate constructor called");
+        sg2 = new Stargate();
+        System.out.println("Test #9: done. Press a key to continue.");
         return 0;
     }
 
     private static int testNum10() {
-
+        System.out.println("Test #10: ");
+        wallWithPortal = new Wall();
+        actor.shoot();
+        bullet1 = new Bullet();
+        bullet1.move();
+        wallWithPortal.changeHasStargete();
+        wallWithPortal.isPortalCompatible();
+        if(true) {
+            //Disposing Stargate
+            System.out.println("Stargate destructor called");
+            sg = null;
+            System.out.println("Stargate destructor returned");
+        }
+        System.out.println("Test #10: done. Press a key to continue.");
         return 0;
     }
 
     private static int testNum11() {
-
+        System.out.println("Test #11: The player steps and picks up a box.");
+        actor.move();
+        fg = mow1.getForeground();
+        actor.pickUp();
+        mow1.setActor();
+        System.out.println("Test #11: done. Press a key to continue.");
         return 0;
     }
 
     private static int testNum12() {
+        System.out.println("Test #12: The player steps picks up the ZPM and wins --- started.");
+        actor.move();
+        fg = mow1.getForeground();
+        actor.pickUp();
+        mow1.setForeground();
+        //Disposing zpmItem
+        System.out.println("ZPM destructor called");
+        zpmItem = null;
+        System.out.println("ZPM destructor returned");
+        //If Actor.ZPMCount == allZPMs
+        System.out.println("if Actor.ZPMCount == allZPMs is true, then:");
+        if(true)
+            engine.victory();
+        System.out.println("Test #12: done. Press a key to continue.");
 
         return 0;
     }
