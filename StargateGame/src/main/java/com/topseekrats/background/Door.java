@@ -1,7 +1,5 @@
 package com.topseekrats.background;
 
-import com.topseekrats.MazeObject;
-
 public class Door extends Background {
     public void changeOpened() {
         System.out.println("Door.changeOpened() called");

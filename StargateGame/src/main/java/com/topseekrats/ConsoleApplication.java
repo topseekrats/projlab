@@ -5,6 +5,7 @@ import com.topseekrats.background.Cleft;
 import com.topseekrats.background.Door;
 import com.topseekrats.background.Switch;
 import com.topseekrats.background.Wall;
+import com.topseekrats.foreground.Bullet;
 import com.topseekrats.foreground.Foreground;
 import com.topseekrats.foreground.Item;
 import com.topseekrats.foreground.Stargate;
@@ -54,7 +55,17 @@ public class ConsoleApplication
         //Two dummy maze fields
         mow1 = dummyMazeObjects.get(0);
         mow2 = dummyMazeObjects.get(1);
-        System.out.println("Test #1: done. Press a key to continue.");
+
+
+        //init for other tests START
+        actor = new Actor();
+        cleft = new Cleft();
+        sw = new Switch();
+        door = new Door();
+
+        //init for other tests END
+
+        System.out.println("Test #1: done. Init for other tests: done.\n\n");
 
         return 0;
     }
@@ -75,7 +86,7 @@ public class ConsoleApplication
         //For now, this will be the door which belongs to the dummy Switch
         door = new Door();
         door.changeOpened();
-        System.out.println("Test #2: done. Press a key to continue.");
+        // System.out.println("Test #2: done. Press a key to continue.");
 
         return 0;
     }
@@ -92,7 +103,7 @@ public class ConsoleApplication
         //For now, this will be the door which is belonging to the dummy Switch
         door = new Door();
         door.changeOpened();
-        System.out.println("Test #3: done. Press a key to continue.");
+        // System.out.println("Test #3: done. Press a key to continue.");
 
         return 0;
     }
@@ -109,7 +120,7 @@ public class ConsoleApplication
         System.out.println("Box destructor called");
         boxItem = null;
         System.out.println("Box destructor returned");
-        System.out.println("Test #4: done. Press a key to continue.");
+        // System.out.println("Test #4: done. Press a key to continue.");
 
         return 0;
     }
@@ -127,7 +138,7 @@ public class ConsoleApplication
         System.out.println("if Actor.ZPMCount == allZPMs is true, then:");
         if(true)
             engine.victory();
-        System.out.println("Test #5: done. Press a key to continue.");
+        // System.out.println("Test #5: done. Press a key to continue.");
 
         return 0;
     }
@@ -147,37 +158,122 @@ public class ConsoleApplication
         mow1.setActor();
         sw.changeDoorState();
         door.changeOpened();
-        System.out.println("Test #6: done. Press a key to continue.");
+        // System.out.println("Test #6: done. Press a key to continue.");
 
         return 0;
     }
 
     private static int testNum07() {
-
+        System.out.println("Test #7: The player steps on a cleft and dies. Game over!");
+        actor.move();
+        bg = mow1.getBackground();
+        cleft.destroy(); // destroy actor
+        engine.death();
         return 0;
     }
 
     private static int testNum08() {
+        System.out.println("Test #8: The player opens a stargate\n");
+
+        // init START
+        Wall wy = new Wall();
+        Wall wb = new Wall();
+        // init END
+
+        actor.shoot();
+
+        Bullet by = new Bullet();
+        by.move();
+        wy.changeHasStargate();
+        wy.isPortalCompatible();
+
+        actor.changeBullet();
+        actor.shoot();
+
+        Bullet bb = new Bullet();
+        bb.move();
+        wb.changeHasStargate();
+        wb.isPortalCompatible();
+
+        Stargate s = new Stargate();
 
         return 0;
     }
 
     private static int testNum09() {
+        System.out.println("Test #9: The player modify one of the stargate's endpoints");
+
+        // init START
+        Stargate so = new Stargate();
+        // init END
+
+        actor.shoot();
+        Bullet by = new Bullet();
+        by.move();
+        Wall wyo = new Wall();
+        wyo.changeHasStargate();    // disable passable = isPassable will return false
+        wyo.isPortalCompatible();
+
+        Wall wyn = new Wall();
+        wyn.changeHasStargate();
+        wyn.isPortalCompatible();
+
+        so.dispose();
+
+        Stargate sn = new Stargate();
 
         return 0;
     }
 
     private static int testNum10() {
+        System.out.println("Test #10: The player tries to place the stargate's both ends on the same wall causing stargate destroy");
+
+        // init START
+        Stargate s = new Stargate();
+        Wall w = new Wall();
+        // init END
+
+        actor.shoot();
+        Bullet b = new Bullet();
+        b.move();
+
+        w.changeHasStargate();
+        w.isPortalCompatible(); // this will return true
+
+        boolean hasStargate = true;
+
+        if(hasStargate) {
+            s.dispose();
+        }
 
         return 0;
     }
 
     private static int testNum11() {
+        System.out.println("Test #11: The player steps next to a box and picks it up");
+        actor.move();
+        fg = mow1.getForeground();
+        // fg is box
+        actor.pickUp();
 
         return 0;
     }
 
     private static int testNum12() {
+        System.out.println("Test #12: The player steps next to a ZPM and picks it up");
+
+        actor.move();
+        fg = mow1.getForeground();
+        actor.pickUp();
+        mow1.setForeground();
+        //Disposing zpmItem
+        System.out.println("ZPM destructor called");
+        zpmItem = null;
+        System.out.println("ZPM destructor returned");
+        //If Actor.ZPMCount == allZPMs
+        System.out.println("if Actor.ZPMCount == allZPMs is true, then:");
+        if(true)
+            engine.victory();
 
         return 0;
     }
@@ -196,7 +292,7 @@ public class ConsoleApplication
         //Teleports the player from a maze field to another
         mow1.setActor();
         mow2.setActor();
-        System.out.println("Test #13: done. Press a key to continue.");
+        // System.out.println("Test #13: done. Press a key to continue.");
 
         return 0;
     }
@@ -238,21 +334,42 @@ public class ConsoleApplication
 
     public static void main(String [] args)
     {
-        System.out.println("Skeleton tests - TopSeekRats");
+        int testCaseInt = -2;
+
+        StringBuffer sb = new StringBuffer("Skeleton tests - TopSeekRats\n");
+        sb.append("Test #1: Game initialization\n");
+        sb.append("Test #2: The player picks up a box from a switch, door closes\n");
+        sb.append("Test #3: The player drops a box onto a switch, door opens\n");
+        sb.append("Test #4: The player drops a box into a cleft\n");
+        sb.append("Test #5: The player picks up the last ZPM and wins\n");
+        sb.append("Test #6: The player steps on a switch and steps off from it\n");
+        sb.append("Test #7: The player steps on a cleft and dies. Game over!\n");
+        sb.append("Test #8: The player opens a stargate\n");
+        sb.append("Test #9: The player modify one of the stargate's endpoints\n");
+        sb.append("Test #10: The player tries to place the stargate's both ends on the same wall causing stargate destroyed\n");
+        sb.append("Test #11: The player steps next to a box and picks it up\n");
+        sb.append("Test #12: The player steps next to a ZPM and picks it up\n");
+        sb.append("Test #13: The player teleports\n");
+        System.out.println(sb);
+
+        do {
         System.out.println("Choose test from 1 to 13");
         // String testCaseString = System.console().readLine();
 
-        int testCaseInt = -2;
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            testCaseInt = Integer.parseInt(br.readLine());
-        }
-        catch (Exception e) {
-            System.err.println(e);
-        }
+            try {
+                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+                testCaseInt = Integer.parseInt(br.readLine());
+            }
+            catch (Exception e) {
+                System.err.println(e.toString());
+            }
+
+        } while (testCaseInt < 1 || testCaseInt > 13);
 
         int result = testCase(testCaseInt);
         System.out.println(result);
+
+
 
        // String waitForContinue = System.console().readLine();
     }

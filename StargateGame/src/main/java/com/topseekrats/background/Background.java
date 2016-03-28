@@ -26,4 +26,7 @@ public abstract class Background implements MazeObject {
 
     @Override
     public void pickUp() {}
+
+    @Override
+    public void dispose() {}
 }

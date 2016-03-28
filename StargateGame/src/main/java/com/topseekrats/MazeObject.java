@@ -8,4 +8,6 @@ public interface MazeObject {
     void changeBullet();
     void dropBox();
     void pickUp();
+    void dispose();
+
 }

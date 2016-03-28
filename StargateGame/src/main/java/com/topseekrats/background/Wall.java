@@ -1,9 +1,14 @@
 package com.topseekrats.background;
 
-import com.topseekrats.MazeObject;
-
 public class Wall extends Background {
-    public void changeHasStargete() {
+
+    public Wall() {
+        /*System.out.println("Wall.newWall() called");
+
+        System.out.println("Wall.newWall() returned");*/
+    }
+
+    public void changeHasStargate() {
         System.out.println("Wall.changeHasStargate() called");
 
         System.out.println("Wall.changeHasStargate() returned");
