@@ -3,7 +3,6 @@ package com.topseekrats.background;
 public class Door extends Background {
     public void changeOpened() {
         System.out.println("Door.changeOpened() called");
-
         System.out.println("Door.changeOpened() returned");
     }
 
