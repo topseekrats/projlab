@@ -49,4 +49,24 @@ public class Actor implements MazeObject {
         System.out.println("Actor.isForeground() returned");
         return false;
     }
+
+    @Override
+    public void setWeight() {
+        System.out.println("Actor.setWeight() called");
+        System.out.println("Actor.setWeight() returned");
+    }
+
+    @Override
+    public int getWeight() {
+        System.out.println("Actor.getWeight() called");
+        System.out.println("Actor.getWeight() returned");
+        return 0;
+    }
+
+    public String getType() {
+        System.out.println("Actor.getType() called");
+
+        System.out.println("Actor.getType() returned");
+        return null;
+    }
 }

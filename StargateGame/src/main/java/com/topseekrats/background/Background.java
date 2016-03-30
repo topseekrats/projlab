@@ -13,6 +13,12 @@ public abstract class Background implements MazeObject {
     }
 
     @Override
+    public void setWeight() {}
+
+    @Override
+    public int getWeight() { return 0; }
+
+    @Override
     public void move() {}
 
     @Override
