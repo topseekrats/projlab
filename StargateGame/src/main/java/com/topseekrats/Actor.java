@@ -11,10 +11,11 @@ public class Actor implements MazeObject {
     private Item item;
     private int zpmCount;
 
-    public Actor(ActorType type) {
+    public Actor(ActorType type) throws IllegalArgumentException {
         this.type = type;
         if (type == ActorType.COLONEL) bullet = new Bullet(BulletType.YELLOW);
-        if (type == ActorType.JAFFA) bullet = new Bullet(BulletType.RED);
+        else if (type == ActorType.JAFFA) bullet = new Bullet(BulletType.RED);
+        else throw new IllegalArgumentException("Actor object can not be created with REPLICATOR ActorType.");
     }
 
     public ActorType getType() { return type; }
