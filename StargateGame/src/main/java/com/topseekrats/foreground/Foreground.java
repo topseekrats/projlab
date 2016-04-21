@@ -4,23 +4,7 @@ import com.topseekrats.MazeObject;
 
 public abstract class Foreground implements MazeObject {
     @Override
-    public boolean isForeground() {
-        System.out.println("Foreground.isForeground() called");
-        System.out.println("Foreground.isForeground() returned");
-        return true;
-    }
-
-    @Override
-    public void setWeight() {}
-
-    @Override
-    public int getWeight() { return 0; }
-
-    @Override
-    public void move() {}
-
-    @Override
-    public void shoot() {}
+    public boolean isForeground() { return true; }
 
     @Override
     public void changeBullet() {}
@@ -29,8 +13,11 @@ public abstract class Foreground implements MazeObject {
     public void dropBox() {}
 
     @Override
-    public void pickUp() {}
+    public void move() {}
 
     @Override
-    public void dispose() {}
+    public void pickUp(Item item) {}
+
+    @Override
+    public void shoot() {}
 }

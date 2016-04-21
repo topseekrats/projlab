@@ -1,34 +1,32 @@
 package com.topseekrats;
 
+import com.sun.org.apache.regexp.internal.RE;
 import com.topseekrats.background.Background;
 import com.topseekrats.foreground.Foreground;
 
+import java.util.Stack;
+
+import static javafx.scene.input.KeyCode.R;
+
 public class MazeObjectWrapper {
-    public Actor getActor() {
-        System.out.println("MazeObjectWrapper.getActor() called");
-        System.out.println("MazeObjectWrapper.getActor() returned");
-        return null;
-    }
 
-    public Foreground getForeground() {
-        System.out.println("MazeObjectWrapper.getForeground() called");
-        System.out.println("MazeObjectWrapper.getForeground() returned");
-        return null;
-    }
+    private Actor[] actors;
+    private Background background;
+    private Stack<Foreground> foregrounds;
+    private Replicator replicator;
 
-    public Background getBackground() {
-        System.out.println("MazeObjectWrapper.getBackground() called");
-        System.out.println("MazeObjectWrapper.getBackground() returned");
-        return null;
-    }
+    public void setActor(Actor actor) { actors[actor.getType().ordinal()] = actor; }
+    public Actor getActor(ActorType type) { return actors[type.ordinal()]; }
 
-    public void setActor() {
-        System.out.println("MazeObjectWrapper.setActor() called");
-        System.out.println("MazeObjectWrapper.setActor() returned");
-    }
+    public Background getBackground() { return background; }
 
-    public void setForeground() {
-        System.out.println("MazeObjectWrapper.setForeground() called");
-        System.out.println("MazeObjectWrapper.setForeground() returned");
-    }
+    public void setForegrounds(Stack<Foreground> foregrounds) { this.foregrounds = foregrounds; }
+    public Stack<Foreground> getForegrounds() { return foregrounds; }
+
+    public void setReplicator(Replicator replicator) { this.replicator = replicator; }
+    public Replicator getReplicator() { return replicator; }
+
+    public void pushForeground(Foreground foreground) { foregrounds.push(foreground); }
+    public Foreground popForeground() { return foregrounds.pop(); }
+
 }

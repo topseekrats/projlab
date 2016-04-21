@@ -2,29 +2,16 @@ package com.topseekrats.background;
 
 public class Wall extends Background {
 
-    public Wall() {
-        /*System.out.println("Wall.newWall() called");
+    private boolean hasStargate = false;
+    private boolean portalCompatible;
 
-        System.out.println("Wall.newWall() returned");*/
-    }
+    public Wall(boolean portalCompatible) { this.portalCompatible = portalCompatible; }
 
-    public void changeHasStargate() {
-        System.out.println("Wall.changeHasStargate() called");
+    public boolean isPortalCompatible() { return portalCompatible; }
 
-        System.out.println("Wall.changeHasStargate() returned");
-    }
-
-    public boolean isPortalCompatible() {
-        System.out.println("Wall.isPortalCompatible() called");
-
-        System.out.println("Wall.isPortalCompatible() returned");
-        return false;
-    }
+    public void changeHasStargate() { hasStargate = !hasStargate; }
 
     @Override
-    public boolean isPassable() {
-        System.out.println("Wall.isPassable() called");
-        System.out.println("Wall.isPassable() returned");
-        return false;
-    }
+    public boolean isPassable() { return hasStargate; }
+
 }

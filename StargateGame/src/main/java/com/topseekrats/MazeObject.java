@@ -1,14 +1,14 @@
 package com.topseekrats;
 
+import com.topseekrats.foreground.Item;
+
 public interface MazeObject {
+
     boolean isForeground();
-    void setWeight();
-    int getWeight();
+    void dropBox();
     void move();
     void shoot();
     void changeBullet();
-    void dropBox();
-    void pickUp();
-    void dispose();
+    void pickUp(Item item);
 
 }

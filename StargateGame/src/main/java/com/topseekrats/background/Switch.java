@@ -1,16 +1,27 @@
 package com.topseekrats.background;
 
 public class Switch extends Background {
-    public void changeDoorState() {
-        System.out.println("Switch.changeDoorState() called");
 
-        System.out.println("Switch.changeDoorState() returned");
+    private Door door;
+    private int weight = 0;
+    private int weightConstraint;
+
+    public Switch(Door door, int weightConstraint) {
+        this.door = door;
+        this.weightConstraint = weightConstraint;
+    }
+
+    public void incrementWeight() {
+        ++weight;
+        if (weight >= weightConstraint && !door.isPassable()) door.changeOpened();
+    }
+
+    public void decrementWeight() {
+        --weight;
+        if (weight < weightConstraint && door.isPassable()) door.changeOpened();
     }
 
     @Override
-    public boolean isPassable() {
-        System.out.println("Switch.isPassable() called");
-        System.out.println("Switch.isPassable() returned");
-        return true;
-    }
+    public boolean isPassable() { return true; }
+
 }

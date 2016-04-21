@@ -1,9 +1,8 @@
 package com.topseekrats.foreground;
 
-//Lövedék típus
-public enum BulletType{
-    Blue,
-    Yellow,
-    Green,
-    Red
+public enum BulletType {
+    YELLOW,
+    BLUE,
+    GREEN,
+    RED
 }
