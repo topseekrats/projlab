@@ -1,7 +1,28 @@
 package com.topseekrats;
 
-public class Replicator extends Actor implements MazeObject {
+import com.topseekrats.foreground.Item;
 
-    public Replicator() { super(ActorType.REPLICATOR); }
+public class Replicator implements MazeObject {
+
+    public Replicator() {}
+
+    @Override
+    public void move() {
+    }
+
+    @Override
+    public boolean isForeground() { return false; }
+
+    @Override
+    public void changeBullet() {}
+
+    @Override
+    public void dropBox() {}
+
+    @Override
+    public void pickUp(final Item item) {}
+
+    @Override
+    public void shoot() {}
 
 }

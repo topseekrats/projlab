@@ -4,11 +4,12 @@ import com.topseekrats.foreground.Item;
 
 public interface MazeObject {
 
-    boolean isForeground();
+    void changeBullet();
     void dropBox();
     void move();
-    void shoot();
-    void changeBullet();
     void pickUp(Item item);
+    void shoot();
+
+    boolean isForeground();
 
 }

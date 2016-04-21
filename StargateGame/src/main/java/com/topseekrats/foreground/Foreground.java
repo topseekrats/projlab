@@ -3,6 +3,7 @@ package com.topseekrats.foreground;
 import com.topseekrats.MazeObject;
 
 public abstract class Foreground implements MazeObject {
+
     @Override
     public boolean isForeground() { return true; }
 
@@ -20,4 +21,5 @@ public abstract class Foreground implements MazeObject {
 
     @Override
     public void shoot() {}
+
 }

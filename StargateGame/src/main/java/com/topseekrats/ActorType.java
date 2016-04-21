@@ -2,6 +2,5 @@ package com.topseekrats;
 
 public enum ActorType {
     COLONEL,
-    JAFFA,
-    REPLICATOR
+    JAFFA
 }
