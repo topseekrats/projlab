@@ -12,6 +12,15 @@ public class MazeObjectWrapper {
     private Stack<Foreground> foregrounds = new Stack<Foreground>();
     private Replicator replicator = null;
 
+    public MazeObjectWrapper() {}
+
+    public MazeObjectWrapper( Background background) { this.background = background; }
+
+    public MazeObjectWrapper( Background background, Foreground foreground) {
+        this.background = background;
+        foregrounds.push(foreground);
+    }
+
     public void setActor(int id, Actor actor) { actors[id] = actor; }
     public Actor getActor(ActorType type) { return actors[type.ordinal()]; }
 
