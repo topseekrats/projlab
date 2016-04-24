@@ -1,12 +1,15 @@
 package com.topseekrats;
 
 import com.topseekrats.background.Background;
+import com.topseekrats.background.Cleft;
 import com.topseekrats.background.Door;
+import com.topseekrats.background.Switch;
 import com.topseekrats.background.Wall;
 import com.topseekrats.foreground.Bullet;
 import com.topseekrats.foreground.BulletType;
 import com.topseekrats.foreground.Item;
 import com.topseekrats.foreground.ItemType;
+import com.topseekrats.foreground.Stargate;
 
 public class Actor implements MazeObject {
 
@@ -26,40 +29,66 @@ public class Actor implements MazeObject {
 
     @Override
     public void move() {
-        //Mezőtől lekérjük az adott actor mozgásirányát
+        //Mezőtől lekérjük az adott játékos mozgásirányát
         MoveDirection moveDirection = Maze.getInstance().moveDirection[type.ordinal()];
         Maze actualMaze = Maze.getInstance();
 
-        //Aktort kivesszük az őt tartalmazó wrapperből
+        //Játékos aktuális pozícióját kimentjük, hogy ki tudjuk majd később szedni innen
+        //És inicializáljuk az új koordinátákat
         int xCoord = actualMaze.actorsPosition[type.ordinal()][0];
+        int newXCoord = actualMaze.actorsPosition[type.ordinal()][0];
         int yCoord = actualMaze.actorsPosition[type.ordinal()][1];
-        actualMaze.playField[xCoord][yCoord].setActor(null);
+        int newYCoord = actualMaze.actorsPosition[type.ordinal()][1];
 
-        //Aktor mozgásiránya szerint módosítjuk a Maze-ben az elhelyezkedésüket
+        //Játékos mozgásiránya szerint módosítjuk az új koordinátákat
         switch (moveDirection) {
             case DOWN:
-                //y koordináta csökken 1-gyel
-                actualMaze.actorsPosition[type.ordinal()][1] += 1;
+                newYCoord += 1;
                 break;
             case LEFT:
-                //x koordináta csökken 1-gyel
-                actualMaze.actorsPosition[type.ordinal()][0] += 1;
+                newXCoord += 1;
                 break;
             case RIGHT:
-                //x koordináta nő 1-gyel
-                actualMaze.actorsPosition[type.ordinal()][0] -= 1;
+                newXCoord -= 1;
                 break;
             case UP:
-                //y koordináta nő 1-gyel
-                actualMaze.actorsPosition[type.ordinal()][1] -= 1;
+                newYCoord -= 1;
                 break;
-            default: break;
         }
+        //A következő mező koordinátája, ahova lépne a játékos
+        MazeObjectWrapper wrapper = actualMaze.playField[newXCoord][newYCoord];
 
-        //Aktort berakjuk a következő mezőbe, ahova lépett
-        xCoord = actualMaze.actorsPosition[type.ordinal()][0];
-        yCoord = actualMaze.actorsPosition[type.ordinal()][1];
-        actualMaze.playField[xCoord][yCoord].setActor(this);
+        //Csak akkor rakjuk be, hogyha ráléphet a következő mezőre
+        if(!wrapper.getBackground().isPassable()){
+            return;
+        }
+        else {
+            actualMaze.actorsPosition[type.ordinal()][0] = newXCoord;
+            actualMaze.actorsPosition[type.ordinal()][1] = newYCoord;
+            actualMaze.playField[xCoord][yCoord].setActor(null);
+
+            //Ha mérlegen állt, csökkentjük a rá nehezedő súlyt
+            if(actualMaze.playField[xCoord][yCoord].getBackground() instanceof Switch) {
+                ((Switch) actualMaze.playField[xCoord][yCoord].getBackground()).decrementWeight();
+                //TODO: mennyivel csökkentsük a súlyt?
+            }
+            //Új mezőre lépés kezelése
+            actualMaze.playField[newXCoord][newYCoord].setActor(this);
+            //Ha szakadékba esik a játékos, akkor meghal
+            if(wrapper.getBackground() instanceof Cleft){
+                ((Cleft) wrapper.getBackground()).destroy(this);
+            }
+            //Ha átjárható falra lép, akkor teleportálni kell
+            else if(wrapper.getBackground() instanceof Wall){
+                //TODO: teleportálni a játékost
+            }
+            //Ha mérlegre lép, növeljük a mérlegre nehezedő súlyt
+            else if(wrapper.getBackground() instanceof Switch){
+                ((Switch)wrapper.getBackground()).incrementWeight();
+                //TODO: mennyivel növeljük a súlyt?
+            }
+
+        }
     }
 
     @Override
@@ -147,11 +176,9 @@ public class Actor implements MazeObject {
                     break;
             }
             //Csak akkor dobja el a dobozt, ha az előtte lévő mező átjárható
-            //TODO:
-            //Így nyitott ajtót is el tud torlaszolni
-            //Kérdés az, hogy ha lerak oda egy dobozt, és becsukódik az ajtó, mi történjen,
-            //De ezt az ajtónyitásnál lekezeljük
-            if(actualMaze.playField[xCoord][yCoord].getBackground().isPassable()) {
+            //És ha az nem egy ajtó
+            Background background = actualMaze.playField[xCoord][yCoord].getBackground();
+            if(background.isPassable() && !(background instanceof Door)) {
                 actualMaze.playField[xCoord][yCoord].pushForeground(item);
                 item = null;
             }
