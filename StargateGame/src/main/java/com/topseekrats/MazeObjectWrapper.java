@@ -29,7 +29,4 @@ public class MazeObjectWrapper {
 
     public void pushForeground(Foreground foreground) { foregrounds.push(foreground); }
     public Foreground popForeground() { return foregrounds.pop(); }
-
-    public void setBackground(Background background){ this.background = background;}
-
 }
