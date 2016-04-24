@@ -1,5 +1,8 @@
 package com.topseekrats;
 
+import com.topseekrats.background.Background;
+import com.topseekrats.background.Door;
+import com.topseekrats.background.Wall;
 import com.topseekrats.foreground.Bullet;
 import com.topseekrats.foreground.BulletType;
 import com.topseekrats.foreground.Item;
@@ -33,7 +36,7 @@ public class Actor implements MazeObject {
         actualMaze.playField[xCoord][yCoord].setActor(null);
 
         //Aktor mozgásiránya szerint módosítjuk a Maze-ben az elhelyezkedésüket
-        switch(moveDirection){
+        switch (moveDirection) {
             case DOWN:
                 //y koordináta csökken 1-gyel
                 actualMaze.actorsPosition[type.ordinal()][1] += 1;
@@ -61,7 +64,43 @@ public class Actor implements MazeObject {
 
     @Override
     public void shoot() {
-        //bullet.move(actualDirection);
+//        MazeObjectWrapper[][] playField = Maze.getInstance().playField;
+        int[][] stargateEndPoints = Maze.getInstance().stargateEndPoints;
+        int[] bulletPosition = Maze.getInstance().actorsPosition[type.ordinal()];
+        while (true) {
+            switch (Maze.getInstance().moveDirection[type.ordinal()]) {
+                case UP:
+                    bulletPosition[1] -= 1;
+                    break;
+                case DOWN:
+                    bulletPosition[1] += 1;
+                    break;
+                case LEFT:
+                    bulletPosition[0] -= 1;
+                    break;
+                case RIGHT:
+                    bulletPosition[0] += 1;
+                    break;
+            }
+            Background background = Maze.getInstance().playField[bulletPosition[0]][bulletPosition[1]].getBackground();
+            if (background.isPassable() == false) {
+                if (background instanceof Door) return;
+                Wall wall = (Wall)background;
+                if(!wall.isPortalCompatible()) return;
+                switch (bullet.getType()) {
+                    case YELLOW:
+                        break;
+                    case BLUE:
+                        break;
+                    case GREEN:
+                        break;
+                    case RED:
+                        break;
+                }
+                Maze.getInstance().stargateEndPoints[bullet.getType().ordinal()] = bulletPosition;
+            }
+
+        }
     }
 
     @Override
@@ -79,7 +118,6 @@ public class Actor implements MazeObject {
             case YELLOW:
                 bullet = new Bullet(BulletType.BLUE);
                 break;
-            default: break;
         }
     }
 
