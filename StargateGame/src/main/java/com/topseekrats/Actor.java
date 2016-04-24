@@ -77,7 +77,6 @@ public class Actor implements MazeObject {
 
     @Override
     public void shoot() {
-        int[][] stargateEndPoints = Maze.getInstance().stargateEndPoints;
         int[] bulletPos = Maze.getInstance().actorsPosition[type.ordinal()];
         while (true) {
             switch (Maze.getInstance().moveDirection[type.ordinal()]) {
@@ -103,52 +102,7 @@ public class Actor implements MazeObject {
                 if (background instanceof Door) return;
                 Wall wall = (Wall)background;
                 if (!wall.isPortalCompatible()) return;
-                switch (bullet.getType()) {
-                    case YELLOW:
-                        // Ha se sarga se kek portal nincs meg.
-                        if (stargateEndPoints[BulletType.YELLOW.ordinal()] == null && stargateEndPoints[BulletType.BLUE.ordinal()] == null) {
-                            stargateEndPoints[BulletType.YELLOW.ordinal()] = bulletPos;
-                            Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(bullet);
-                        }
-                        // Ha sarga van, kek nincs.
-                        else if (stargateEndPoints[BulletType.YELLOW.ordinal()] != null && stargateEndPoints[BulletType.BLUE.ordinal()] == null) {
-                            int[] oldEndPoint = stargateEndPoints[BulletType.YELLOW.ordinal()];
-                            Maze.getInstance().playField[oldEndPoint[0]][oldEndPoint[1]].popForeground();
-                            stargateEndPoints[BulletType.YELLOW.ordinal()] = bulletPos;
-                        }
-                        // Ha sarga nincs, kek van.
-                        else if (stargateEndPoints[BulletType.YELLOW.ordinal()] == null && stargateEndPoints[BulletType.BLUE.ordinal()] != null) {
-                            stargateEndPoints[BulletType.YELLOW.ordinal()] = bulletPos;
-
-                            // Ha a kekre lotte a sargat.
-                            if (bulletPos == stargateEndPoints[BulletType.BLUE.ordinal()]) {
-                                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].popForeground();
-                                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(bullet);
-                            }
-                            else {
-                                // Csillagkapu letrehozasa a sarga portal helyere.
-                                Stargate stargate = new Stargate(stargateEndPoints[BulletType.BLUE.ordinal()]);
-                                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].popForeground();
-                                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(stargate);
-
-                                // Csillagkapu letrehozasa a kek portal helyere.
-                                stargate = new Stargate(stargateEndPoints[BulletType.YELLOW.ordinal()]);
-                                int[] bluePortalPos = stargateEndPoints[BulletType.BLUE.ordinal()];
-                                Maze.getInstance().playField[bluePortalPos[0]][bluePortalPos[1]].popForeground();
-                                Maze.getInstance().playField[bluePortalPos[0]][bluePortalPos[1]].pushForeground(stargate);
-                            }
-                        }
-                        else {
-
-                        }
-                        break;
-                    case BLUE:
-                        break;
-                    case GREEN:
-                        break;
-                    case RED:
-                        break;
-                }
+                portalManager(bullet.getType(), bulletPos);
                 Maze.getInstance().stargateEndPoints[bullet.getType().ordinal()] = bulletPos;
             }
 
@@ -227,4 +181,61 @@ public class Actor implements MazeObject {
 
     @Override
     public boolean isForeground() { return false; }
+
+    private void portalManager(BulletType type, int[] bulletPos) {
+        int[][] stargateEndPoints = Maze.getInstance().stargateEndPoints;
+        int bulletId = bullet.getType().ordinal();
+        int bulletPairId = -1;
+        switch (bullet.getType()) {
+            case YELLOW:
+                bulletPairId = BulletType.BLUE.ordinal();
+                break;
+            case BLUE:
+                bulletPairId = BulletType.YELLOW.ordinal();
+                break;
+            case GREEN:
+                bulletPairId = BulletType.RED.ordinal();
+                break;
+            case RED:
+                bulletPairId = BulletType.GREEN.ordinal();
+                break;
+        }
+
+        // Ha se sarga se kek portal nincs meg.
+        if (stargateEndPoints[bulletId] == null && stargateEndPoints[bulletPairId] == null) {
+            stargateEndPoints[bulletId] = bulletPos;
+            Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(bullet);
+        }
+        // Ha sarga van, kek nincs.
+        else if (stargateEndPoints[bulletId] != null && stargateEndPoints[bulletPairId] == null) {
+            int[] oldEndPoint = stargateEndPoints[bulletId];
+            Maze.getInstance().playField[oldEndPoint[0]][oldEndPoint[1]].popForeground();
+            stargateEndPoints[bulletId] = bulletPos;
+        }
+        // Ha sarga nincs, kek van.
+        else if (stargateEndPoints[bulletId] == null && stargateEndPoints[bulletPairId] != null) {
+            stargateEndPoints[BulletType.YELLOW.ordinal()] = bulletPos;
+
+            // Ha a kekre lotte a sargat.
+            if (bulletPos == stargateEndPoints[bulletPairId]) {
+                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].popForeground();
+                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(bullet);
+            }
+            else {
+                // Csillagkapu letrehozasa a sarga portal helyere.
+                Stargate stargate = new Stargate(stargateEndPoints[bulletPairId]);
+                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].popForeground();
+                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(stargate);
+
+                // Csillagkapu letrehozasa a kek portal helyere.
+                stargate = new Stargate(stargateEndPoints[bulletId]);
+                int[] bluePortalPos = stargateEndPoints[bulletPairId];
+                Maze.getInstance().playField[bluePortalPos[0]][bluePortalPos[1]].popForeground();
+                Maze.getInstance().playField[bluePortalPos[0]][bluePortalPos[1]].pushForeground(stargate);
+            }
+        }
+        else {
+
+        }
+    }
 }
