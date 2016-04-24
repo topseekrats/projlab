@@ -186,13 +186,9 @@ public class Actor implements MazeObject {
         else if (item.getType() == ItemType.ZPM) {
             ++zpmCount;
             ++Maze.getInstance().zpmPickUpCounter;
-            Maze.getInstance().zpmOnMap -= 1;
-            if(Maze.getInstance().zpmPickUpCounter % 2 == 0){
-                Engine.generateRandomZPM();
-            }
-            if(Maze.getInstance().zpmOnMap == 0){
-                Engine.finish();
-            }
+            if(Maze.getInstance().zpmPickUpCounter % 2 == 0) Engine.generateRandomZPM();
+            --Maze.getInstance().zpmOnMap;
+            if(Maze.getInstance().zpmOnMap == 0) Engine.finish();
         }
         else {
             if (this.item == null) this.item = item;
@@ -231,16 +227,19 @@ public class Actor implements MazeObject {
         }
         // Ha csak olyan volt, mint amit most lott.
         else if (stargateEndPoints[bulletId] != null && stargateEndPoints[bulletPairId] == null) {
+            // Regi portal eltuntetese.
             int[] oldEndPoint = stargateEndPoints[bulletId];
             Maze.getInstance().playField[oldEndPoint[0]][oldEndPoint[1]].popForeground();
+
+            // Uj portal tarolasa.
             stargateEndPoints[bulletId] = bulletPos;
             Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(bullet);
         }
-        // Ha csak az ellenkezo tipus volt vagy mar mindketto.
-        else {
-            int[] oldEndPoint = stargateEndPoints[bulletId];
-            Maze.getInstance().playField[oldEndPoint[0]][oldEndPoint[1]].popForeground();
+        // Ha csak az ellenkezo tipus volt.
+        else if (stargateEndPoints[bulletId] == null && stargateEndPoints[bulletPairId] != null) {
+            // Most kilott portal koordinatainak tarolasa.
             stargateEndPoints[bulletId] = bulletPos;
+
             // Ha az ellenkezo tipusra lotte.
             if (bulletPos == stargateEndPoints[bulletPairId]) {
                 Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].popForeground();
@@ -250,7 +249,6 @@ public class Actor implements MazeObject {
             else {
                 // Csillagkapu letrehozasa az egyik portal helyere.
                 Stargate stargate = new Stargate(stargateEndPoints[bulletPairId]);
-                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].popForeground();
                 Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(stargate);
 
                 // Csillagkapu letrehozasa a masik portal helyere.
@@ -258,6 +256,40 @@ public class Actor implements MazeObject {
                 int[] pairBulletPos = stargateEndPoints[bulletPairId];
                 Maze.getInstance().playField[pairBulletPos[0]][pairBulletPos[1]].popForeground();
                 Maze.getInstance().playField[pairBulletPos[0]][pairBulletPos[1]].pushForeground(stargate);
+
+                // Falak atjarhatova tetele.
+                ((Wall)Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].getBackground()).changeHasStargate();
+                ((Wall)Maze.getInstance().playField[pairBulletPos[0]][pairBulletPos[1]].getBackground()).changeHasStargate();
+            }
+        }
+        // Ha mar mindket tipusu portal volt.
+        else {
+            // Csillagkapu levetele a regi falrol.
+            int[] oldEndPoint = stargateEndPoints[bulletId];
+            ((Wall)Maze.getInstance().playField[oldEndPoint[0]][oldEndPoint[1]].getBackground()).changeHasStargate();
+            Maze.getInstance().playField[oldEndPoint[0]][oldEndPoint[1]].popForeground();
+
+            // Most kilott portal koordinatainak tarolasa.
+            stargateEndPoints[bulletId] = bulletPos;
+
+            // Ha az ellenkezo tipusra lotte.
+            if (bulletPos == stargateEndPoints[bulletPairId]) {
+                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].popForeground();
+                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(bullet);
+            }
+            // Ha egy ures specialis falra lotte.
+            else {
+                // Csillagkapu letrehozasa az uj portal helyere.
+                Stargate stargate = new Stargate(stargateEndPoints[bulletPairId]);
+                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].popForeground();
+                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(stargate);
+
+                // Meglevo Csillagkapu parkoordinatainak modositasa.
+                int[] pairBulletPos = stargateEndPoints[bulletPairId];
+                ((Stargate)Maze.getInstance().playField[pairBulletPos[0]][pairBulletPos[1]].peekForeground()).setPairCoords(bulletPos);
+
+                // Uj fal atjarhatova tetele.
+                ((Wall)Maze.getInstance().playField[pairBulletPos[0]][pairBulletPos[1]].getBackground()).changeHasStargate();
             }
         }
         Maze.getInstance().stargateEndPoints = stargateEndPoints;

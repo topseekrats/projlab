@@ -1,22 +1,23 @@
 package com.topseekrats.foreground;
 
 import com.topseekrats.Actor;
-import com.topseekrats.ActorType;
 import com.topseekrats.Maze;
 
 public class Stargate extends Foreground {
 
-    private int[] pairCoors;
+    private int[] pairCoords;
 
-    public Stargate(int[] pairCoors) { this.pairCoors = pairCoors; }
+    public Stargate(int[] pairCoords) { this.pairCoords = pairCoords; }
+
+    public void setPairCoords(int[] pairCoords) { this.pairCoords = pairCoords; }
 
     public void teleport(Actor actor) {
         int[] pos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
 
         //elteleportáljuk egyik helyről a másikra
         Maze.getInstance().playField[pos[0]][pos[1]].setActor(actor.getType().ordinal(),null);
-        Maze.getInstance().playField[pairCoors[0]][pairCoors[1]].setActor(actor.getType().ordinal(),actor);
-        Maze.getInstance().actorsPosition[actor.getType().ordinal()] = pairCoors;
+        Maze.getInstance().playField[pairCoords[0]][pairCoords[1]].setActor(actor.getType().ordinal(),actor);
+        Maze.getInstance().actorsPosition[actor.getType().ordinal()] = pairCoords;
     }
 
 }
