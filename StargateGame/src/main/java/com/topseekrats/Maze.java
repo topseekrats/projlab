@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Maze implements Serializable {
 
-    public int zpmOnMap = 25;
+    public int zpmOnMap = 15;
     public int zpmPickUpCounter = 0;
     public int[] replicatorPosition = new int[2];
     public int[][] actorsPosition = new int[2][2];

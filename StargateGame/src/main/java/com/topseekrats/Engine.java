@@ -22,11 +22,12 @@ public final class Engine {
         out.close();
     }
 
-    public static Maze load() throws IOException, ClassNotFoundException {
+    public static void load() throws IOException, ClassNotFoundException {
         ObjectInputStream in = new ObjectInputStream(new FileInputStream("maps/default.sgmap"));
         Maze temp = (Maze)in.readObject();
         in.close();
-        return temp;
+        Maze.getInstance().playField = temp.playField;
+        Maze.getInstance().zpmOnMap = temp.zpmOnMap;
     }
 
     public static void victory(ActorType actorType) {

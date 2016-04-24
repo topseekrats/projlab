@@ -2,7 +2,9 @@ package com.topseekrats.foreground;
 
 import com.topseekrats.MazeObject;
 
-public abstract class Foreground implements MazeObject {
+import java.io.Serializable;
+
+public abstract class Foreground implements MazeObject, Serializable {
 
     @Override
     public boolean isForeground() { return true; }

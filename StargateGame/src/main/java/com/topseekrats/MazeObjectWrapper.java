@@ -3,9 +3,10 @@ package com.topseekrats;
 import com.topseekrats.background.Background;
 import com.topseekrats.foreground.Foreground;
 
+import java.io.Serializable;
 import java.util.Stack;
 
-public class MazeObjectWrapper {
+public class MazeObjectWrapper implements Serializable {
 
     private Actor[] actors = new Actor[2];
     private Background background = null;

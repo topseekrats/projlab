@@ -1,9 +1,10 @@
 package com.topseekrats.background;
 
 import com.topseekrats.MazeObject;
-import com.topseekrats.foreground.Item;
 
-public abstract class Background implements MazeObject {
+import java.io.Serializable;
+
+public abstract class Background implements MazeObject, Serializable {
 
     public abstract boolean isPassable();
 
