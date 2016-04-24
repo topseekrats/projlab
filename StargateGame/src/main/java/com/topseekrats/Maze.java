@@ -1,12 +1,20 @@
 package com.topseekrats;
 
-public final class Maze {
+import java.io.Serializable;
 
-    public static int[][] actorsPosition = new int[2][];
-    public static int actualZpmCount;
-    public static MazeObjectWrapper[][] playField = new MazeObjectWrapper[20][20];
-    public static int[][] stargateEndPoints = new int[2][];
-    public static MoveDirection[] moveDirection = new MoveDirection[2];
+public class Maze implements Serializable {
+
+    public int actualZpmCount;
+    public int[] replicatorPosition = new int[2];
+    public int[][] actorsPosition = new int[2][2];
+    public int[][] stargateEndPoints = new int[2][2];
+    public MazeObjectWrapper[][] playField = new MazeObjectWrapper[20][20];
+    public MoveDirection[] moveDirection = new MoveDirection[2];
+
+    private static Maze instance = new Maze();
 
     private Maze() {}
+
+    public static Maze getInstance() { return instance; }
+
 }
