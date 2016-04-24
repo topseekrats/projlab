@@ -3,6 +3,8 @@ package com.topseekrats;
 import com.topseekrats.background.*;
 import com.topseekrats.foreground.*;
 
+import static java.awt.Color.blue;
+
 public class Actor implements MazeObject {
 
     private ActorType type;
@@ -31,11 +33,11 @@ public class Actor implements MazeObject {
         // Játékos mozgásiránya szerint módosítjuk az új koordinátákat
         switch (moveDirection) {
             case UP:
-                if (pos[0] > 0) pos[1] -= 1;
+                if (pos[0] > 0) pos[0] -= 1;
                 else return;
                 break;
             case DOWN:
-                if (pos[0] < Maze.getInstance().playField.length-1) pos[1] += 1;
+                if (pos[0] < Maze.getInstance().playField.length-1) pos[0] += 1;
                 else return;
                 break;
             case LEFT:
@@ -43,7 +45,7 @@ public class Actor implements MazeObject {
                 else return;
                 break;
             case RIGHT:
-                if (pos[1] < Maze.getInstance().playField[0].length-1) pos[1] += 1;
+                if (pos[1] < Maze.getInstance().playField[1].length-1) pos[1] += 1;
                 else return;
                 break;
         }
@@ -80,11 +82,11 @@ public class Actor implements MazeObject {
         while (true) {
             switch (Maze.getInstance().moveDirection[type.ordinal()]) {
                 case UP:
-                    if (bulletPos[0] > 0) bulletPos[1] -= 1;
+                    if (bulletPos[0] > 0) bulletPos[0] -= 1;
                     else return;
                     break;
                 case DOWN:
-                    if (bulletPos[0] < Maze.getInstance().playField.length-1) bulletPos[1] += 1;
+                    if (bulletPos[0] < Maze.getInstance().playField.length-1) bulletPos[0] += 1;
                     else return;
                     break;
                 case LEFT:
@@ -92,7 +94,7 @@ public class Actor implements MazeObject {
                     else return;
                     break;
                 case RIGHT:
-                    if (bulletPos[1] < Maze.getInstance().playField[0].length-1) bulletPos[1] += 1;
+                    if (bulletPos[1] < Maze.getInstance().playField[1].length-1) bulletPos[1] += 1;
                     else return;
                     break;
             }
@@ -103,18 +105,38 @@ public class Actor implements MazeObject {
                 if (!wall.isPortalCompatible()) return;
                 switch (bullet.getType()) {
                     case YELLOW:
+                        // Ha se sarga se kek portal nincs meg.
                         if (stargateEndPoints[BulletType.YELLOW.ordinal()] == null && stargateEndPoints[BulletType.BLUE.ordinal()] == null) {
                             stargateEndPoints[BulletType.YELLOW.ordinal()] = bulletPos;
                             Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(bullet);
                         }
+                        // Ha sarga van, kek nincs.
                         else if (stargateEndPoints[BulletType.YELLOW.ordinal()] != null && stargateEndPoints[BulletType.BLUE.ordinal()] == null) {
                             int[] oldEndPoint = stargateEndPoints[BulletType.YELLOW.ordinal()];
                             Maze.getInstance().playField[oldEndPoint[0]][oldEndPoint[1]].popForeground();
                             stargateEndPoints[BulletType.YELLOW.ordinal()] = bulletPos;
                         }
+                        // Ha sarga nincs, kek van.
                         else if (stargateEndPoints[BulletType.YELLOW.ordinal()] == null && stargateEndPoints[BulletType.BLUE.ordinal()] != null) {
                             stargateEndPoints[BulletType.YELLOW.ordinal()] = bulletPos;
-                            Stargate stargate = new Stargate(stargateEndPoints[BulletType.YELLOW.ordinal()]);
+
+                            // Ha a kekre lotte a sargat.
+                            if (bulletPos == stargateEndPoints[BulletType.BLUE.ordinal()]) {
+                                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].popForeground();
+                                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(bullet);
+                            }
+                            else {
+                                // Csillagkapu letrehozasa a sarga portal helyere.
+                                Stargate stargate = new Stargate(stargateEndPoints[BulletType.BLUE.ordinal()]);
+                                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].popForeground();
+                                Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(stargate);
+
+                                // Csillagkapu letrehozasa a kek portal helyere.
+                                stargate = new Stargate(stargateEndPoints[BulletType.YELLOW.ordinal()]);
+                                int[] bluePortalPos = stargateEndPoints[BulletType.BLUE.ordinal()];
+                                Maze.getInstance().playField[bluePortalPos[0]][bluePortalPos[1]].popForeground();
+                                Maze.getInstance().playField[bluePortalPos[0]][bluePortalPos[1]].pushForeground(stargate);
+                            }
                         }
                         else {
 
@@ -159,11 +181,11 @@ public class Actor implements MazeObject {
         //Maga elé rakja le a dobozt
         switch (Maze.getInstance().moveDirection[type.ordinal()]) {
             case UP:
-                if (pos[0] > 0) pos[1] -= 1;
+                if (pos[0] > 0) pos[0] -= 1;
                 else return;
                 break;
             case DOWN:
-                if (pos[0] < Maze.getInstance().playField.length-1) pos[1] += 1;
+                if (pos[0] < Maze.getInstance().playField.length-1) pos[0] += 1;
                 else return;
                 break;
             case LEFT:
