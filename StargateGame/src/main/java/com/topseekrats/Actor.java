@@ -71,7 +71,7 @@ public class Actor implements MazeObject {
         else if (wrapper.getBackground() instanceof Cleft) ((Cleft)wrapper.getBackground()).destroy(this);
         //Ha átjárható falra lép, akkor teleportálni kell
         else if (wrapper.getBackground() instanceof Wall) {
-            ((Stargate) wrapper.getForegrounds().peek()).teleport(this);
+            ((Stargate) wrapper.peekForeground()).teleport(this);
         }
     }
 
