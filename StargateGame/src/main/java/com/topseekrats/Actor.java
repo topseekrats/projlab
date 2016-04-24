@@ -187,6 +187,12 @@ public class Actor implements MazeObject {
             ++zpmCount;
             ++Maze.getInstance().zpmPickUpCounter;
             Maze.getInstance().zpmOnMap -= 1;
+            if(Maze.getInstance().zpmPickUpCounter % 2 == 0){
+                Engine.generateRandomZPM();
+            }
+            if(Maze.getInstance().zpmOnMap == 0){
+                Engine.finish();
+            }
         }
         else {
             if (this.item == null) this.item = item;
