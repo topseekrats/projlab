@@ -26,12 +26,11 @@ public class Replicator implements MazeObject {
         //Replikátort kivesszük az őt tartalmazó wrapperből
         int[] pos = Maze.getInstance().replicatorPosition;
         int[] oldPos = pos;
-//        m.playField[xCoord][yCoord].setReplicator(null);
 
-        log("rep POS: " + pos[1] + "," + pos[0]);
+//        log("Replicator POS: " + pos[1] + "," + pos[0]);
 
         int dir = r.nextInt(4);
-        log("dir=" + dir);
+//        log("dir=" + dir);
 
         switch (dir) {
             case 0:
@@ -56,16 +55,23 @@ public class Replicator implements MazeObject {
                 break;
         }
 
-//        m.playField[xCoord][yCoord].setReplicator(this);
+        if (!Maze.getInstance().playField[pos[0]][pos[1]].getBackground().isPassable()) return;
+        Maze.getInstance().playField[oldPos[0]][oldPos[1]].setReplicator(null);
 
-        // ha szakadékra lépett
-        if (Maze.getInstance().playField[pos[1]][pos[0]].getBackground() instanceof Cleft)
+        // Ha szakadékra lépett.
+        if (Maze.getInstance().playField[pos[1]][pos[0]].getBackground() instanceof Cleft) {
             Maze.getInstance().playField[pos[1]][pos[0]].setBackground(new Floor());
-        log("md=" + md);
-        log("rep POS: " + pos[1] + "," + pos[0]);
+            return;
+        }
+
+        //Új mezőre lépés kezelése
+        Maze.getInstance().playField[pos[0]][pos[1]].setReplicator(this);
+
+//        log("md=" + md);
+//        log("rep POS: " + pos[1] + "," + pos[0]);
     }
 
-    private void log(String s) { System.out.println(s); }
+//    private void log(String s) { System.out.println(s); }
 
     @Override
     public boolean isForeground() { return false; }
