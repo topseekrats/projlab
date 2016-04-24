@@ -3,8 +3,6 @@ package com.topseekrats;
 import com.topseekrats.background.*;
 import com.topseekrats.foreground.*;
 
-import static java.awt.Color.blue;
-
 public class Actor implements MazeObject {
 
     private ActorType type;
@@ -172,8 +170,8 @@ public class Actor implements MazeObject {
         if (item == null) return;
         else if (item.getType() == ItemType.ZPM) {
             ++zpmCount;
-            ++Maze.getInstance().zpmCounter;
-            Maze.getInstance().actualZpmCount -= 1;
+            ++Maze.getInstance().zpmPickUpCounter;
+            Maze.getInstance().zpmOnMap -= 1;
         }
         else {
             if (this.item == null) this.item = item;
