@@ -15,9 +15,9 @@ public class MazeObjectWrapper implements Serializable {
 
     public MazeObjectWrapper() {}
 
-    public MazeObjectWrapper( Background background) { this.background = background; }
+    public MazeObjectWrapper(Background background) { this.background = background; }
 
-    public MazeObjectWrapper( Background background, Foreground foreground) {
+    public MazeObjectWrapper(Background background, Foreground foreground) {
         this.background = background;
         foregrounds.push(foreground);
     }
@@ -35,6 +35,10 @@ public class MazeObjectWrapper implements Serializable {
     public Replicator getReplicator() { return replicator; }
 
     public void pushForeground(Foreground foreground) { foregrounds.push(foreground); }
+    public Foreground peekForeground() {
+        if (foregrounds.empty()) return null;
+        return foregrounds.peek();
+    }
     public Foreground popForeground() {
         if (foregrounds.empty()) return null;
         return foregrounds.pop();

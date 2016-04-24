@@ -111,11 +111,11 @@ public class Actor implements MazeObject {
                     break;
             }
             Background background = Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].getBackground();
-            if (background.isPassable() == false) {
+            if (!background.isPassable()) {
                 if (background instanceof Door) return;
                 Wall wall = (Wall)background;
                 if (!wall.isPortalCompatible()) return;
-                portalManager(bullet.getType(), bulletPos);
+                portalManager(bulletPos);
             }
 
         }
@@ -183,7 +183,7 @@ public class Actor implements MazeObject {
         Item item = (Item)Maze.getInstance().playField[pos[0]][pos[1]].popForeground();
 
         if (item == null) return;
-        else if (item.getType() == ItemType.ZPM) {
+        if (item.getType() == ItemType.ZPM) {
             ++zpmCount;
             ++Maze.getInstance().zpmPickUpCounter;
             if(Maze.getInstance().zpmPickUpCounter % 2 == 0) Engine.generateRandomZPM();
@@ -199,7 +199,7 @@ public class Actor implements MazeObject {
     @Override
     public boolean isForeground() { return false; }
 
-    private void portalManager(BulletType type, int[] bulletPos) {
+    private void portalManager(int[] bulletPos) {
         int[][] stargateEndPoints = Maze.getInstance().stargateEndPoints;
 
         // Portalok szinenek meghatarozasa.

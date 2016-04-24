@@ -15,7 +15,6 @@ import java.util.Random;
  */
 public class Replicator implements MazeObject {
 
-    private MoveDirection md = MoveDirection.RIGHT;
     private Random r = new Random();
 
     /**
@@ -34,23 +33,18 @@ public class Replicator implements MazeObject {
 
         switch (dir) {
             case 0:
-                md = MoveDirection.UP;
                 if (pos[1] > 0) pos[0] -= 1; // one row up
                 break;
             case 1:
-                md = MoveDirection.DOWN;
                 if (pos[1] < Maze.getInstance().playField.length-1) pos[0] += 1; // one row down
                 break;
             case 2:
-                md = MoveDirection.LEFT;
                 if (pos[1] > 0) pos[1] -= 1; // one column left/back
                 break;
             case 3:
-                md = MoveDirection.RIGHT;
                 if (pos[1] < Maze.getInstance().playField[0].length-1) pos[1] += 1; // one column right/forward
                 break;
             default:
-                md = MoveDirection.RIGHT;
                 if (pos[1] < Maze.getInstance().playField[0].length-1) pos[1] += 1; // one column right/forward
                 break;
         }
