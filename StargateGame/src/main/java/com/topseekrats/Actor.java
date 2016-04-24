@@ -184,6 +184,7 @@ public class Actor implements MazeObject {
     private void portalManager(BulletType type, int[] bulletPos) {
         int[][] stargateEndPoints = Maze.getInstance().stargateEndPoints;
 
+        // Portalok szinenek meghatarozasa.
         int bulletId = bullet.getType().ordinal();
         int bulletPairId = -1;
         switch (bullet.getType()) {
@@ -237,5 +238,6 @@ public class Actor implements MazeObject {
                 Maze.getInstance().playField[pairBulletPos[0]][pairBulletPos[1]].pushForeground(stargate);
             }
         }
+        Maze.getInstance().stargateEndPoints = stargateEndPoints;
     }
 }
