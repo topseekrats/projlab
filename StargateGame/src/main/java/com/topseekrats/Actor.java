@@ -52,8 +52,17 @@ public class Actor implements MazeObject {
         // A következő mező koordinátája, ahova lépne a játékos
         MazeObjectWrapper wrapper = Maze.getInstance().playField[pos[0]][pos[1]];
 
-        //Csak akkor rakjuk be, hogyha ráléphet a következő mezőre
+        //Csak akkor rakjuk be, hogyha ráléphet a következő mezőre:
+        //A mezőre rá lehet lépni
+        //A mezőn nincs ott a másik játékos
         if (!wrapper.getBackground().isPassable()) return;
+        if(this.type == ActorType.COLONEL){
+            if(wrapper.getActor(ActorType.JAFFA) != null) return;
+        }
+        else{
+            if(wrapper.getActor(ActorType.COLONEL) != null) return;
+        }
+
 
         Maze.getInstance().actorsPosition[type.ordinal()] = pos;
 
@@ -155,7 +164,10 @@ public class Actor implements MazeObject {
         //És ha az nem egy ajtó
         Background background = Maze.getInstance().playField[pos[0]][pos[1]].getBackground();
         if (background.isPassable() && !(background instanceof Door)) {
-            Maze.getInstance().playField[pos[0]][pos[1]].pushForeground(item);
+            //Ha szakadékba dobjuk a dobozt, akkor nem rakjuk le már sehova
+            if(!(background instanceof Cleft)){
+                Maze.getInstance().playField[pos[0]][pos[1]].pushForeground(item);
+            }
             item = null;
         }
     }

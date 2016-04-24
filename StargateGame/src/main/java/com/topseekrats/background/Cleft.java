@@ -10,8 +10,9 @@ public class Cleft extends Background {
     public void destroy(MazeObject mazeObject) {
         if (mazeObject instanceof Actor) {
             Actor temp = (Actor)mazeObject;
-            if (temp.getType() == ActorType.COLONEL) Engine.death(ActorType.COLONEL);
-            else Engine.death(ActorType.JAFFA);
+            //if (temp.getType() == ActorType.COLONEL) Engine.death(ActorType.COLONEL);
+            //else Engine.death(ActorType.JAFFA);
+            Engine.death(temp.getType());
         }
     }
 
