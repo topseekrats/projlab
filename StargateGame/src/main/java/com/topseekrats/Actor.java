@@ -49,30 +49,33 @@ public class Actor implements MazeObject {
                 else return;
                 break;
         }
-        // A következő mező koordinátája, ahova lépne a játékos
-        MazeObjectWrapper wrapper = Maze.getInstance().playField[pos[0]][pos[1]];
 
         //Csak akkor rakjuk be, hogyha ráléphet a következő mezőre
-        if (!wrapper.getBackground().isPassable()) return;
-
+        if (!Maze.getInstance().playField[pos[0]][pos[1]].getBackground().isPassable()) return;
         Maze.getInstance().actorsPosition[type.ordinal()] = pos;
 
         //Új mezőre lépés kezelése
-        Maze.getInstance().playField[pos[0]][pos[1]].setActor(getType().ordinal(), this);
         Maze.getInstance().playField[oldPos[0]][oldPos[1]].setActor(getType().ordinal(), null);
+
 
         //Ha mérlegen állt, csökkentjük a rá nehezedő súlyt
         if (Maze.getInstance().playField[oldPos[0]][oldPos[1]].getBackground() instanceof Switch)
             ((Switch)Maze.getInstance().playField[oldPos[0]][oldPos[1]].getBackground()).decrementWeight();
 
-        //Ha mérlegre lép, növeljük a mérlegre nehezedő súlyt
-        if (wrapper.getBackground() instanceof Switch) ((Switch)wrapper.getBackground()).incrementWeight();
-        // Ha szakadékba esik a játékos, akkor meghal
-        else if (wrapper.getBackground() instanceof Cleft) ((Cleft)wrapper.getBackground()).destroy(this);
         //Ha átjárható falra lép, akkor teleportálni kell
-        else if (wrapper.getBackground() instanceof Wall) {
-            ((Stargate) wrapper.peekForeground()).teleport(this);
+        if (Maze.getInstance().playField[pos[0]][pos[1]].getBackground() instanceof Wall) {
+            ((Stargate) Maze.getInstance().playField[pos[0]][pos[1]].peekForeground()).teleport(this);
+            return;
         }
+
+        Maze.getInstance().playField[pos[0]][pos[1]].setActor(getType().ordinal(), this);
+
+        //Ha mérlegre lép, növeljük a mérlegre nehezedő súlyt
+        if (Maze.getInstance().playField[pos[0]][pos[1]].getBackground() instanceof Switch)
+            ((Switch)Maze.getInstance().playField[pos[0]][pos[1]].getBackground()).incrementWeight();
+        // Ha szakadékba esik a játékos, akkor meghal
+        else if (Maze.getInstance().playField[pos[0]][pos[1]].getBackground() instanceof Cleft)
+            ((Cleft)Maze.getInstance().playField[pos[0]][pos[1]].getBackground()).destroy(this);
     }
 
     @Override
