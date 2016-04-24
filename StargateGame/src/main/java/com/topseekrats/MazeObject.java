@@ -7,7 +7,7 @@ public interface MazeObject {
     void changeBullet();
     void dropBox();
     void move();
-    void pickUp(Item item);
+    void pickUp();
     void shoot();
 
     boolean isForeground();

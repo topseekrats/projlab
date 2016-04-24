@@ -2,7 +2,6 @@ package com.topseekrats;
 
 import com.topseekrats.background.Cleft;
 import com.topseekrats.background.Floor;
-import com.topseekrats.foreground.Item;
 import java.util.Random;
 
 /**
@@ -16,86 +15,57 @@ import java.util.Random;
  */
 public class Replicator implements MazeObject {
 
-    private Random r;
     private MoveDirection md = MoveDirection.RIGHT;
-
-    public Replicator() {
-        r = new Random();
-    }
+    private Random r = new Random();
 
     /**
      * random movement
      */
     @Override
     public void move() {
-        Maze m = Maze.getInstance();
-
         //Replikátort kivesszük az őt tartalmazó wrapperből
-        int xCoord = m.replicatorPosition[0];
-        int yCoord = m.replicatorPosition[1];
+        int[] pos = Maze.getInstance().replicatorPosition;
+        int[] oldPos = pos;
 //        m.playField[xCoord][yCoord].setReplicator(null);
 
-        log("rep POS: "+xCoord+","+yCoord);
+        log("rep POS: " + pos[0] + "," + pos[1]);
 
         int dir = r.nextInt(4);
-        log("dir="+dir);
+        log("dir=" + dir);
 
         switch (dir) {
             case 0:
-                setMd(MoveDirection.UP);
-                if (m.replicatorPosition[0] == 0) {
-                    // first row => do nothing
-                } else {
-                    m.replicatorPosition[0] = m.replicatorPosition[0] - 1; // one row up
-                }
+                md = MoveDirection.UP;
+                if (pos[1] != 0) pos[1] -= 1; // one row up
                 break;
             case 1:
-                setMd(MoveDirection.LEFT);
-                if (m.replicatorPosition[1] == 0) {
-                    // first column => do nothing
-                } else {
-                    m.replicatorPosition[1] = m.replicatorPosition[1] - 1; // one column left/back
-                }
+                md = MoveDirection.DOWN;
+                if (pos[1] != Maze.getInstance().playField[0].length-1) pos[1] += 1; // one row down
                 break;
             case 2:
-                setMd(MoveDirection.DOWN);
-                if (m.replicatorPosition[0] == m.playField.length-1) {
-                    // last row => do nothing
-                } else {
-                    m.replicatorPosition[0] = m.replicatorPosition[0] + 1; // one row down
-                }
+                md = MoveDirection.LEFT;
+                if (pos[0] != 0) pos[0] -= 1; // one column left/back
                 break;
             case 3:
-                setMd(MoveDirection.RIGHT);
-                if (m.replicatorPosition[1] == m.playField[0].length) {
-                    // last column => do nothing
-                } else {
-                    m.replicatorPosition[1] = m.replicatorPosition[1] + 1; // one column right/forward
-                }
+                md = MoveDirection.RIGHT;
+                if (pos[0] != Maze.getInstance().playField.length-1) pos[0] += 1; // one column right/forward
                 break;
             default:
-                setMd(MoveDirection.RIGHT);
-                if (m.replicatorPosition[1] == m.playField[0].length-1) {
-                    // last column => do nothing
-                } else {
-                    m.replicatorPosition[1] = m.replicatorPosition[1] + 1; // one column right/forward
-                }
+                md = MoveDirection.RIGHT;
+                if (pos[0] != Maze.getInstance().playField.length-1) pos[0] += 1; // one column right/forward
                 break;
         }
 
-        //Replikátort berakjuk a következő mezőbe, ahova lépett
-        xCoord = m.replicatorPosition[0];
-        yCoord = m.replicatorPosition[1];
 //        m.playField[xCoord][yCoord].setReplicator(this);
 
         // ha szakadékra lépett
-        if (m.playField[xCoord][yCoord].getBackground() instanceof Cleft) {
-            m.playField[xCoord][yCoord].setBackground(new Floor());
-        }
-        log("md="+getMd());
-        log("rep POS: "+xCoord+","+yCoord);
-
+        if (Maze.getInstance().playField[pos[0]][pos[1]].getBackground() instanceof Cleft)
+            Maze.getInstance().playField[pos[0]][pos[1]].setBackground(new Floor());
+        log("md=" + md);
+        log("rep POS: " + pos[0] + "," + pos[1]);
     }
+
+    private void log(String s) { System.out.println(s); }
 
     @Override
     public boolean isForeground() { return false; }
@@ -107,24 +77,8 @@ public class Replicator implements MazeObject {
     public void dropBox() {}
 
     @Override
-    public void pickUp(final Item item) {}
-
+    public void pickUp() {}
 
     @Override
     public void shoot() {}
-
-
-    private MoveDirection getMd() {
-        return md;
-    }
-
-    public void setMd(MoveDirection md) {
-        this.md = md;
-    }
-
-    private void log(String s) {
-        java.lang.System.out.println(s);
-    }
-
-
 }

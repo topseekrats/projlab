@@ -17,7 +17,7 @@ public abstract class Background implements MazeObject {
     public void dropBox() {}
 
     @Override
-    public void pickUp(Item item) {}
+    public void pickUp() {}
 
     @Override
     public void move() {}

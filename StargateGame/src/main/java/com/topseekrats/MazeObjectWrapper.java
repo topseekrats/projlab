@@ -1,12 +1,9 @@
 package com.topseekrats;
 
-import com.sun.org.apache.regexp.internal.RE;
 import com.topseekrats.background.Background;
 import com.topseekrats.foreground.Foreground;
 
 import java.util.Stack;
-
-import static javafx.scene.input.KeyCode.R;
 
 public class MazeObjectWrapper {
 
@@ -28,5 +25,9 @@ public class MazeObjectWrapper {
     public Replicator getReplicator() { return replicator; }
 
     public void pushForeground(Foreground foreground) { foregrounds.push(foreground); }
-    public Foreground popForeground() { return foregrounds.pop(); }
+    public Foreground popForeground() {
+        if (foregrounds.empty()) return null;
+        return foregrounds.pop();
+    }
+
 }

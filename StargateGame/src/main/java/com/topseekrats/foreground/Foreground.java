@@ -17,7 +17,7 @@ public abstract class Foreground implements MazeObject {
     public void move() {}
 
     @Override
-    public void pickUp(Item item) {}
+    public void pickUp() {}
 
     @Override
     public void shoot() {}
