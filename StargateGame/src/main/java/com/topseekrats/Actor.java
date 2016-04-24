@@ -30,25 +30,26 @@ public class Actor implements MazeObject {
             actorID = 1;
 
         //Mezőtől lekérjük az adott actor mozgásirányát
-        MoveDirection moveDirection = Maze.moveDirection[actorID];
+        MoveDirection moveDirection = Maze.getInstance().moveDirection[actorID];
+        Maze actualMaze = Maze.getInstance();
 
         //Aktor mozgásiránya szerint módosítjuk a Maze-ben az elhelyezkedésüket
         switch(moveDirection){
             case DOWN:
                 //y koordináta csökken 1-gyel
-                Maze.actorsPosition[actorID][1] = Maze.actorsPosition[actorID][1]-1;
+                actualMaze.actorsPosition[actorID][1] = actualMaze.actorsPosition[actorID][1]-1;
                 break;
             case LEFT:
                 //x koordináta csökken 1-gyel
-                Maze.actorsPosition[actorID][0] = Maze.actorsPosition[actorID][0]-1;
+                actualMaze.actorsPosition[actorID][0] = actualMaze.actorsPosition[actorID][0]-1;
                 break;
             case RIGHT:
                 //x koordináta nő 1-gyel
-                Maze.actorsPosition[actorID][0] = Maze.actorsPosition[actorID][0]+1;
+                actualMaze.actorsPosition[actorID][0] = actualMaze.actorsPosition[actorID][0]+1;
                 break;
             case UP:
                 //y koordináta nő 1-gyel
-                Maze.actorsPosition[actorID][1] = Maze.actorsPosition[actorID][1]+1;
+                actualMaze.actorsPosition[actorID][1] = actualMaze.actorsPosition[actorID][1]+1;
                 break;
             default: break;
         }
