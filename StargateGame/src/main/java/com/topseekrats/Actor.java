@@ -22,22 +22,77 @@ public class Actor implements MazeObject {
 
     @Override
     public void move() {
+        //Colonel az első játékos, Jaffa a második
+        int actorID;
+        if(this.type == ActorType.COLONEL)
+            actorID = 0;
+        else
+            actorID = 1;
+
+        //Mezőtől lekérjük az adott actor mozgásirányát
+        MoveDirection moveDirection = Maze.moveDirection[actorID];
+
+        //Aktor mozgásiránya szerint módosítjuk a Maze-ben az elhelyezkedésüket
+        switch(moveDirection){
+            case DOWN:
+                //y koordináta csökken 1-gyel
+                Maze.actorsPosition[actorID][1] = Maze.actorsPosition[actorID][1]-1;
+                break;
+            case LEFT:
+                //x koordináta csökken 1-gyel
+                Maze.actorsPosition[actorID][0] = Maze.actorsPosition[actorID][0]-1;
+                break;
+            case RIGHT:
+                //x koordináta nő 1-gyel
+                Maze.actorsPosition[actorID][0] = Maze.actorsPosition[actorID][0]+1;
+                break;
+            case UP:
+                //y koordináta nő 1-gyel
+                Maze.actorsPosition[actorID][1] = Maze.actorsPosition[actorID][1]+1;
+                break;
+            default: break;
+        }
     }
 
     @Override
     public void shoot() {
+        //bullet.move(actualDirection);
     }
 
     @Override
     public void changeBullet() {
+        switch(bullet.getType()){
+            case BLUE:
+                bullet = new Bullet(BulletType.YELLOW);
+                break;
+            case GREEN:
+                bullet = new Bullet(BulletType.RED);
+                break;
+            case RED:
+                bullet = new Bullet(BulletType.GREEN);
+                break;
+            case YELLOW:
+                bullet = new Bullet(BulletType.BLUE);
+                break;
+            default: break;
+        }
     }
 
     @Override
     public void dropBox() {
+        if(item != null)
+        {
+            //doboz kezeli önmagát?
+            //item.dropBox();
+            item = null;
+        }
     }
 
     @Override
     public void pickUp(Item item) {
+        //doboz kezeli önmagát?
+        //item.pickUp(item);
+        this.item = item;
     }
 
     @Override
