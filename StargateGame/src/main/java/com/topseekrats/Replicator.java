@@ -28,7 +28,7 @@ public class Replicator implements MazeObject {
         int[] oldPos = pos;
 //        m.playField[xCoord][yCoord].setReplicator(null);
 
-        log("rep POS: " + pos[0] + "," + pos[1]);
+        log("rep POS: " + pos[1] + "," + pos[0]);
 
         int dir = r.nextInt(4);
         log("dir=" + dir);
@@ -36,33 +36,33 @@ public class Replicator implements MazeObject {
         switch (dir) {
             case 0:
                 md = MoveDirection.UP;
-                if (pos[1] != 0) pos[1] -= 1; // one row up
+                if (pos[1] > 0) pos[0] -= 1; // one row up
                 break;
             case 1:
                 md = MoveDirection.DOWN;
-                if (pos[1] != Maze.getInstance().playField[0].length-1) pos[1] += 1; // one row down
+                if (pos[1] < Maze.getInstance().playField.length-1) pos[0] += 1; // one row down
                 break;
             case 2:
                 md = MoveDirection.LEFT;
-                if (pos[0] != 0) pos[0] -= 1; // one column left/back
+                if (pos[1] > 0) pos[1] -= 1; // one column left/back
                 break;
             case 3:
                 md = MoveDirection.RIGHT;
-                if (pos[0] != Maze.getInstance().playField.length-1) pos[0] += 1; // one column right/forward
+                if (pos[1] < Maze.getInstance().playField[0].length-1) pos[1] += 1; // one column right/forward
                 break;
             default:
                 md = MoveDirection.RIGHT;
-                if (pos[0] != Maze.getInstance().playField.length-1) pos[0] += 1; // one column right/forward
+                if (pos[1] < Maze.getInstance().playField[0].length-1) pos[1] += 1; // one column right/forward
                 break;
         }
 
 //        m.playField[xCoord][yCoord].setReplicator(this);
 
         // ha szakadékra lépett
-        if (Maze.getInstance().playField[pos[0]][pos[1]].getBackground() instanceof Cleft)
-            Maze.getInstance().playField[pos[0]][pos[1]].setBackground(new Floor());
+        if (Maze.getInstance().playField[pos[1]][pos[0]].getBackground() instanceof Cleft)
+            Maze.getInstance().playField[pos[1]][pos[0]].setBackground(new Floor());
         log("md=" + md);
-        log("rep POS: " + pos[0] + "," + pos[1]);
+        log("rep POS: " + pos[1] + "," + pos[0]);
     }
 
     private void log(String s) { System.out.println(s); }

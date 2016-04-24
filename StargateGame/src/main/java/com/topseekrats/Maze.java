@@ -4,7 +4,8 @@ import java.io.Serializable;
 
 public class Maze implements Serializable {
 
-    public int actualZpmCount;
+    public int actualZpmCount = 25;
+    public int zpmCounter = 0;
     public int[] replicatorPosition = new int[2];
     public int[][] actorsPosition = new int[2][2];
     public int[][] stargateEndPoints = new int[4][2];

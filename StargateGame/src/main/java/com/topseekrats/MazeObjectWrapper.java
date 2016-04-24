@@ -7,12 +7,12 @@ import java.util.Stack;
 
 public class MazeObjectWrapper {
 
-    private Actor[] actors;
-    private Background background;
-    private Stack<Foreground> foregrounds;
-    private Replicator replicator;
+    private Actor[] actors = new Actor[2];
+    private Background background = null;
+    private Stack<Foreground> foregrounds = new Stack<Foreground>();
+    private Replicator replicator = null;
 
-    public void setActor(Actor actor) { actors[actor.getType().ordinal()] = actor; }
+    public void setActor(int id, Actor actor) { actors[id] = actor; }
     public Actor getActor(ActorType type) { return actors[type.ordinal()]; }
 
     public void setBackground(Background background) { this.background = background; }
