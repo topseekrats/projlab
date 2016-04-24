@@ -1,11 +1,11 @@
-package com.topseekrats;
+﻿package com.topseekrats;
 
 import com.topseekrats.background.Cleft;
 import com.topseekrats.background.Floor;
 import java.util.Random;
 
 /**
- * <p>
+ * <p> LMs
  *     A labirintusban egy replikátor véletlenszerűen menetel,
  *     de csak olyan helyeken, ahol az ezredes is tud menni.
  *     Semmivel, az ezredessel sem konfrontálódik (egyszerre állhat ugyanazon a mezőn más elemekkel).
