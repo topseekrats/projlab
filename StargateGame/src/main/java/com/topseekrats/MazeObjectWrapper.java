@@ -18,6 +18,7 @@ public class MazeObjectWrapper {
     public void setActor(Actor actor) { actors[actor.getType().ordinal()] = actor; }
     public Actor getActor(ActorType type) { return actors[type.ordinal()]; }
 
+    public void setBackground(Background background) { this.background = background; }
     public Background getBackground() { return background; }
 
     public void setForegrounds(Stack<Foreground> foregrounds) { this.foregrounds = foregrounds; }

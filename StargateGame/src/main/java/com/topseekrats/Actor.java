@@ -92,7 +92,6 @@ public class Actor implements MazeObject {
 
     @Override
     public void shoot() {
-//        MazeObjectWrapper[][] playField = Maze.getInstance().playField;
         int[][] stargateEndPoints = Maze.getInstance().stargateEndPoints;
         int[] bulletPosition = Maze.getInstance().actorsPosition[type.ordinal()];
         while (true) {
@@ -114,9 +113,25 @@ public class Actor implements MazeObject {
             if (background.isPassable() == false) {
                 if (background instanceof Door) return;
                 Wall wall = (Wall)background;
-                if(!wall.isPortalCompatible()) return;
+                if (!wall.isPortalCompatible()) return;
                 switch (bullet.getType()) {
                     case YELLOW:
+                        if (stargateEndPoints[BulletType.YELLOW.ordinal()] == null && stargateEndPoints[BulletType.BLUE.ordinal()] == null) {
+                            stargateEndPoints[BulletType.YELLOW.ordinal()] = bulletPosition;
+                            Maze.getInstance().playField[bulletPosition[0]][bulletPosition[1]].pushForeground(bullet);
+                        }
+                        else if (stargateEndPoints[BulletType.YELLOW.ordinal()] != null && stargateEndPoints[BulletType.BLUE.ordinal()] == null) {
+                            int[] oldEndPoint = stargateEndPoints[BulletType.YELLOW.ordinal()];
+                            Maze.getInstance().playField[oldEndPoint[0]][oldEndPoint[1]].popForeground();
+                            stargateEndPoints[BulletType.YELLOW.ordinal()] = bulletPosition;
+                        }
+                        else if (stargateEndPoints[BulletType.YELLOW.ordinal()] == null && stargateEndPoints[BulletType.BLUE.ordinal()] != null) {
+                            stargateEndPoints[BulletType.YELLOW.ordinal()] = bulletPosition;
+                            Stargate stargate = new Stargate(stargateEndPoints[BulletType.YELLOW.ordinal()]);
+                        }
+                        else {
+
+                        }
                         break;
                     case BLUE:
                         break;
@@ -159,8 +174,7 @@ public class Actor implements MazeObject {
             int yCoord = actualMaze.actorsPosition[type.ordinal()][1];
 
             //Maga elé rakja le a dobozt
-            MoveDirection playerDirection = actualMaze.moveDirection[type.ordinal()];
-            switch(playerDirection){
+            switch(actualMaze.moveDirection[type.ordinal()]){
                 case DOWN:
                     yCoord += 1;
                     break;
