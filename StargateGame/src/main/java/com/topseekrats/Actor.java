@@ -3,6 +3,7 @@ package com.topseekrats;
 import com.topseekrats.foreground.Bullet;
 import com.topseekrats.foreground.BulletType;
 import com.topseekrats.foreground.Item;
+import com.topseekrats.foreground.ItemType;
 
 public class Actor implements MazeObject {
 
@@ -22,37 +23,40 @@ public class Actor implements MazeObject {
 
     @Override
     public void move() {
-        //Colonel az első játékos, Jaffa a második
-        int actorID;
-        if(this.type == ActorType.COLONEL)
-            actorID = 0;
-        else
-            actorID = 1;
-
         //Mezőtől lekérjük az adott actor mozgásirányát
-        MoveDirection moveDirection = Maze.getInstance().moveDirection[actorID];
+        MoveDirection moveDirection = Maze.getInstance().moveDirection[type.ordinal()];
         Maze actualMaze = Maze.getInstance();
+
+        //Aktort kivesszük az őt tartalmazó wrapperből
+        int xCoord = actualMaze.actorsPosition[type.ordinal()][0];
+        int yCoord = actualMaze.actorsPosition[type.ordinal()][1];
+        actualMaze.playField[xCoord][yCoord].setActor(null);
 
         //Aktor mozgásiránya szerint módosítjuk a Maze-ben az elhelyezkedésüket
         switch(moveDirection){
             case DOWN:
                 //y koordináta csökken 1-gyel
-                actualMaze.actorsPosition[actorID][1] = actualMaze.actorsPosition[actorID][1]-1;
+                actualMaze.actorsPosition[type.ordinal()][1] += 1;
                 break;
             case LEFT:
                 //x koordináta csökken 1-gyel
-                actualMaze.actorsPosition[actorID][0] = actualMaze.actorsPosition[actorID][0]-1;
+                actualMaze.actorsPosition[type.ordinal()][0] += 1;
                 break;
             case RIGHT:
                 //x koordináta nő 1-gyel
-                actualMaze.actorsPosition[actorID][0] = actualMaze.actorsPosition[actorID][0]+1;
+                actualMaze.actorsPosition[type.ordinal()][0] -= 1;
                 break;
             case UP:
                 //y koordináta nő 1-gyel
-                actualMaze.actorsPosition[actorID][1] = actualMaze.actorsPosition[actorID][1]+1;
+                actualMaze.actorsPosition[type.ordinal()][1] -= 1;
                 break;
             default: break;
         }
+
+        //Aktort berakjuk a következő mezőbe, ahova lépett
+        xCoord = actualMaze.actorsPosition[type.ordinal()][0];
+        yCoord = actualMaze.actorsPosition[type.ordinal()][1];
+        actualMaze.playField[xCoord][yCoord].setActor(this);
     }
 
     @Override
@@ -83,17 +87,76 @@ public class Actor implements MazeObject {
     public void dropBox() {
         if(item != null)
         {
-            //doboz kezeli önmagát?
-            //item.dropBox();
-            item = null;
+            Maze actualMaze = Maze.getInstance();
+            //itt kezeljük az eldobást
+            int xCoord = actualMaze.actorsPosition[type.ordinal()][0];
+            int yCoord = actualMaze.actorsPosition[type.ordinal()][1];
+
+            //Maga elé rakja le a dobozt
+            MoveDirection playerDirection = actualMaze.moveDirection[type.ordinal()];
+            switch(playerDirection){
+                case DOWN:
+                    yCoord += 1;
+                    break;
+                case LEFT:
+                    xCoord += 1;
+                    break;
+                case RIGHT:
+                    xCoord -= 1;
+                    break;
+                case UP:
+                    yCoord -= 1;
+                    break;
+            }
+            //Csak akkor dobja el a dobozt, ha az előtte lévő mező átjárható
+            //TODO:
+            //Így nyitott ajtót is el tud torlaszolni
+            //Kérdés az, hogy ha lerak oda egy dobozt, és becsukódik az ajtó, mi történjen,
+            //De ezt az ajtónyitásnál lekezeljük
+            if(actualMaze.playField[xCoord][yCoord].getBackground().isPassable()) {
+                actualMaze.playField[xCoord][yCoord].pushForeground(item);
+                item = null;
+            }
         }
     }
 
+    //Játékos felszedi az alatta heverő item-et
+    //F gombnyomásra meghívódik ez a fv és átadódik az aktuális item
     @Override
-    public void pickUp(Item item) {
-        //doboz kezeli önmagát?
-        //item.pickUp(item);
-        this.item = item;
+    public void pickUp(Item item){
+
+        Maze actualMaze = Maze.getInstance();
+        //játékos pozíciója, rá kell lépnie az item helyére
+        int xCoord = actualMaze.actorsPosition[type.ordinal()][0];
+        int yCoord = actualMaze.actorsPosition[type.ordinal()][1];
+
+        Item poppedItem = item;
+        //Ha nullal hívták meg a pickUp függvényt (hibás meghívás, vagy nincs semmi a mezőn)
+        if(poppedItem == null){
+            poppedItem = (Item)actualMaze.playField[xCoord][yCoord].popForeground();
+            //Ha nincs semmi a mezőn, ne csináljunk semmit
+            if(poppedItem == null)
+                return;
+        }
+        else {
+            poppedItem = item;
+        }
+        //Ha ZPM, akkor növeljük a zpmCount-ot
+        if(poppedItem.getType() == ItemType.ZPM){
+            zpmCount++;
+        }
+        //Ha doboz, akkor felszedjük és elrakjuk az aktorba, ha nincs nála már doboz
+        //Ha van az aktornál doboz, akkor visszarakjuk a mezőre
+        else{
+            //Ha nincs a játékosnál doboz
+            if(this.item == null) {
+                this.item = poppedItem;
+            }
+            else {
+                //Visszarakjuk a mezőre a nem felvehető itemet
+                actualMaze.playField[xCoord][yCoord].pushForeground(poppedItem);
+            }
+        }
     }
 
     @Override
