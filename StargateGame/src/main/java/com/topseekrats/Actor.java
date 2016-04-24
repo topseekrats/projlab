@@ -87,7 +87,6 @@ public class Actor implements MazeObject {
                 ((Switch)wrapper.getBackground()).incrementWeight();
                 //TODO: mennyivel növeljük a súlyt?
             }
-
         }
     }
 
