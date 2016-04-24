@@ -30,6 +30,13 @@ public class Actor implements MazeObject {
 
     @Override
     public void changeBullet() {
+        if (type == ActorType.COLONEL) {
+            if (bullet.getType() == BulletType.YELLOW) bullet = new Bullet(BulletType.BLUE);
+            else bullet = new Bullet(BulletType.YELLOW);
+        } else {
+            if (bullet.getType() == BulletType.RED) bullet = new Bullet(BulletType.GREEN);
+            else bullet = new Bullet(BulletType.RED);
+        }
     }
 
     @Override
@@ -38,6 +45,7 @@ public class Actor implements MazeObject {
 
     @Override
     public void pickUp(Item item) {
+
     }
 
     @Override
