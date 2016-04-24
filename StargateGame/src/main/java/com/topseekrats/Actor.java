@@ -55,12 +55,12 @@ public class Actor implements MazeObject {
         //Csak akkor rakjuk be, hogyha ráléphet a következő mezőre:
         //A mezőre rá lehet lépni
         //A mezőn nincs ott a másik játékos
-        if (!wrapper.getBackground().isPassable()) return;
+        if (!Maze.getInstance().playField[pos[0]][pos[1]].getBackground().isPassable()) return;
         if(this.type == ActorType.COLONEL){
-            if(wrapper.getActor(ActorType.JAFFA) != null) return;
+            if(Maze.getInstance().playField[pos[0]][pos[1]].getActor(ActorType.JAFFA) != null) return;
         }
         else{
-            if(wrapper.getActor(ActorType.COLONEL) != null) return;
+            if(Maze.getInstance().playField[pos[0]][pos[1]].getActor(ActorType.COLONEL) != null) return;
         }
 
 
