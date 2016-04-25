@@ -1,5 +1,9 @@
 package com.topseekrats.foreground;
 
+/**
+ * Portál fegyverből kilőtt portálgolyó osztálya
+ * Actor shoot() függvénye vezérli
+ */
 public class Bullet extends Foreground {
 
     private BulletType type;

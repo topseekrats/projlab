@@ -105,6 +105,9 @@ public class Tester {
         }
     }
 
+    /**
+     * 1. teszteset: játékosok létrehozása a pályán
+     */
     private static void test1() {
         try {
             Engine.newGame();
@@ -118,7 +121,14 @@ public class Tester {
         System.out.println("Actors created at (" + colonelPos[1] + "," + colonelPos[0] + ") and (" + jaffaPos[1] + "," + jaffaPos[0] + ")");
     }
 
+    /**
+     * 2. teszteset: Játékos mozog, lő kompatibilis falra, portál létrejön a falon
+     * @param strDir mozgás iránya
+     * @param strActorType mozgó játékos típusa
+     * @param strBulletType kilőtt lövedék típusa
+     */
     private static void test2(String strDir, String strActorType, String strBulletType) {
+        //Inicializálás
         createTestMaze();
         Actor actor = new Actor(ActorType.valueOf(strActorType));
         Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
@@ -126,6 +136,7 @@ public class Tester {
         Maze.getInstance().playField[0][2].setBackground(new Wall(true));
         Maze.getInstance().actorsPosition[actor.getType().ordinal()] = new int[] {0, 0};
 
+        //mozgás, lövedékcsere, lövés
         int[] oldPos = new int[] {0, 0};
         actor.move();
         actor.changeBullet();
@@ -133,12 +144,20 @@ public class Tester {
         int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
         int[] portalPos = Maze.getInstance().stargateEndPoints[1];
 
+        //log
         System.out.println(strActorType + " moved from (" + oldPos[1] + "," + oldPos[0] +") to (" + newPos[1] + "," + newPos[0] + ")");
         System.out.println("Bullet " + strBulletType + " set for " + strActorType + " successfully");
         System.out.println(strBulletType + " portal created on wall at (" + portalPos[1] + "," + portalPos[0] + ")");
     }
 
+    /**
+     * 3. teszteset: Játékos mozog, lő nem kompatibilis falra, portál nem jön létre a falon
+     * @param strDir mozgás iránya
+     * @param strActorType mozgó játékos típusa
+     * @param strBulletType kilőtt lövedék típusa
+     */
     private static void test3(String strDir, String strActorType, String strBulletType) {
+        //Inicializálás
         createTestMaze();
         Actor actor = new Actor(ActorType.valueOf(strActorType));
         Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
@@ -146,6 +165,7 @@ public class Tester {
         Maze.getInstance().playField[0][2].setBackground(new Wall(false));
         Maze.getInstance().actorsPosition[actor.getType().ordinal()] = new int[] {0, 0};
 
+        //mozgás, lövedékcsere, lövés
         int[] oldPos = new int[] {0, 0};
         actor.move();
         actor.changeBullet();
@@ -153,12 +173,20 @@ public class Tester {
         int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
         int[] portalPos = Maze.getInstance().stargateEndPoints[2];
 
+        //log
         System.out.println(strActorType + " moved from (" + oldPos[1] + "," + oldPos[0] +") to (" + newPos[1] + "," + newPos[0] + ")");
         System.out.println("Bullet " + strBulletType + " set for " + strActorType + " successfully");
         if (portalPos[0] == -1) System.out.println("The wall is not portal-compatible, no portal created.");
     }
 
+    /**
+     * 4. teszteset: játékos kilövi a második portált kompatibilis falra, létrejön egy csillagkapu
+     * @param strDir mozgás iránya
+     * @param strActorType mozgó játékos típusa
+     * @param strBulletType kilőtt lövedék típusa
+     */
     private static void test4(String strDir, String strActorType, String strBulletType) {
+        //Inicializálás
         createTestMaze();
         Actor actor = new Actor(ActorType.valueOf(strActorType));
         Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
@@ -168,6 +196,7 @@ public class Tester {
         Maze.getInstance().stargateEndPoints[BulletType.YELLOW.ordinal()] = new int[] {2, 2};
         Maze.getInstance().actorsPosition[actor.getType().ordinal()] = new int[] {0, 0};
 
+        //mozgás, lövedékcsere, lövés
         int[] oldPos = new int[] {0, 0};
         actor.move();
         actor.changeBullet();
@@ -177,13 +206,20 @@ public class Tester {
         int[] gatePosYellow = Maze.getInstance().stargateEndPoints[BulletType.YELLOW.ordinal()];
         int[] gatePosBlue = Maze.getInstance().stargateEndPoints[BulletType.BLUE.ordinal()];
 
+        //log
         System.out.println(strActorType + " moved from (" + oldPos[1] + "," + oldPos[0] +") to (" + newPos[1] + "," + newPos[0] + ")");
         System.out.println("Bullet " + strBulletType + " set for " + strActorType + " successfully");
         System.out.println(strBulletType + " portal created on wall at (" + wallPos[1] + "," + wallPos[0] + ")");
         System.out.println("Stargate is on the field with portals (" + gatePosYellow[1] + "," + gatePosYellow[0] + "), (" + gatePosBlue[1] + "," + gatePosBlue[0] + ").");
     }
 
+    /**
+     * 5. teszteset: játékos mozog átjárható területre
+     * @param strDir mozgás iránya
+     * @param strType játékos típusa
+     */
     private static void test5(String strDir, String strType) {
+        //Inicializálás
         createTestMaze();
         Actor actor = new Actor(ActorType.valueOf(strType));
         Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
@@ -191,26 +227,44 @@ public class Tester {
         Maze.getInstance().playField[1][1].setActor(actor.getType().ordinal(), actor);
         Maze.getInstance().actorsPosition[actor.getType().ordinal()] = new int[] {1, 1};
 
+        //mozgás
         int[] oldPos = new int[] {1, 1};
         actor.move();
         int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
+
+        //log
         System.out.println(strType + " moved from (" + oldPos[1] + "," + oldPos[0] +") to (" + newPos[1] + "," + newPos[0] + ")");
     }
 
+    /**
+     * 6. teszteset: mozgás nem átjárható terület felé
+     * @param strDir mozgás iránya
+     * @param strType játékos típusa
+     */
     private static void test6(String strDir, String strType) {
+        //Inicializálás
         createTestMaze();
         Actor actor = new Actor(ActorType.valueOf(strType));
         Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
         Maze.getInstance().playField[0][0].setActor(actor.getType().ordinal(), actor);
         Maze.getInstance().playField[0][1].setBackground(new Wall(false));
 
+        //mozgás
         int[] oldPos = new int[] {0, 0};
         actor.move();
         int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
+
+        //log
         System.out.println(strType + " cannot move from (" + oldPos[1] + "," + oldPos[0] + ") to (" + newPos[1] + "," + newPos[0] + "), the field is not passable." );
     }
 
+    /**
+     * 7. teszteset: játékos rálép egy mérlegre
+     * @param strDir mozgás iránya
+     * @param strType játékos típusa
+     */
     private static void test7(String strDir, String strType) {
+        //Inicializálás
         createTestMaze();
         Actor actor = new Actor(ActorType.valueOf(strType));
         Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
@@ -218,49 +272,76 @@ public class Tester {
         Switch s = new Switch(new Door(), 2);
         Maze.getInstance().playField[0][1].setBackground(s);
 
+        //mozgás mérlegre
         int[] oldPos = new int[] {0, 0};
         int oldW = s.getWeight();
         actor.move();
         int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
+
+        //log
         System.out.println(strType + " moved from (" + oldPos[1] + "," + oldPos[0] + ") to (" + newPos[1] + "," + newPos[0] + ").");
         System.out.println("Weight changed from " + oldW + " to " + s.getWeight() + ".");
     }
 
+    /**
+     * 8. teszteset: ZPM felvétele
+     * @param strDir mozgás iránya
+     * @param strType játékos típusa
+     */
     private static void test8(String strDir, String strType) {
+        //Inicializálás
         createTestMaze();
         Actor actor = new Actor(ActorType.valueOf(strType));
         Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
         Maze.getInstance().playField[0][0].setActor(actor.getType().ordinal(), actor);
         Maze.getInstance().playField[0][1].pushForeground(new Item(ItemType.ZPM));
 
+        //mozgás, felvétel
         int[] oldPos = new int[] {0, 0};
         actor.move();
         int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
         int oldZpm = actor.getZpmCount();
         actor.pickUp();
         int newZpm = actor.getZpmCount();
+
+        //log
         System.out.println(strType + " moved from (" + oldPos[1] + "," + oldPos[0] + ") to (" + newPos[1] + "," + newPos[0] + ").");
         System.out.println("ZPM count of " + strType + " changed from " + oldZpm + " to " + newZpm + ".");
     }
 
+    /**
+     * 9. teszteset: doboz felvétele
+     * @param strDir mozgás iránya
+     * @param strType játékos típusa
+     */
     private static void test9(String strDir, String strType) {
+        //Inicializálás
         createTestMaze();
         Actor actor = new Actor(ActorType.valueOf(strType));
         Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
         Maze.getInstance().playField[0][0].setActor(actor.getType().ordinal(), actor);
         Maze.getInstance().playField[0][1].pushForeground(new Item(ItemType.BOX));
 
+        //mozgás, felvétel
         int[] oldPos = new int[] {0, 0};
         actor.move();
         int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
         int oldFieldItemsNum = Maze.getInstance().playField[0][1].getForegrounds().size();
         actor.pickUp();
         int newFieldItemsNum = Maze.getInstance().playField[0][1].getForegrounds().size();
+
+        //log
         System.out.println(strType + " moved from (" + oldPos[1] + "," + oldPos[0] + ") to (" + newPos[1] + "," + newPos[0] + ").");
         System.out.println("Count of foreground items on the field decreased from " + oldFieldItemsNum + " to " + newFieldItemsNum + ".");
     }
 
+    /**
+     * 10. teszteset: második doboz felvételének tiltása
+     * @param strDir mozgás iránya
+     * @param strType játékos típusa
+     */
     private static void test10(String strDir, String strType) {
+        //Inicializálás
         createTestMaze();
         Actor actor = new Actor(ActorType.valueOf(strType));
         Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
@@ -268,6 +349,7 @@ public class Tester {
         Maze.getInstance().playField[0][1].pushForeground(new Item(ItemType.BOX));
         Maze.getInstance().playField[0][1].pushForeground(new Item(ItemType.BOX));
 
+        //mozgás, felvétel, 2. felvétel próbája
         int[] oldPos = new int[] {0, 0};
         actor.move();
         int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
@@ -276,12 +358,20 @@ public class Tester {
         int firstFieldItemNum = Maze.getInstance().playField[0][1].getForegrounds().size();
         actor.pickUp();
         int secondFieldItemNum = Maze.getInstance().playField[0][1].getForegrounds().size();
+
+        //log
         System.out.println(strType + " moved from (" + oldPos[1] + "," + oldPos[0] + ") to (" + newPos[1] + "," + newPos[0] + ").");
         System.out.println("Count of foreground items on the field decreased from " + oldFieldItemNum + " to " + firstFieldItemNum + ", and after that to " + secondFieldItemNum + ".");
         System.out.println(strType + " cannot pick up two boxes.");
     }
 
+    /**
+     * 11. teszteset: doboz eldobása
+     * @param strDir mozgás iránya
+     * @param strType játékos típusa
+     */
     private static void test11(String strDir, String strType) {
+        //Inicializálás
         createTestMaze();
         Actor actor = new Actor(ActorType.valueOf(strType));
         Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
@@ -289,16 +379,22 @@ public class Tester {
         Maze.getInstance().playField[0][0].pushForeground(new Item(ItemType.BOX));
         actor.pickUp();
 
+        //mozgás, eldobás
         int[] oldPos = new int[] {0, 0};
         actor.move();
         int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
         int oldFieldItemNum = Maze.getInstance().playField[0][2].getForegrounds().size();
         actor.dropBox();
         int newFieldItemNum = Maze.getInstance().playField[0][2].getForegrounds().size();
+
+        //log
         System.out.println(strType + " moved from (" + oldPos[1] + "," + oldPos[0] + ") to (" + newPos[1] + "," + newPos[0] + ").");
         System.out.println("Box number at field (1,0) changed from " + oldFieldItemNum + " to " + newFieldItemNum + ".");
     }
 
+    /**
+     * Teszt játékmező létrehozása, egyelőre csak padlóval tesztelünk
+     */
     private static void createTestMaze() {
         Maze.getInstance().playField = new MazeObjectWrapper[3][3];
         for (int j = 0; j < Maze.getInstance().playField.length; ++j )

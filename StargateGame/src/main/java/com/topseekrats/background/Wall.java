@@ -1,5 +1,9 @@
 package com.topseekrats.background;
 
+/**
+ * Fal osztálya, nem átjárható, speciális falra kilőhető portál.
+ * Tárolja, hogy van-e rajta portál, vagy sem.
+ */
 public class Wall extends Background {
 
     private boolean hasStargate = false;

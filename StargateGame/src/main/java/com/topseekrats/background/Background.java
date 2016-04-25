@@ -4,6 +4,9 @@ import com.topseekrats.MazeObject;
 
 import java.io.Serializable;
 
+/**
+ * A játékmező landscape objektumainak absztrakt ősosztálya
+ */
 public abstract class Background implements MazeObject, Serializable {
 
     public abstract boolean isPassable();

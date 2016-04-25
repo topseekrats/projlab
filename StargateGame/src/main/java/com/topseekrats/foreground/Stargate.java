@@ -3,6 +3,10 @@ package com.topseekrats.foreground;
 import com.topseekrats.Actor;
 import com.topseekrats.Maze;
 
+/**
+ * Csillagkapu osztály, ez végzi a játékos teleportálását
+ * A teleportálást a játékos mozgása hívja meg
+ */
 public class Stargate extends Foreground {
 
     private int[] pairCoords;
@@ -11,6 +15,10 @@ public class Stargate extends Foreground {
 
     public void setPairCoords(int[] pairCoords) { this.pairCoords = pairCoords; }
 
+    /**
+     * Játékos teleportálása
+     * @param actor A teleportálandó játékos
+     */
     public void teleport(Actor actor) {
         int[] pos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
 

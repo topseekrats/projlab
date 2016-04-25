@@ -1,5 +1,8 @@
 package com.topseekrats.background;
 
+/**
+ * Ajtó osztálya, mérleg vezérli a nyitását
+ */
 public class Door extends Background {
 
     private boolean opened = false;

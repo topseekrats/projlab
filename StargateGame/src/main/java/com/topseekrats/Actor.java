@@ -3,6 +3,12 @@ package com.topseekrats;
 import com.topseekrats.background.*;
 import com.topseekrats.foreground.*;
 
+/**
+ * Játékos osztálya, a játék fő logikája itt található meg:
+ * - mozgás
+ * - lövés
+ * - objektumokkal interakció
+ */
 public class Actor implements MazeObject {
 
     private ActorType type;
@@ -19,6 +25,15 @@ public class Actor implements MazeObject {
     public ActorType getType() { return type; }
     public int getZpmCount() { return zpmCount; }
 
+    /**
+     * Játékos mozgása, figyelembe véve az alábbi szabályokat:
+     * - mozgásirány szerinti haladás (move-to-direction)
+     * - nem átjárható mezőre lépés tiltása (non-passable areas)
+     * - játékos nem léphet rá másik játékosra (unit collision)
+     * További funkciók:
+     * - mérleg interakciók
+     * - teleportálás
+     */
     @Override
     public void move() {
         // Maze-től lekérjük az adott játékos mozgásirányát.
@@ -88,6 +103,10 @@ public class Actor implements MazeObject {
             ((Cleft)Maze.getInstance().playField[pos[0]][pos[1]].getBackground()).destroy(this);
     }
 
+    /**
+     * Lövés kezelése
+     * - portalManager használata portálnyitáshoz
+     */
     @Override
     public void shoot() {
         int[] bulletPos = Maze.getInstance().actorsPosition[type.ordinal()].clone();
@@ -111,16 +130,27 @@ public class Actor implements MazeObject {
                     break;
             }
             Background background = Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].getBackground();
-            if (!background.isPassable()) {
-                if (background instanceof Door) return;
-                Wall wall = (Wall)background;
-                if (!wall.isPortalCompatible()) return;
-                portalManager(bulletPos);
+            //Ha replikátorba csapódik a lövedék
+            if(background instanceof Floor && Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].getReplicator() != null){
+                Engine.killReplicator(bulletPos);
                 return;
+            }
+            //Ha falba csapódik a lövedék
+            if(background instanceof Wall) {
+                if (!background.isPassable()) {
+                    if (background instanceof Door) return;
+                    Wall wall = (Wall) background;
+                    if (!wall.isPortalCompatible()) return;
+                    portalManager(bulletPos);
+                    return;
+                }
             }
         }
     }
 
+    /**
+     * lövedék cseréje
+     */
     @Override
     public void changeBullet() {
         switch (bullet.getType()) {
@@ -139,6 +169,11 @@ public class Actor implements MazeObject {
         }
     }
 
+    /**
+     * doboz eldobása, maga elé dobja le a dobozt a játékos
+     * Ajtóba, falra nem tudja lerakni a dobozt
+     * Szakadékba, mérlegre, szabad padlóra le tudja rakni
+     */
     @Override
     public void dropBox() {
         if (item == null) return;
@@ -176,6 +211,11 @@ public class Actor implements MazeObject {
         }
     }
 
+    /**
+     * ZPM vagy BOX (doboz) felvétele
+     * csak egy doboz lehet a játékosnál
+     * pályáról 2. ZPM felvétele esetén új ZPM generálódik, ezt az Engine intézi
+     */
     @Override
     public void pickUp(){
         // Játékos pozíciója, rá kell lépnie az item helyére
@@ -199,10 +239,14 @@ public class Actor implements MazeObject {
     @Override
     public boolean isForeground() { return false; }
 
+    /**
+     * Portál manager metódus lövéshez
+     * @param bulletPos kilőtt lövedék pozíciója (ahova becsapódott)
+     */
     private void portalManager(int[] bulletPos) {
         int[][] stargateEndPoints = Maze.getInstance().stargateEndPoints;
 
-        // Portalok szinenek meghatarozasa.
+        // Portálok színének meghatározása.
         int bulletId = bullet.getType().ordinal();
         int bulletPairId = -1;
         switch (bullet.getType()) {
@@ -220,75 +264,75 @@ public class Actor implements MazeObject {
                 break;
         }
 
-        // Ha egyik fajta portal sincs.
+        // Ha egyik fajta portál sincs.
         if (stargateEndPoints[bulletId][0] == -1 && stargateEndPoints[bulletPairId][0] == -1) {
             stargateEndPoints[bulletId] = bulletPos;
             Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(bullet);
         }
-        // Ha csak olyan volt, mint amit most lott.
+        // Ha csak olyan volt, mint amit most lőtt.
         else if (stargateEndPoints[bulletId][0] != -1 && stargateEndPoints[bulletPairId][0] == -1) {
-            // Regi portal eltuntetese.
+            // Régi portál eltüntetése.
             int[] oldEndPoint = stargateEndPoints[bulletId];
             Maze.getInstance().playField[oldEndPoint[0]][oldEndPoint[1]].popForeground();
 
-            // Uj portal tarolasa.
+            // Új portál tárolása.
             stargateEndPoints[bulletId] = bulletPos;
             Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(bullet);
         }
-        // Ha csak az ellenkezo tipus volt.
+        // Ha csak az ellenkező típus volt.
         else if (stargateEndPoints[bulletId][0] == -1 && stargateEndPoints[bulletPairId][0] != -1) {
             // Most kilott portal koordinatainak tarolasa.
             stargateEndPoints[bulletId] = bulletPos;
 
-            // Ha az ellenkezo tipusra lotte.
+            // Ha az ellenkező típusra lőtte.
             if (bulletPos == stargateEndPoints[bulletPairId]) {
                 Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].popForeground();
                 Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(bullet);
             }
-            // Ha a ket portal ket kulon helyen van.
+            // Ha a két portál két külön helyen van.
             else {
-                // Csillagkapu letrehozasa az egyik portal helyere.
+                // Csillagkapu létrehozása az egyik portál helyére.
                 Stargate stargate = new Stargate(stargateEndPoints[bulletPairId]);
                 Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(stargate);
 
-                // Csillagkapu letrehozasa a masik portal helyere.
+                // Csillagkapu létrehozása a másik portál helyére.
                 stargate = new Stargate(stargateEndPoints[bulletId]);
                 int[] pairBulletPos = stargateEndPoints[bulletPairId];
                 Maze.getInstance().playField[pairBulletPos[0]][pairBulletPos[1]].popForeground();
                 Maze.getInstance().playField[pairBulletPos[0]][pairBulletPos[1]].pushForeground(stargate);
 
-                // Falak atjarhatova tetele.
+                // Falak átjárhatová tétele.
                 ((Wall)Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].getBackground()).changeHasStargate();
                 ((Wall)Maze.getInstance().playField[pairBulletPos[0]][pairBulletPos[1]].getBackground()).changeHasStargate();
             }
         }
-        // Ha mar mindket tipusu portal volt.
+        // Ha már mindkét típusú portál volt.
         else {
-            // Csillagkapu levetele a regi falrol.
+            // Csillagkapu levétele a régi falról.
             int[] oldEndPoint = stargateEndPoints[bulletId];
             ((Wall)Maze.getInstance().playField[oldEndPoint[0]][oldEndPoint[1]].getBackground()).changeHasStargate();
             Maze.getInstance().playField[oldEndPoint[0]][oldEndPoint[1]].popForeground();
 
-            // Most kilott portal koordinatainak tarolasa.
+            // Most kilőtt portál koordinátáinak tárolása.
             stargateEndPoints[bulletId] = bulletPos;
 
-            // Ha az ellenkezo tipusra lotte.
+            // Ha az ellenkező típusra lőtte.
             if (bulletPos == stargateEndPoints[bulletPairId]) {
                 Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].popForeground();
                 Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(bullet);
             }
-            // Ha egy ures specialis falra lotte.
+            // Ha egy üres speciális falra lőtte.
             else {
-                // Csillagkapu letrehozasa az uj portal helyere.
+                // Csillagkapu létrehozása az új portál helyére.
                 Stargate stargate = new Stargate(stargateEndPoints[bulletPairId]);
                 Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].popForeground();
                 Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(stargate);
 
-                // Meglevo Csillagkapu parkoordinatainak modositasa.
+                // Meglévő Csillagkapu párkoordinátáinak módosítása.
                 int[] pairBulletPos = stargateEndPoints[bulletPairId];
                 ((Stargate)Maze.getInstance().playField[pairBulletPos[0]][pairBulletPos[1]].peekForeground()).setPairCoords(bulletPos);
 
-                // Uj fal atjarhatova tetele.
+                // Új fal átjárhatóvá tétele.
                 ((Wall)Maze.getInstance().playField[pairBulletPos[0]][pairBulletPos[1]].getBackground()).changeHasStargate();
             }
         }

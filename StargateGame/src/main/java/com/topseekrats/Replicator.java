@@ -18,6 +18,13 @@ public class Replicator implements MazeObject {
     private Random r = new Random();
 
     /**
+     * Ha létrejön a replikátor, a játékmezőbe is jegyezzük be, hogy le tudjuk kezelni a meghalását
+     */
+    public Replicator(){
+        Maze.getInstance().replicatorLives = true;
+    }
+
+    /**
      * random movement
      */
     @Override
@@ -55,6 +62,7 @@ public class Replicator implements MazeObject {
         // Ha szakadékra lépett.
         if (Maze.getInstance().playField[pos[1]][pos[0]].getBackground() instanceof Cleft) {
             Maze.getInstance().playField[pos[1]][pos[0]].setBackground(new Floor());
+            Maze.getInstance().replicatorLives = false;
             return;
         }
 

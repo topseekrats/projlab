@@ -48,7 +48,9 @@ public final class Engine {
     public static void draw(){
     }
 
-    //random ZPM generálása
+    /**
+     * random ZPM generálása
+     */
     public static void generateRandomZPM() {
         Random r = new Random();
         int[] newZPMCoord = new int[2];
@@ -64,7 +66,9 @@ public final class Engine {
         Maze.getInstance().playField[newZPMCoord[0]][newZPMCoord[1]].pushForeground(new Item(ItemType.ZPM));
     }
 
-    //Eldönti, hogyan ért véget a játék
+    /**
+     * Eldönti, hogyan ért véget a játék
+     */
     public static void finish() {
         int[] colPos = Maze.getInstance().actorsPosition[0];
         int[] jaffaPos = Maze.getInstance().actorsPosition[1];
@@ -77,5 +81,24 @@ public final class Engine {
             Engine.victory(ActorType.JAFFA);
         else
             Engine.draw();
+    }
+
+    /**
+     * Replikátor kivégzése golyó által
+     * @param replicatorPos replikátor jelenlegi pozíciója
+     */
+    public static void killReplicator(int[] replicatorPos) {
+        Maze.getInstance().replicatorLives = false;
+        Maze.getInstance().playField[replicatorPos[0]][replicatorPos[1]].setReplicator(null);
+    }
+
+    /**
+     * Replikátor mozgatása
+     */
+    public static void replicatorMoving(){
+        while(Maze.getInstance().replicatorLives){
+            int[] pos = Maze.getInstance().replicatorPosition;
+            Maze.getInstance().playField[pos[0]][pos[1]].getReplicator().move();
+        }
     }
 }

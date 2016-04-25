@@ -2,6 +2,9 @@ package com.topseekrats;
 
 import com.topseekrats.foreground.Item;
 
+/**
+ * Mezőobjektumok közös interfésze
+ */
 public interface MazeObject {
 
     void changeBullet();
