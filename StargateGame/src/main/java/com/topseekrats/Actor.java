@@ -17,7 +17,7 @@ public class Actor implements MazeObject {
     }
 
     public ActorType getType() { return type; }
-    public int getZpmCount() { return  zpmCount; }
+    public int getZpmCount() { return zpmCount; }
 
     @Override
     public void move() {
@@ -26,7 +26,7 @@ public class Actor implements MazeObject {
 
         // Játékos aktuális pozícióját kimentjük, hogy ki tudjuk majd később szedni innen
         int[] pos = Maze.getInstance().actorsPosition[type.ordinal()];
-        int[] oldPos = pos;
+        int[] oldPos = pos.clone();
 
         // Játékos mozgásiránya szerint módosítjuk az új koordinátákat
         switch (moveDirection) {
@@ -90,7 +90,7 @@ public class Actor implements MazeObject {
 
     @Override
     public void shoot() {
-        int[] bulletPos = Maze.getInstance().actorsPosition[type.ordinal()];
+        int[] bulletPos = Maze.getInstance().actorsPosition[type.ordinal()].clone();
         while (true) {
             switch (Maze.getInstance().moveDirection[type.ordinal()]) {
                 case UP:
@@ -116,8 +116,8 @@ public class Actor implements MazeObject {
                 Wall wall = (Wall)background;
                 if (!wall.isPortalCompatible()) return;
                 portalManager(bulletPos);
+                return;
             }
-
         }
     }
 
@@ -221,12 +221,12 @@ public class Actor implements MazeObject {
         }
 
         // Ha egyik fajta portal sincs.
-        if (stargateEndPoints[bulletId] == null && stargateEndPoints[bulletPairId] == null) {
+        if (stargateEndPoints[bulletId][0] == -1 && stargateEndPoints[bulletPairId][0] == -1) {
             stargateEndPoints[bulletId] = bulletPos;
             Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(bullet);
         }
         // Ha csak olyan volt, mint amit most lott.
-        else if (stargateEndPoints[bulletId] != null && stargateEndPoints[bulletPairId] == null) {
+        else if (stargateEndPoints[bulletId][0] != -1 && stargateEndPoints[bulletPairId][0] == -1) {
             // Regi portal eltuntetese.
             int[] oldEndPoint = stargateEndPoints[bulletId];
             Maze.getInstance().playField[oldEndPoint[0]][oldEndPoint[1]].popForeground();
@@ -236,7 +236,7 @@ public class Actor implements MazeObject {
             Maze.getInstance().playField[bulletPos[0]][bulletPos[1]].pushForeground(bullet);
         }
         // Ha csak az ellenkezo tipus volt.
-        else if (stargateEndPoints[bulletId] == null && stargateEndPoints[bulletPairId] != null) {
+        else if (stargateEndPoints[bulletId][0] == -1 && stargateEndPoints[bulletPairId][0] != -1) {
             // Most kilott portal koordinatainak tarolasa.
             stargateEndPoints[bulletId] = bulletPos;
 

@@ -1,45 +1,16 @@
 package com.topseekrats;
 
 import com.topseekrats.background.*;
-import com.topseekrats.foreground.Item;
-import com.topseekrats.foreground.ItemType;
+import com.topseekrats.foreground.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-//Class for testing the skeleton
-public class Tester
-{
+public class Tester {
 
-    private static MazeObjectWrapper[][] playField;
-
-    //Entry point of the application
     public static void main(String[] args) throws IOException {
-        Door door = new Door();
-        MazeObjectWrapper[][] asd = new MazeObjectWrapper[][] {{new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor(), new Item(ItemType.ZPM)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor(), new Item(ItemType.ZPM)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor(), new Item(ItemType.ZPM)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor(), new Item(ItemType.BOX)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor(), new Item(ItemType.ZPM)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor(), new Item(ItemType.ZPM)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Floor(), new Item(ItemType.ZPM)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor(), new Item(ItemType.ZPM)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Door()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Switch(door, 2)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor(), new Item(ItemType.ZPM)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor(), new Item(ItemType.ZPM)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Cleft()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor(), new Item(ItemType.ZPM)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor(), new Item(ItemType.BOX)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor(), new Item(ItemType.ZPM)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(true)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor(), new Item(ItemType.ZPM)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor(), new Item(ItemType.ZPM)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor(), new Item(ItemType.ZPM)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Floor()), new MazeObjectWrapper(new Wall(false))},
-                {new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false)), new MazeObjectWrapper(new Wall(false))}, };
-
-        Maze.getInstance().playField = asd;
-        /*menu();
+        menu();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         String temp = br.readLine();
         int testCase = 0;
@@ -55,7 +26,7 @@ public class Tester
             temp = br.readLine();
             if (tryParse(temp)) testCase = Integer.parseInt(temp);
             else testCase = 0;
-        }*/
+        }
     }
 
     //Menu of the application
@@ -65,31 +36,17 @@ public class Tester
         sb.append("############################ TOPSEEKRATS - PROTOTYPE ###########################\n");
         sb.append("################################################################################\n\n");
         sb.append("Test cases:\n");
-        sb.append("1: Game initialization.\n");
-        sb.append("2: Shot bullet to the special wall.\n");
-        sb.append("3: Shot bullet to  the not special wall.\n");
+        sb.append("1: New game.\n");
+        sb.append("2: Move, change bullet and shoot to a special wall.\n");
+        sb.append("3: Move, change bullet and shoot to a regular wall.\n");
         sb.append("4: Open stargate.\n");
-        sb.append("5: Modify stargate.\n");
-        sb.append("6: Go across the stargate.\n");
-        sb.append("7: Close stargate.\n");
-        sb.append("8: moveActor RIGHT COLONEL\n");
-        sb.append("9: The Actor moves to the wall\n");
-        sb.append("10: The Actor moves to the swithc.\n");
-        sb.append("11: Pick up ZPM.\n");
-        sb.append("12: Appear ZPM.\n");
-        sb.append("13: Pick up box.\n");
-        sb.append("14: Pick up other box.\n");
-        sb.append("15: Drop box.\n");
-        sb.append("16: Pack boxes on each other.\n");
-        sb.append("17: Open door.\n");
-        sb.append("18: Go across to the opened door.\n");
-        sb.append("19: Go across to the closed door.\n");
-        sb.append("20: The Actor dies.\n");
-        sb.append("21: Box destroy.\n");
-        sb.append("22: The Replicator shot.\n");
-        sb.append("23: The Replicator moves.\n");
-        sb.append("24: Replicator falls into the crap.\n");
-        sb.append("25: Collect all of the ZPM.\n");
+        sb.append("5: Move actor.\n");
+        sb.append("6: Actor wanna move into a wall.\n");
+        sb.append("7: Actor moves to a switch.\n");
+        sb.append("8: Pick up ZPM.\n");
+        sb.append("9: Pick up box.\n");
+        sb.append("10: Pick up second box.\n");
+        sb.append("11: Drop box.\n");
         sb.append("-1: Quit.\n\n");
         sb.append("################################################################################\n\n");
         sb.append("Pick a test case:");
@@ -109,248 +66,244 @@ public class Tester
     //Helper method for running the selected test case
     private static void runTestCase(int testCase) {
         switch (testCase) {
-//            case 1:
-//                test1();
-//                break;
-//            case 2:
-//                test2();
-//                break;
-//            case 3:
-//                test3();
-//                break;
-//            case 4:
-//                test4();
-//                break;
-//            case 5:
-//                test5();
-//                break;
-//            case 6:
-//                test6();
-//                break;
-//            case 7:
-//                test7();
-//                break;
-            case 8:
-                test8("RIGHT", "COLONEL");
+            case 1:
+                test1();
                 break;
-//            case 9:
-//                test9();
-//                break;
-//            case 10:
-//                test10();
-//                break;
-//            case 11:
-//                test11();
-//                break;
-//            case 12:
-//                test12();
-//                break;
-//            case 13:
-//                test13();
-//                break;
-//            case 14:
-//                test14();
-//                break;
-//            case 15:
-//                test15();
-//                break;
-//            case 16:
-//                test16();
-//                break;
-//            case 17:
-//                test17();
-//                break;
-//            case 18:
-//                test18();
-//                break;
-//            case 19:
-//                test19();
-//                break;
-//            case 20:
-//                test20();
-//                break;
-//            case 21:
-//                test21();
-//                break;
-//            case 22:
-//                test22();
-//                break;
-//            case 23:
-//                test23();
-//                break;
-//            case 24:
-//                test24();
-//                break;
-//            case 25:
-//                test25();
-//                break;
+            case 2:
+                test2("RIGHT", "COLONEL", "BLUE");
+                break;
+            case 3:
+                test3("RIGHT", "JAFFA", "RED");
+                break;
+            case 4:
+                test4("RIGHT", "COLONEL", "YELLOW");
+                break;
+            case 5:
+                test5("RIGHT", "COLONEL");
+                break;
+            case 6:
+                test6("RIGHT", "COLONEL");
+                break;
+            case 7:
+                test7("RIGHT", "JAFFA");
+                break;
+            case 8:
+                test8("RIGHT", "JAFFA");
+                break;
+            case 9:
+                test9("RIGHT", "COLONEL");
+                break;
+            case 10:
+                test10("RIGHT", "JAFFA");
+                break;
+            case 11:
+                test11("RIGHT", "COLONEL");
+                break;
             default:
                 System.out.println("Invalid test case.");
                 break;
         }
     }
 
-//    //Test #1
-//    private static void test1() {
-//        start test.map
-//        createActors <x1:y1> <x2:y2> <x3:y3>
-//    }
-//
-//    //Test #2
-//    private static void test2() {
-//        moveActor <actorType> <moveDirection>
-//                changeBullet <actorType> <bulletType>
-//                shoot <actorType> <moveDirection>
-//    }
-//
-//    //Test #3
-//    private static void test3() {
-//        moveActor <moveDirection> <actorType>
-//                changeBullet <actorType> <bulletType>
-//                shoot <actorType> <moveDirection>
-//    }
-//
-//    //Test #4
-//    private static void test4() {
-//        moveActor <moveDirection> <actorType>
-//                changeBullet <actorType> <bulletType>
-//                shoot <actorType> <moveDirection>
-//                getActualState
-//    }
-//
-//    //Test #5
-//    private static void test5() {
-//        changeBullet <actorType> <bulletType>
-//                shoot <actorType> <moveDirection>
-//                getActualState
-//    }
-//
-//    //Test #6
-//    private static void test6() {
-//        moveActor <moveDirection> <actorType>
-//                teleport <actorType> <x:y>
-//    }
-//
-//    //Test #7
-//    private static void test7() {
-//        changeBullet <actorType> <bulletType>
-//                shoot <actorType> <moveDirection>
-//                moveActor <moveDirection> <actorType>
-//                teleport <actorType> <x1:y1>
-//                getActualState
-//    }
-//
-    //Test #8
-    private static void test8(String strDir, String strType) {
-        Maze.getInstance().playField = new MazeObjectWrapper[3][3];
-        for (int j = 0; j < Maze.getInstance().playField.length; ++j )
-            for (int i = 0; i < Maze.getInstance().playField.length; ++i)
-                Maze.getInstance().playField[i][j] = new MazeObjectWrapper();
-        Maze.getInstance().moveDirection[0] = MoveDirection.valueOf(strDir);
-        Actor actor = new Actor(ActorType.valueOf(strType));
-        for (int j = 0; j < Maze.getInstance().playField.length; ++j ) {
-            for (int i = 0; i < Maze.getInstance().playField.length; ++i) {
-                Maze.getInstance().playField[i][j].setBackground(new Floor());
-                if (i == 1 && j == 1) Maze.getInstance().playField[i][j].setActor(actor.getType().ordinal(), actor);
-            }
+    private static void test1() {
+        try {
+            Engine.newGame();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        int[] colonelPos = Maze.getInstance().actorsPosition[0];
+        int[] jaffaPos = Maze.getInstance().actorsPosition[1];
+
+        System.out.println("New game started.");
+        System.out.println("Actors created at (" + colonelPos[1] + "," + colonelPos[0] + ") and (" + jaffaPos[1] + "," + jaffaPos[0] + ")");
+    }
+
+    private static void test2(String strDir, String strActorType, String strBulletType) {
+        createTestMaze();
+        Actor actor = new Actor(ActorType.valueOf(strActorType));
+        Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
+        Maze.getInstance().playField[0][0].setActor(actor.getType().ordinal(), actor);
+        Maze.getInstance().playField[0][2].setBackground(new Wall(true));
+        Maze.getInstance().actorsPosition[actor.getType().ordinal()] = new int[] {0, 0};
+
+        int[] oldPos = new int[] {0, 0};
+        actor.move();
+        actor.changeBullet();
+        actor.shoot();
+        int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
+        int[] portalPos = Maze.getInstance().stargateEndPoints[1];
+
+        System.out.println(strActorType + " moved from (" + oldPos[1] + "," + oldPos[0] +") to (" + newPos[1] + "," + newPos[0] + ")");
+        System.out.println("Bullet " + strBulletType + " set for " + strActorType + " successfully");
+        System.out.println(strBulletType + " portal created on wall at (" + portalPos[1] + "," + portalPos[0] + ")");
+    }
+
+    private static void test3(String strDir, String strActorType, String strBulletType) {
+        createTestMaze();
+        Actor actor = new Actor(ActorType.valueOf(strActorType));
+        Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
+        Maze.getInstance().playField[0][0].setActor(actor.getType().ordinal(), actor);
+        Maze.getInstance().playField[0][2].setBackground(new Wall(false));
+        Maze.getInstance().actorsPosition[actor.getType().ordinal()] = new int[] {0, 0};
+
+        int[] oldPos = new int[] {0, 0};
+        actor.move();
+        actor.changeBullet();
+        actor.shoot();
+        int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
+        int[] portalPos = Maze.getInstance().stargateEndPoints[2];
+
+        System.out.println(strActorType + " moved from (" + oldPos[1] + "," + oldPos[0] +") to (" + newPos[1] + "," + newPos[0] + ")");
+        System.out.println("Bullet " + strBulletType + " set for " + strActorType + " successfully");
+        if (portalPos[0] == -1) System.out.println("The wall is not portal-compatible, no portal created.");
+    }
+
+    private static void test4(String strDir, String strActorType, String strBulletType) {
+        createTestMaze();
+        Actor actor = new Actor(ActorType.valueOf(strActorType));
+        Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
+        Maze.getInstance().playField[0][0].setActor(actor.getType().ordinal(), actor);
+        Maze.getInstance().playField[0][2].setBackground(new Wall(true));
+        Maze.getInstance().playField[2][2].setBackground(new Wall(true));
+        Maze.getInstance().stargateEndPoints[BulletType.YELLOW.ordinal()] = new int[] {2, 2};
+        Maze.getInstance().actorsPosition[actor.getType().ordinal()] = new int[] {0, 0};
+
+        int[] oldPos = new int[] {0, 0};
+        actor.move();
+        actor.changeBullet();
+        actor.shoot();
+        int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
+        int[] wallPos = Maze.getInstance().stargateEndPoints[BulletType.BLUE.ordinal()];
+        int[] gatePosYellow = Maze.getInstance().stargateEndPoints[BulletType.YELLOW.ordinal()];
+        int[] gatePosBlue = Maze.getInstance().stargateEndPoints[BulletType.BLUE.ordinal()];
+
+        System.out.println(strActorType + " moved from (" + oldPos[1] + "," + oldPos[0] +") to (" + newPos[1] + "," + newPos[0] + ")");
+        System.out.println("Bullet " + strBulletType + " set for " + strActorType + " successfully");
+        System.out.println(strBulletType + " portal created on wall at (" + wallPos[1] + "," + wallPos[0] + ")");
+        System.out.println("Stargate is on the field with portals (" + gatePosYellow[1] + "," + gatePosYellow[0] + "), (" + gatePosBlue[1] + "," + gatePosBlue[0] + ").");
+    }
+
+    private static void test5(String strDir, String strType) {
+        createTestMaze();
+        Actor actor = new Actor(ActorType.valueOf(strType));
+        Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
+
+        Maze.getInstance().playField[1][1].setActor(actor.getType().ordinal(), actor);
         Maze.getInstance().actorsPosition[actor.getType().ordinal()] = new int[] {1, 1};
+
         int[] oldPos = new int[] {1, 1};
         actor.move();
         int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
         System.out.println(strType + " moved from (" + oldPos[1] + "," + oldPos[0] +") to (" + newPos[1] + "," + newPos[0] + ")");
     }
 
-//    //Test #9
-//    private static void test9() {
-//        moveActor <moveDirection> <actorType>
-//    }
-//
-//    //Test #10
-//    private static void test10() {
-//        moveActor <moveDirection> <actorType>
-//                changeWeight <x:y> <weight>
-//    }
-//
-//    //Test #11
-//    private static void test11() {
-//        moveActor <moveDirection> <actorType>
-//                pickUp <actorType>
-//    }
-//
-//    //Test #12
-//    private static void test12() {
-//        moveActor <moveDirection> <actorType>
-//                pickUp <actorType>
-//    }
-//
-//    //Test #13
-//    private static void test13() {
-//        moveActor <moveDirection> <actorType>
-//                pickUp <actorType>
-//                changeWeight <x:y> <weight>
-//    }
-//
-//    //Test #14
-//    private static void test14() {
-//        moveActor <moveDirection> <actorType>
-//                pickUp <actorType>
-//    }
-//
-//    //Test #15
-//    private static void test15() {
-//        moveActor <moveDirection> <actorType>
-//                dropBox <actorType>
-//    }
-//
-//    //Test #16
-//    private static void test16() {
-//        new Actor().changeBullet();
-//    }
-//
-//    //Test #17
-//    private static void test17() {
-//        new Actor().changeBullet();
-//    }
-//
-//    //Test #18
-//    private static void test18() {
-//        new Actor().changeBullet();
-//    }
-//
-//    //Test #19
-//    private static void test19() {
-//        new Actor().changeBullet();
-//    }
-//
-//    //Test #20
-//    private static void test20() {
-//        new Actor().changeBullet();
-//    }
-//
-//    //Test #21
-//    private static void test21() {
-//        new Actor().changeBullet();
-//    }
-//
-//    //Test #22
-//    private static void test22() {
-//        new Actor().changeBullet();
-//    }
-//
-//    //Test #23
-//    private static void test23() {
-//        new Actor().changeBullet();
-//    }
-//
-//    //Test #24
-//    private static void test24() {
-//        new Actor().changeBullet();
-//    }
-//
-//    //Test #25
-//    private static void test25() {
-//        new Actor().changeBullet();
-//    }
+    private static void test6(String strDir, String strType) {
+        createTestMaze();
+        Actor actor = new Actor(ActorType.valueOf(strType));
+        Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
+        Maze.getInstance().playField[0][0].setActor(actor.getType().ordinal(), actor);
+        Maze.getInstance().playField[0][1].setBackground(new Wall(false));
+
+        int[] oldPos = new int[] {0, 0};
+        actor.move();
+        int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
+        System.out.println(strType + " cannot move from (" + oldPos[1] + "," + oldPos[0] + ") to (" + newPos[1] + "," + newPos[0] + "), the field is not passable." );
+    }
+
+    private static void test7(String strDir, String strType) {
+        createTestMaze();
+        Actor actor = new Actor(ActorType.valueOf(strType));
+        Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
+        Maze.getInstance().playField[0][0].setActor(actor.getType().ordinal(), actor);
+        Switch s = new Switch(new Door(), 2);
+        Maze.getInstance().playField[0][1].setBackground(s);
+
+        int[] oldPos = new int[] {0, 0};
+        int oldW = s.getWeight();
+        actor.move();
+        int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
+        System.out.println(strType + " moved from (" + oldPos[1] + "," + oldPos[0] + ") to (" + newPos[1] + "," + newPos[0] + ").");
+        System.out.println("Weight changed from " + oldW + " to " + s.getWeight() + ".");
+    }
+
+    private static void test8(String strDir, String strType) {
+        createTestMaze();
+        Actor actor = new Actor(ActorType.valueOf(strType));
+        Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
+        Maze.getInstance().playField[0][0].setActor(actor.getType().ordinal(), actor);
+        Maze.getInstance().playField[0][1].pushForeground(new Item(ItemType.ZPM));
+
+        int[] oldPos = new int[] {0, 0};
+        actor.move();
+        int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
+        int oldZpm = actor.getZpmCount();
+        actor.pickUp();
+        int newZpm = actor.getZpmCount();
+        System.out.println(strType + " moved from (" + oldPos[1] + "," + oldPos[0] + ") to (" + newPos[1] + "," + newPos[0] + ").");
+        System.out.println("ZPM count of " + strType + " changed from " + oldZpm + " to " + newZpm + ".");
+    }
+
+    private static void test9(String strDir, String strType) {
+        createTestMaze();
+        Actor actor = new Actor(ActorType.valueOf(strType));
+        Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
+        Maze.getInstance().playField[0][0].setActor(actor.getType().ordinal(), actor);
+        Maze.getInstance().playField[0][1].pushForeground(new Item(ItemType.BOX));
+
+        int[] oldPos = new int[] {0, 0};
+        actor.move();
+        int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
+        int oldFieldItemsNum = Maze.getInstance().playField[0][1].getForegrounds().size();
+        actor.pickUp();
+        int newFieldItemsNum = Maze.getInstance().playField[0][1].getForegrounds().size();
+        System.out.println(strType + " moved from (" + oldPos[1] + "," + oldPos[0] + ") to (" + newPos[1] + "," + newPos[0] + ").");
+        System.out.println("Count of foreground items on the field decreased from " + oldFieldItemsNum + " to " + newFieldItemsNum + ".");
+    }
+
+    private static void test10(String strDir, String strType) {
+        createTestMaze();
+        Actor actor = new Actor(ActorType.valueOf(strType));
+        Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
+        Maze.getInstance().playField[0][0].setActor(actor.getType().ordinal(), actor);
+        Maze.getInstance().playField[0][1].pushForeground(new Item(ItemType.BOX));
+        Maze.getInstance().playField[0][1].pushForeground(new Item(ItemType.BOX));
+
+        int[] oldPos = new int[] {0, 0};
+        actor.move();
+        int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
+        int oldFieldItemNum = Maze.getInstance().playField[0][1].getForegrounds().size();
+        actor.pickUp();
+        int firstFieldItemNum = Maze.getInstance().playField[0][1].getForegrounds().size();
+        actor.pickUp();
+        int secondFieldItemNum = Maze.getInstance().playField[0][1].getForegrounds().size();
+        System.out.println(strType + " moved from (" + oldPos[1] + "," + oldPos[0] + ") to (" + newPos[1] + "," + newPos[0] + ").");
+        System.out.println("Count of foreground items on the field decreased from " + oldFieldItemNum + " to " + firstFieldItemNum + ", and after that to " + secondFieldItemNum + ".");
+        System.out.println(strType + " cannot pick up two boxes.");
+    }
+
+    private static void test11(String strDir, String strType) {
+        createTestMaze();
+        Actor actor = new Actor(ActorType.valueOf(strType));
+        Maze.getInstance().moveDirection[actor.getType().ordinal()] = MoveDirection.valueOf(strDir);
+        Maze.getInstance().playField[0][0].setActor(actor.getType().ordinal(), actor);
+        Maze.getInstance().playField[0][0].pushForeground(new Item(ItemType.BOX));
+        actor.pickUp();
+
+        int[] oldPos = new int[] {0, 0};
+        actor.move();
+        int[] newPos = Maze.getInstance().actorsPosition[actor.getType().ordinal()];
+        int oldFieldItemNum = Maze.getInstance().playField[0][2].getForegrounds().size();
+        actor.dropBox();
+        int newFieldItemNum = Maze.getInstance().playField[0][2].getForegrounds().size();
+        System.out.println(strType + " moved from (" + oldPos[1] + "," + oldPos[0] + ") to (" + newPos[1] + "," + newPos[0] + ").");
+        System.out.println("Box number at field (1,0) changed from " + oldFieldItemNum + " to " + newFieldItemNum + ".");
+    }
+
+    private static void createTestMaze() {
+        Maze.getInstance().playField = new MazeObjectWrapper[3][3];
+        for (int j = 0; j < Maze.getInstance().playField.length; ++j )
+            for (int i = 0; i < Maze.getInstance().playField.length; ++i)
+                Maze.getInstance().playField[i][j] = new MazeObjectWrapper(new Floor());
+    }
 
 }

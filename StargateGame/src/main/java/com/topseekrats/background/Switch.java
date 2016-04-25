@@ -11,6 +11,8 @@ public class Switch extends Background {
         this.weightConstraint = weightConstraint;
     }
 
+    public int getWeight() { return weight; }
+
     public void incrementWeight() {
         ++weight;
         if (weight >= weightConstraint && !door.isPassable()) door.changeOpened();

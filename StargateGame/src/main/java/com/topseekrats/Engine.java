@@ -13,17 +13,26 @@ import java.util.Random;
 
 public final class Engine {
 
-    public static void newGame() {
+    public static void newGame() throws IOException, ClassNotFoundException {
+        load("maps/default.sgmap");
+        Maze.getInstance().playField[2][2].setActor(0, new Actor(ActorType.COLONEL));
+        Maze.getInstance().playField[19][19].setActor(1, new Actor(ActorType.JAFFA));
+        Maze.getInstance().actorsPosition[0] = new int[] {2,2};
+        Maze.getInstance().actorsPosition[1] = new int[] {19,19};
     }
 
     public static void save() throws IOException {
-        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("maps/default.sgmap"));
+        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("maps/save1.sgmap"));
         out.writeObject(Maze.getInstance());
         out.close();
     }
 
     public static void load() throws IOException, ClassNotFoundException {
-        ObjectInputStream in = new ObjectInputStream(new FileInputStream("maps/default.sgmap"));
+
+    }
+
+    public static void load(String filename) throws IOException, ClassNotFoundException {
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename));
         Maze temp = (Maze)in.readObject();
         in.close();
         Maze.getInstance().playField = temp.playField;
@@ -36,7 +45,6 @@ public final class Engine {
     public static void death(ActorType actorType) {
     }
 
-    //döntetlen
     public static void draw(){
     }
 

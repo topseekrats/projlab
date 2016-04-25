@@ -8,7 +8,7 @@ public class Maze implements Serializable {
     public int zpmPickUpCounter = 0;
     public int[] replicatorPosition = new int[2];
     public int[][] actorsPosition = new int[2][2];
-    public int[][] stargateEndPoints = new int[4][2];
+    public int[][] stargateEndPoints = new int[][] {{-1, -1}, {-1, -1}, {-1, -1}, {-1, -1}};
     public MazeObjectWrapper[][] playField = new MazeObjectWrapper[20][20];
     public MoveDirection[] moveDirection = new MoveDirection[2];
 
