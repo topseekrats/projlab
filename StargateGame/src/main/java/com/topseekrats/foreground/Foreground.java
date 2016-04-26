@@ -11,6 +11,8 @@ import java.io.Serializable;
  */
 public abstract class Foreground implements MazeObject, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     @Override
     public boolean isForeground() { return true; }
 

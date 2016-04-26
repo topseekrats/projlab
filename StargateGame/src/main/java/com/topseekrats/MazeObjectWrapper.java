@@ -8,6 +8,8 @@ import java.util.Stack;
 
 public class MazeObjectWrapper implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private Actor[] actors = new Actor[2];
     private Background background = null;
     private Stack<Foreground> foregrounds = new Stack<Foreground>();

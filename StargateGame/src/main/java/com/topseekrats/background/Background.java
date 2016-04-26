@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public abstract class Background implements MazeObject, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     public abstract boolean isPassable();
 
     @Override

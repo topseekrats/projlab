@@ -7,6 +7,8 @@ import java.io.Serializable;
  */
 public class Maze implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     public int zpmOnMap = 15;
     public int zpmPickUpCounter = 0;
     public int[] replicatorPosition = new int[2];
