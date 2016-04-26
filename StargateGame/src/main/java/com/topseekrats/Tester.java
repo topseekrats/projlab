@@ -1,5 +1,6 @@
 package com.topseekrats;
 
+import com.sun.xml.internal.bind.v2.model.core.MaybeElement;
 import com.topseekrats.background.*;
 import com.topseekrats.foreground.*;
 
@@ -397,6 +398,10 @@ public class Tester {
      */
     private static void createTestMaze() {
         Maze.getInstance().playField = new MazeObjectWrapper[3][3];
+        Maze.getInstance().stargateEndPoints = new int[][] {{-1, -1}, {-1, -1}, {-1, -1}, {-1, -1}};
+        Maze.getInstance().actorsPosition = new int[2][2];
+        Maze.getInstance().moveDirection = new MoveDirection[2];
+        
         for (int j = 0; j < Maze.getInstance().playField.length; ++j )
             for (int i = 0; i < Maze.getInstance().playField.length; ++i)
                 Maze.getInstance().playField[i][j] = new MazeObjectWrapper(new Floor());
