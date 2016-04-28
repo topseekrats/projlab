@@ -40,7 +40,7 @@ public class Actor implements MazeObject {
         MoveDirection moveDirection = Maze.getInstance().moveDirection[type.ordinal()];
 
         // Játékos aktuális pozícióját kimentjük, hogy ki tudjuk majd később szedni innen
-        int[] pos = Maze.getInstance().actorsPosition[type.ordinal()];
+        int[] pos = Maze.getInstance().actorsPosition[type.ordinal()].clone();
         int[] oldPos = pos.clone();
 
         // Játékos mozgásiránya szerint módosítjuk az új koordinátákat
