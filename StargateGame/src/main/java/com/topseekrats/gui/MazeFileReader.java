@@ -105,40 +105,45 @@ public class MazeFileReader {
                 v = map[i][j];
                 switch (v) {
                     case 0:
-                        //drawFloor
                         mows[i][j].setBackground(new Floor());
                         break;
                     case 1:
-                        //drawWall
                         mows[i][j].setBackground(new Wall(false));
                         break;
                     case 2:
-                        //drawCleft
                         mows[i][j].setBackground(new Cleft());
                         break;
                     case 3:
-                        //drawDoor
                         lastDoor = new Door();
                         mows[i][j].setBackground(lastDoor);
                         break;
                     case 4:
-                        //drawSwitch
                         if (lastDoor != null) {
                             mows[i][j].setBackground(new Switch(lastDoor, weight));
                             lastDoor = null;
                         }
                         break;
                     case 5:
-                        //drawColonel
                         mows[i][j].setActor(0, new Actor(ActorType.COLONEL));
                         Maze.getInstance().actorsPosition[0][0] = i;
                         Maze.getInstance().actorsPosition[0][1] = j;
                         break;
                     case 6:
-                        //drawJaffa
                         mows[i][j].setActor(1, new Actor(ActorType.JAFFA));
                         Maze.getInstance().actorsPosition[1][0] = i;
                         Maze.getInstance().actorsPosition[1][1] = j;
+                        break;
+                    case 7:
+                        Log.log("rep pos: "+i+";"+j);
+                        mows[i][j].setReplicator(new Replicator());
+                        Maze.getInstance().replicatorPosition[0] = i;
+                        Maze.getInstance().replicatorPosition[1] = j;
+
+                        // debug
+                        int xPosRep = Maze.getInstance().replicatorPosition[0];
+                        int yPosRep = Maze.getInstance().replicatorPosition[1];
+                        Replicator rep = Maze.getInstance().playField[xPosRep][yPosRep].getReplicator();
+                        Log.log("rep pos: "+xPosRep+";"+yPosRep);
                         break;
                     default:
                         //drawFloor

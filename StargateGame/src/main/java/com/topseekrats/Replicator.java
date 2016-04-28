@@ -30,20 +30,22 @@ public class Replicator implements MazeObject {
     @Override
     public void move() {
         //Replikátort kivesszük az őt tartalmazó wrapperből
-        int[] pos = Maze.getInstance().replicatorPosition;
-        int[] oldPos = pos;
+        int[] pos = Maze.getInstance().replicatorPosition.clone(); // clone itt is lemaradt
+        int[] oldPos = pos.clone(); // clone itt is lemaradt
 
-//        log("Replicator POS: " + pos[1] + "," + pos[0]);
+        Log.log("Replicator POS: " + pos[1] + "," + pos[0]);
 
         int dir = r.nextInt(4);
-//        log("dir=" + dir);
+        Log.log("dir=" + dir);
 
         switch (dir) {
             case 0:
-                if (pos[1] > 0) pos[0] -= 1; // one row up
+//                if (pos[1] > 0) pos[0] -= 1; // one row up // Mark: pos.1 > 0 => pos.0 csökkentése? Mind2-t át kell írni...
+                if (pos[0] > 0) pos[0] -= 1; // one row up
                 break;
             case 1:
-                if (pos[1] < Maze.getInstance().playField.length-1) pos[0] += 1; // one row down
+//                if (pos[1] < Maze.getInstance().playField.length-1) pos[0] += 1; // one row down
+                if (pos[0] < Maze.getInstance().playField.length-1) pos[0] += 1; // one row down
                 break;
             case 2:
                 if (pos[1] > 0) pos[1] -= 1; // one column left/back
@@ -56,24 +58,34 @@ public class Replicator implements MazeObject {
                 break;
         }
 
-        if (!Maze.getInstance().playField[pos[0]][pos[1]].getBackground().isPassable()) return;
+        if (Maze.getInstance().playField[pos[0]][pos[1]].getBackground() != null &&
+                !Maze.getInstance().playField[pos[0]][pos[1]].getBackground().isPassable()) return;
         Maze.getInstance().playField[oldPos[0]][oldPos[1]].setReplicator(null);
 
         // Ha szakadékra lépett.
+        /*
         if (Maze.getInstance().playField[pos[1]][pos[0]].getBackground() instanceof Cleft) {
             Maze.getInstance().playField[pos[1]][pos[0]].setBackground(new Floor());
+            Maze.getInstance().replicatorLives = false;
+            return;
+        }
+        */
+        // maradok az (x = 0.index = sorok) konvenciónál, ha nem oké, egységesen kell javítani
+        if (Maze.getInstance().playField[pos[0]][pos[1]].getBackground() instanceof Cleft) {
+            Maze.getInstance().playField[pos[0]][pos[1]].setBackground(new Floor());
             Maze.getInstance().replicatorLives = false;
             return;
         }
 
         //Új mezőre lépés kezelése
         Maze.getInstance().playField[pos[0]][pos[1]].setReplicator(this);
+        Maze.getInstance().replicatorPosition = pos.clone();
+
+
 
 //        log("md=" + md);
 //        log("rep POS: " + pos[1] + "," + pos[0]);
     }
-
-//    private void log(String s) { System.out.println(s); }
 
     @Override
     public boolean isForeground() { return false; }

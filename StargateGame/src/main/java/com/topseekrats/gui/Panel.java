@@ -1,8 +1,14 @@
 package com.topseekrats.gui;
 
+import com.topseekrats.Maze;
+import com.topseekrats.Replicator;
+import sun.util.calendar.LocalGregorianCalendar;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
@@ -13,6 +19,9 @@ public class Panel extends JPanel implements MouseMotionListener {
 
     private final MazePanel mazePanel;
     private final JLabel mouseCoordinatesLabel;
+    private final JLabel refreshLabelSetText;
+    public final static int INTERVAL = 500;
+    public static int timeInt = 0;
 
 
     public Panel() {
@@ -24,10 +33,34 @@ public class Panel extends JPanel implements MouseMotionListener {
         mazePanel.setBorder(border);
         add(mazePanel, BorderLayout.CENTER);
 
+        refreshLabelSetText = new JLabel("last refresh: null");
+        add(refreshLabelSetText, BorderLayout.SOUTH);
 
         mouseCoordinatesLabel = new JLabel("x: 0, y: 0");
         add(mouseCoordinatesLabel, BorderLayout.SOUTH);
         addMouseMotionListener(this);
+
+        Timer timer = new Timer(INTERVAL, new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                //Refresh the panel
+                // Replicator mozgatása
+                if (Maze.getInstance().replicatorLives) {
+                    int xPosRep = Maze.getInstance().replicatorPosition[0];
+                    int yPosRep = Maze.getInstance().replicatorPosition[1];
+                    Replicator rep = Maze.getInstance().playField[xPosRep][yPosRep].getReplicator();
+                    // Log.log("rep pos: "+xPosRep+";"+yPosRep);
+                    if (rep != null) {
+                        rep.move();
+                    }
+                }
+                mazePanel.repaint();
+                timeInt += INTERVAL/100;
+                refreshLabelSetText(Integer.toString(timeInt));
+
+            }
+        });
+
+        timer.start();
 
     }
 
@@ -43,6 +76,8 @@ public class Panel extends JPanel implements MouseMotionListener {
         mouseCoordinatesLabel.setText("x: "+e.getPoint().x+", y: "+e.getPoint().y);
     }
 
-    private void log(String s) { System.out.println(s); }
+    public void refreshLabelSetText(String s) {
+        mouseCoordinatesLabel.setText("last refresh: "+s);
+    }
 
 }
