@@ -1,8 +1,13 @@
 package com.topseekrats;
 
-import com.sun.xml.internal.bind.v2.model.core.MaybeElement;
-import com.topseekrats.background.*;
-import com.topseekrats.foreground.*;
+import com.topseekrats.background.Door;
+import com.topseekrats.background.Floor;
+import com.topseekrats.background.Switch;
+import com.topseekrats.background.Wall;
+import com.topseekrats.foreground.BulletType;
+import com.topseekrats.foreground.Item;
+import com.topseekrats.foreground.ItemType;
+import com.topseekrats.gui.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -99,6 +104,11 @@ public class Tester {
                 break;
             case 11:
                 test11("RIGHT", "COLONEL");
+                break;
+            case 0:
+                // GUI
+                Frame jf = new Frame();
+
                 break;
             default:
                 System.out.println("Invalid test case.");
