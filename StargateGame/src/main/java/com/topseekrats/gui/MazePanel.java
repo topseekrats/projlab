@@ -31,9 +31,13 @@ public class MazePanel extends JPanel {
     public MazePanel() {
 
         // megadott fájlból olvasás int[][] -be, majd int[][] átalakítása playField-dé és eltárolás Maze -be
+
+        /*
         MazeFileReader mfr = new MazeFileReader("StargateGame"+File.separator+"maps"+File.separator+"default.sgmap");
         mfr.readSerializedMazeFromFile();
-        /*
+        */
+        // VAGY
+        MazeFileReader mfr = new MazeFileReader("StargateGame"+File.separator+"maps"+File.separator+"mapTest.txt");
         mfr.int2D = mfr.txtFile2int2D();
         if (mfr.getInt2D() != null) {
             mfr.makeMaze(mfr.getInt2D());
@@ -41,7 +45,7 @@ public class MazePanel extends JPanel {
             // ha int[][] null, akkor dummy adatokból playField generálás és eltárolás Maze-be
             mfr.makeMaze(mfr.makeMapDummy());
         }
-        */
+
 
         setPreferredSize(new Dimension(rowTitleNum*titleWidth, colTitleNum*titleHeight));
         // listen to key events
