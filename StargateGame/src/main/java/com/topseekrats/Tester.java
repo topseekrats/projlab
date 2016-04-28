@@ -107,9 +107,7 @@ public class Tester {
                 break;
             case 0:
                 // GUI
-
                 Frame jf = new Frame();
-
                 break;
             default:
                 System.out.println("Invalid test case.");
