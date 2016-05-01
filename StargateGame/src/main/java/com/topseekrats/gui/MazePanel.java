@@ -6,6 +6,7 @@ import com.topseekrats.MazeObjectWrapper;
 import com.topseekrats.background.*;
 import com.topseekrats.foreground.Bullet;
 import com.topseekrats.foreground.Item;
+import com.topseekrats.foreground.ItemType;
 import com.topseekrats.foreground.Stargate;
 
 import javax.swing.*;
@@ -161,6 +162,11 @@ public class MazePanel extends JPanel {
                         // drawBullet()
                     } else if (value.getForegrounds().firstElement() instanceof Item) {
                         // drawItem()
+                        if (((Item) value.getForegrounds().firstElement()).getType() == ItemType.BOX) {
+                            drawBox(g, j * titleWidth, i * titleHeight);
+                        } else if (((Item) value.getForegrounds().firstElement()).getType() == ItemType.ZPM) {
+                            drawZpm(g, j * titleWidth, i * titleHeight);
+                        }
                     } else if (value.getForegrounds().firstElement() instanceof Stargate) {
                         // drawStargate()
                     }
@@ -307,6 +313,32 @@ public class MazePanel extends JPanel {
         g.fillRect(x, y, titleWidth, titleHeight);
         //log("x:"+x+" y:"+y+"  titleWidth:"+titleWidth+" titleHeight:"+titleHeight);
         g.drawImage(replicatorTile.getImage(), x, y, null);
+    }
+
+    /**
+     * ZPM
+     * @param g
+     * @param x
+     * @param y
+     */
+    private void drawZpm(Graphics g, int x, int y) {
+        g.setColor(Color.WHITE);
+        g.fillRect(x, y, titleWidth, titleHeight);
+        //log("x:"+x+" y:"+y+"  titleWidth:"+titleWidth+" titleHeight:"+titleHeight);
+        g.drawImage(zpmTile.getImage(), x, y, null);
+    }
+
+    /**
+     * Box
+     * @param g
+     * @param x
+     * @param y
+     */
+    private void drawBox(Graphics g, int x, int y) {
+        g.setColor(Color.WHITE);
+        g.fillRect(x, y, titleWidth, titleHeight);
+        //log("x:"+x+" y:"+y+"  titleWidth:"+titleWidth+" titleHeight:"+titleHeight);
+        g.drawImage(boxTile.getImage(), x, y, null);
     }
 
 }

@@ -2,6 +2,8 @@ package com.topseekrats.gui;
 
 import com.topseekrats.*;
 import com.topseekrats.background.*;
+import com.topseekrats.foreground.Item;
+import com.topseekrats.foreground.ItemType;
 
 import java.io.*;
 
@@ -144,6 +146,12 @@ public class MazeFileReader {
                         int yPosRep = Maze.getInstance().replicatorPosition[1];
                         Replicator rep = Maze.getInstance().playField[xPosRep][yPosRep].getReplicator();
                         Log.log("rep pos: "+xPosRep+";"+yPosRep);
+                        break;
+                    case 8:
+                        mows[i][j].pushForeground(new Item(ItemType.BOX));
+                        break;
+                    case 9:
+                        mows[i][j].pushForeground(new Item(ItemType.ZPM));
                         break;
                     default:
                         //drawFloor
