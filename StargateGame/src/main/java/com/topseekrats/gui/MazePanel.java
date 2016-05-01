@@ -1,6 +1,8 @@
 package com.topseekrats.gui;
 
-import com.topseekrats.*;
+import com.topseekrats.ActorType;
+import com.topseekrats.Maze;
+import com.topseekrats.MazeObjectWrapper;
 import com.topseekrats.background.*;
 import com.topseekrats.foreground.Bullet;
 import com.topseekrats.foreground.Item;
@@ -8,12 +10,8 @@ import com.topseekrats.foreground.Stargate;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.util.zip.ZipEntry;
 
 /**
  * Created by Mark-PC10 on 2016. 04. 24..
@@ -26,6 +24,20 @@ public class MazePanel extends JPanel {
     public final int titleHeight = titleWidth;
     public final int weight = 2;
     private int i = 0;
+
+    private Tile cleftTile = null;
+    private Tile doorOpenTile = null;
+    private Tile doorClosedTile = null;
+    private Tile floorTile = null;
+    private Tile switchTile = null;
+    private Tile wallTile = null;
+    private Tile boxTile = null;
+    private Tile zpmTile = null;
+    private Tile stargate1Tile = null;
+    private Tile stargate2Tile = null;
+    private Tile colonelTile = null;
+    private Tile jaffaTile = null;
+    private Tile replicatorTile = null;
 
 
     public MazePanel() {
@@ -46,6 +58,7 @@ public class MazePanel extends JPanel {
             mfr.makeMaze(mfr.makeMapDummy());
         }
 
+        initTiles();
 
         setPreferredSize(new Dimension(rowTitleNum*titleWidth, colTitleNum*titleHeight));
         // listen to key events
@@ -64,11 +77,6 @@ public class MazePanel extends JPanel {
             drawMap(g);
             repaint();
         }
-    }
-
-    private void drawBackground(Graphics g) {
-        g.setColor(Color.BLACK);
-        g.fillRect(0, 0, getWidth() - 1, getHeight() - 1);
     }
 
     private void drawMap(Graphics g) {
@@ -183,6 +191,22 @@ public class MazePanel extends JPanel {
         }
     }
 
+    private void initTiles() {
+        cleftTile = new Tile("szakadek02_3030.jpg");
+        doorOpenTile = new Tile("door_open_3030.jpg");
+        doorClosedTile = new Tile("door_closed_3030.jpg");
+        floorTile = new Tile("floor_3030.jpg");
+        switchTile = new Tile("switch_01_3030.jpg");
+        wallTile = new Tile("wall_3030.jpg");
+        boxTile = new Tile("cube_3030.gif");
+        zpmTile = new Tile("zpm_3030.png");
+        stargate1Tile = new Tile("stargate_01_3030.jpg");
+        stargate2Tile = new Tile("stargate_02_3030.jpg");
+        colonelTile = new Tile("colonel_3030.jpg");
+        jaffaTile = new Tile("jaffa_3030.jpg");
+        replicatorTile = new Tile("replicator_3030.jpg");
+    }
+
     /**
      * BLACK
      * @param g
@@ -192,6 +216,7 @@ public class MazePanel extends JPanel {
     private void drawFloor(Graphics g, int x, int y) {
         g.setColor(Color.BLACK);
         g.fillRect(x, y, titleWidth, titleHeight);
+        g.drawImage(floorTile.getImage(), x, y, null);
     }
 
     /**
@@ -203,6 +228,7 @@ public class MazePanel extends JPanel {
     private void drawWall(Graphics g, int x, int y) {
         g.setColor(Color.BLUE);
         g.fillRect(x, y, titleWidth, titleHeight);
+        g.drawImage(wallTile.getImage(), x, y, null);
     }
 
     /**
@@ -215,6 +241,7 @@ public class MazePanel extends JPanel {
         g.setColor(Color.RED);
         g.fillRect(x, y, titleWidth, titleHeight);
         //log("x:"+x+" y:"+y+"  titleWidth:"+titleWidth+" titleHeight:"+titleHeight);
+        g.drawImage(cleftTile.getImage(), x, y, null);
     }
 
     /**
@@ -227,6 +254,7 @@ public class MazePanel extends JPanel {
         g.setColor(Color.ORANGE);
         g.fillRect(x, y, titleWidth, titleHeight);
         //log("x:"+x+" y:"+y+"  titleWidth:"+titleWidth+" titleHeight:"+titleHeight);
+        g.drawImage(doorClosedTile.getImage(), x, y, null);
     }
 
     /**
@@ -239,6 +267,7 @@ public class MazePanel extends JPanel {
         g.setColor(Color.GREEN);
         g.fillRect(x, y, titleWidth, titleHeight);
         //log("x:"+x+" y:"+y+"  titleWidth:"+titleWidth+" titleHeight:"+titleHeight);
+        g.drawImage(switchTile.getImage(), x, y, null);
     }
 
     /**
@@ -251,6 +280,7 @@ public class MazePanel extends JPanel {
         g.setColor(Color.MAGENTA);
         g.fillRect(x, y, titleWidth, titleHeight);
         //log("x:"+x+" y:"+y+"  titleWidth:"+titleWidth+" titleHeight:"+titleHeight);
+        g.drawImage(colonelTile.getImage(), x, y, null);
     }
 
     /**
@@ -263,6 +293,7 @@ public class MazePanel extends JPanel {
         g.setColor(Color.YELLOW);
         g.fillRect(x, y, titleWidth, titleHeight);
         //log("x:"+x+" y:"+y+"  titleWidth:"+titleWidth+" titleHeight:"+titleHeight);
+        g.drawImage(jaffaTile.getImage(), x, y, null);
     }
 
     /**
@@ -275,26 +306,7 @@ public class MazePanel extends JPanel {
         g.setColor(Color.WHITE);
         g.fillRect(x, y, titleWidth, titleHeight);
         //log("x:"+x+" y:"+y+"  titleWidth:"+titleWidth+" titleHeight:"+titleHeight);
+        g.drawImage(replicatorTile.getImage(), x, y, null);
     }
-
-    private void log(String s) { System.out.println(s); }
-
-    private void logMaze() {
-        MazeObjectWrapper[][] mows = Maze.getInstance().playField;
-        if (mows.length > 0) {
-            for (int i = 0; i < mows.length; i++) {
-                for (int j = 0; j < mows[0].length; j++) {
-                    log("\t i:"+i+" j:"+j);
-                    if (mows[i][j].getBackground() != null) log(mows[i][j].getBackground().toString());
-                    if (mows[i][j].getActor(ActorType.COLONEL) != null) log(mows[i][j].getActor(ActorType.COLONEL).toString());
-                    if (mows[i][j].getActor(ActorType.JAFFA) != null) log(mows[i][j].getActor(ActorType.JAFFA).toString());
-                    if (mows[i][j].getForegrounds() != null) log(mows[i][j].getForegrounds().firstElement().toString());
-                    if (mows[i][j].getReplicator() != null) log(mows[i][j].getReplicator().toString());
-                }
-            }
-        }
-
-    }
-
 
 }
