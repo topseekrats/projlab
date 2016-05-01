@@ -79,7 +79,7 @@ public class Replicator implements MazeObject {
 
         //Új mezőre lépés kezelése
         Maze.getInstance().playField[pos[0]][pos[1]].setReplicator(this);
-        Maze.getInstance().replicatorPosition = pos.clone();
+        Maze.getInstance().replicatorPosition = pos.clone(); // ez is lemaradt
 
 
 
