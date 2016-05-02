@@ -33,10 +33,10 @@ public class Replicator implements MazeObject {
         int[] pos = Maze.getInstance().replicatorPosition.clone(); // clone itt is lemaradt
         int[] oldPos = pos.clone(); // clone itt is lemaradt
 
-        Log.log("Replicator POS: " + pos[1] + "," + pos[0]);
+//        Log.log("Replicator POS: " + pos[1] + "," + pos[0]);
 
         int dir = r.nextInt(4);
-        Log.log("dir=" + dir);
+//        Log.log("dir=" + dir);
 
         switch (dir) {
             case 0:

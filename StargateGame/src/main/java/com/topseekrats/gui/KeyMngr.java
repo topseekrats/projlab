@@ -14,6 +14,10 @@ public class KeyMngr implements KeyListener {
     private boolean keyRightPressed = false;
     private boolean keyUpPressed = false;
     private boolean keyDownPressed = false;
+    private boolean keyWPressed = false;
+    private boolean keyAPressed = false;
+    private boolean keySPressed = false;
+    private boolean keyDPressed = false;
     private static KeyMngr instance;
 
     private KeyMngr() {
@@ -32,14 +36,23 @@ public class KeyMngr implements KeyListener {
         setKeyRightPressed(false);
         setKeyUpPressed(false);
         setKeyDownPressed(false);
+        setKeyWPressed(false);
+        setKeyAPressed(false);
+        setKeySPressed(false);
+        setKeyDPressed(false);
     }
 
     /* (non-Javadoc)
      * @see org.eclipse.swt.events.KeyListener#keyPressed(org.eclipse.swt.events.KeyEvent)
      */
+
+    /**
+     * Billentyű lenyomása esetén fut le
+     * @param e
+     */
     public void keyPressed(KeyEvent e) {
         setKeyPressed(true);
-        Log.log("v keyPressed: "+e.getKeyCode());
+        // Log.log("v keyPressed: "+e.getKeyCode());
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             Log.log(" LEFT");
             setKeyLeftPressed(true);
@@ -56,35 +69,72 @@ public class KeyMngr implements KeyListener {
             Log.log(" DOWN");
             setKeyDownPressed(true);
         }
+        else if (e.getKeyCode() == KeyEvent.VK_W) {
+            Log.log(" W");
+            setKeyWPressed(true);
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_A) {
+            Log.log(" A");
+            setKeyAPressed(true);
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_S) {
+            Log.log(" S");
+            setKeySPressed(true);
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_D) {
+            Log.log(" D");
+            setKeyDPressed(true);
+        }
 
     }
 
     /* (non-Javadoc)
      * @see org.eclipse.swt.events.KeyListener#keyReleased(org.eclipse.swt.events.KeyEvent)
      */
+
+    /**
+     * Billentyű elengedése esetén fut le
+     * @param e
+     */
     public void keyReleased(KeyEvent e) {
-        Log.log("^ keyReleased: "+e.getKeyCode());
+        // Log.log("^ keyReleased: "+e.getKeyCode());
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            Log.log(" LEFT");
+            // Log.log(" LEFT");
             setKeyLeftPressed(false);
         }
         else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            Log.log(" RIGHT");
+            // Log.log(" RIGHT");
             setKeyRightPressed(false);
         }
         else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            Log.log(" UP");
+            // Log.log(" UP");
             setKeyUpPressed(false);
         }
         else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            Log.log(" DOWN");
+            // Log.log(" DOWN");
             setKeyDownPressed(false);
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_W) {
+            // Log.log(" W");
+            setKeyWPressed(false);
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_A) {
+            // Log.log(" A");
+            setKeyAPressed(false);
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_S) {
+            // Log.log(" S");
+            setKeySPressed(false);
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_D) {
+            // Log.log(" D");
+            setKeyDPressed(false);
         }
     }
 
 
     public void keyTyped(KeyEvent e) {
-        Log.log("keyTyped: "+e.getKeyCode());
+        // Log.log("keyTyped: "+e.getKeyCode());
     }
 
 
@@ -94,24 +144,25 @@ public class KeyMngr implements KeyListener {
             Maze maze = Maze.getInstance();
             int x = maze.actorsPosition[0][0];
             int y = maze.actorsPosition[0][1];
-            Log.log("x:"+x+" y:"+y);
-            if (maze.playField[x][y].getActor(ActorType.COLONEL) != null) {
+            // Log.log("x:"+x+" y:"+y);
+            /*if (maze.playField[x][y].getActor(ActorType.COLONEL) != null) {
                 Log.log("van COLONEL");
             } else {
                 Log.log("NINCS COLONEL!!");
-            }
+            }*/
 
             maze.moveDirection[0] = MoveDirection.LEFT;
-            maze.playField[x][y].getActor(ActorType.COLONEL).move();
+            if (maze.playField[x][y].getActor(ActorType.COLONEL) != null)
+                maze.playField[x][y].getActor(ActorType.COLONEL).move();
 
-            x = maze.actorsPosition[0][0];
+            /*x = maze.actorsPosition[0][0];
             y = maze.actorsPosition[0][1];
-            Log.log("ÚJ x:"+x+" y:"+y);
+            // Log.log("ÚJ x:"+x+" y:"+y);
             if (maze.playField[x][y].getActor(ActorType.COLONEL) != null) {
                 Log.log("van COLONEL");
             } else {
                 Log.log("NINCS COLONEL!!");
-            }
+            }*/
         }
     }
 
@@ -127,7 +178,8 @@ public class KeyMngr implements KeyListener {
             int x = Maze.getInstance().actorsPosition[0][0];
             int y = Maze.getInstance().actorsPosition[0][1];
             Maze.getInstance().moveDirection[0] = MoveDirection.RIGHT;
-            Maze.getInstance().playField[x][y].getActor(ActorType.COLONEL).move();
+            if (Maze.getInstance().playField[x][y].getActor(ActorType.COLONEL) != null)
+                Maze.getInstance().playField[x][y].getActor(ActorType.COLONEL).move();
         }
     }
 
@@ -143,7 +195,8 @@ public class KeyMngr implements KeyListener {
             int x = Maze.getInstance().actorsPosition[0][0];
             int y = Maze.getInstance().actorsPosition[0][1];
             Maze.getInstance().moveDirection[0] = MoveDirection.UP;
-            Maze.getInstance().playField[x][y].getActor(ActorType.COLONEL).move();
+            if (Maze.getInstance().playField[x][y].getActor(ActorType.COLONEL) != null)
+                Maze.getInstance().playField[x][y].getActor(ActorType.COLONEL).move();
         }
     }
 
@@ -159,7 +212,52 @@ public class KeyMngr implements KeyListener {
             int x = Maze.getInstance().actorsPosition[0][0];
             int y = Maze.getInstance().actorsPosition[0][1];
             Maze.getInstance().moveDirection[0] = MoveDirection.DOWN;
-            Maze.getInstance().playField[x][y].getActor(ActorType.COLONEL).move();
+            if (Maze.getInstance().playField[x][y].getActor(ActorType.COLONEL) != null)
+                Maze.getInstance().playField[x][y].getActor(ActorType.COLONEL).move();
+        }
+    }
+
+    public synchronized void setKeyWPressed(boolean keyWPressed) {
+        this.keyWPressed = keyWPressed;
+        if (!keyWPressed) {
+            int x = Maze.getInstance().actorsPosition[1][0];
+            int y = Maze.getInstance().actorsPosition[1][1];
+            Maze.getInstance().moveDirection[1] = MoveDirection.UP;
+            if (Maze.getInstance().playField[x][y].getActor(ActorType.JAFFA) != null)
+                Maze.getInstance().playField[x][y].getActor(ActorType.JAFFA).move();
+        }
+    }
+
+    public synchronized void setKeyAPressed(boolean keyAPressed) {
+        this.keyAPressed = keyAPressed;
+        if (!keyAPressed) {
+            int x = Maze.getInstance().actorsPosition[1][0];
+            int y = Maze.getInstance().actorsPosition[1][1];
+            Maze.getInstance().moveDirection[1] = MoveDirection.LEFT;
+            if (Maze.getInstance().playField[x][y].getActor(ActorType.JAFFA) != null)
+                Maze.getInstance().playField[x][y].getActor(ActorType.JAFFA).move();
+        }
+    }
+
+    public synchronized void setKeySPressed(boolean keySPressed) {
+        this.keySPressed = keySPressed;
+        if (!keySPressed) {
+            int x = Maze.getInstance().actorsPosition[1][0];
+            int y = Maze.getInstance().actorsPosition[1][1];
+            Maze.getInstance().moveDirection[1] = MoveDirection.DOWN;
+            if (Maze.getInstance().playField[x][y].getActor(ActorType.JAFFA) != null)
+                Maze.getInstance().playField[x][y].getActor(ActorType.JAFFA).move();
+        }
+    }
+
+    public synchronized void setKeyDPressed(boolean keyDPressed) {
+        this.keyDPressed = keyDPressed;
+        if (!keyDPressed) {
+            int x = Maze.getInstance().actorsPosition[1][0];
+            int y = Maze.getInstance().actorsPosition[1][1];
+            Maze.getInstance().moveDirection[1] = MoveDirection.RIGHT;
+            if (Maze.getInstance().playField[x][y].getActor(ActorType.JAFFA) != null)
+                Maze.getInstance().playField[x][y].getActor(ActorType.JAFFA).move();
         }
     }
 

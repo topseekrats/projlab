@@ -43,6 +43,17 @@ public final class Engine {
     }
 
     public static void death(ActorType actorType) {
+        if (actorType == ActorType.COLONEL) {
+            int x = Maze.getInstance().actorsPosition[0][0];
+            int y = Maze.getInstance().actorsPosition[0][1];
+            Maze.getInstance().playField[x][y].setActor(0, null);
+        } else if (actorType == ActorType.JAFFA) {
+            int x = Maze.getInstance().actorsPosition[1][0];
+            int y = Maze.getInstance().actorsPosition[1][1];
+            Maze.getInstance().playField[x][y].setActor(1, null);
+        }
+
+        Log.log(actorType+" died");
     }
 
     public static void draw(){
