@@ -1,25 +1,25 @@
 package com.topseekrats.background;
 
 import com.topseekrats.Actor;
-import com.topseekrats.ActorType;
 import com.topseekrats.Engine;
 import com.topseekrats.MazeObject;
 
 /**
- * Szakadék osztály, ha rálép egy ilyen mezőre a játékos, akkor a játékos megsemmisül
+ * Szakadékot reprezentáló osztály.
+ * Ha egy játékos ilyen mezőre lép, akkor meghal.
+ * Ha egy tárgy ilyen mezőbe esik, az megsemmisül.
  */
 public class Cleft extends Background {
 
     /**
-     * Szakadékba zuhanás miatti megsemmisítés
-     * @param mazeObject A megsemmissíteni kívánt mazeObject
+     * A konkrét megsemmisítést végző metódus.
+     *
+     * @param mazeObject a megsemmissíteni kívánt objektum
      */
     public void destroy(MazeObject mazeObject) {
         if (mazeObject instanceof Actor) {
-            Actor temp = (Actor)mazeObject;
-            //if (temp.getType() == ActorType.COLONEL) Engine.death(ActorType.COLONEL);
-            //else Engine.death(ActorType.JAFFA);
-            Engine.death(temp.getType());
+            Actor actor = (Actor)mazeObject;
+            Engine.death(actor.getType());
         }
     }
 

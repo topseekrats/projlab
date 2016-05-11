@@ -63,11 +63,11 @@ public class Actor implements MazeObject {
                 break;
         }
 
-        //Csak akkor rakjuk be, hogyha ráléphet a következő mezőre
+        // Csak akkor rakjuk be, hogyha ráléphet a következő mezőre
         if (!Maze.getInstance().playField[pos[0]][pos[1]].getBackground().isPassable()) return;
-        //Csak akkor rakjuk be, hogyha ráléphet a következő mezőre:
-        //A mezőre rá lehet lépni
-        //A mezőn nincs ott a másik játékos
+        // Csak akkor rakjuk be, hogyha ráléphet a következő mezőre:
+        // A mezőre rá lehet lépni
+        // A mezőn nincs ott a másik játékos
         if (!Maze.getInstance().playField[pos[0]][pos[1]].getBackground().isPassable()) return;
         if(this.type == ActorType.COLONEL){
             if(Maze.getInstance().playField[pos[0]][pos[1]].getActor(ActorType.JAFFA) != null) return;
@@ -79,15 +79,15 @@ public class Actor implements MazeObject {
 
         Maze.getInstance().actorsPosition[type.ordinal()] = pos;
 
-        //Új mezőre lépés kezelése
+        // Új mezőre lépés kezelése
         Maze.getInstance().playField[oldPos[0]][oldPos[1]].setActor(getType().ordinal(), null);
 
 
-        //Ha mérlegen állt, csökkentjük a rá nehezedő súlyt
+        // Ha mérlegen állt, csökkentjük a rá nehezedő súlyt
         if (Maze.getInstance().playField[oldPos[0]][oldPos[1]].getBackground() instanceof Switch)
             ((Switch)Maze.getInstance().playField[oldPos[0]][oldPos[1]].getBackground()).decrementWeight();
 
-        //Ha átjárható falra lép, akkor teleportálni kell
+        // Ha átjárható falra lép, akkor teleportálni kell
         if (Maze.getInstance().playField[pos[0]][pos[1]].getBackground() instanceof Wall) {
             ((Stargate) Maze.getInstance().playField[pos[0]][pos[1]].peekForeground()).teleport(this);
             return;
@@ -95,7 +95,7 @@ public class Actor implements MazeObject {
 
         Maze.getInstance().playField[pos[0]][pos[1]].setActor(getType().ordinal(), this);
 
-        //Ha mérlegre lép, növeljük a mérlegre nehezedő súlyt
+        // Ha mérlegre lép, növeljük a mérlegre nehezedő súlyt
         if (Maze.getInstance().playField[pos[0]][pos[1]].getBackground() instanceof Switch)
             ((Switch)Maze.getInstance().playField[pos[0]][pos[1]].getBackground()).incrementWeight();
         // Ha szakadékba esik a játékos, akkor meghal

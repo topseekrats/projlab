@@ -5,7 +5,7 @@ import com.topseekrats.MazeObject;
 import java.io.Serializable;
 
 /**
- * A játékmező landscape objektumainak absztrakt ősosztálya
+ * Egy játékmező háttérobjektumainak összefogó osztálya.
  */
 public abstract class Background implements MazeObject, Serializable {
 

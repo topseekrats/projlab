@@ -1,8 +1,12 @@
 package com.topseekrats.foreground;
 
 /**
- * Pályán lévő felvehető tárgyak típusai
- * ZPM: küldetéstárgy
+ * <p>A labirintusban elhelyezett tárgyakat meghatározó felsoroló típus.</p>
+ * <p>Lehetséges tárgytípusok:</p>
+ * <ul>
+ *     <li>{@link ItemType#BOX} - felvehető doboz, aminek súlya van</li>
+ *     <li>{@link ItemType#ZPM} - felvehető küldetéstárgy</li>
+ * </ul>
  */
 public enum ItemType {
     ZPM,

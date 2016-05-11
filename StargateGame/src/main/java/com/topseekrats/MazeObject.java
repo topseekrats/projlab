@@ -1,7 +1,7 @@
 package com.topseekrats;
 
 /**
- * Mezőobjektumok közös interfésze
+ * A játékteret alkotó labirintus egyes mezőin elhelyezhető objektumok interfésze.
  */
 public interface MazeObject {
 

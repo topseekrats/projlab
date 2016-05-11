@@ -1,11 +1,10 @@
 package com.topseekrats.background;
 
 /**
- * Padló osztály, erre kerülhetnek rá a ZPM-ek, dobozok, játékosok ezeken haladnak végig.
+ * Padlót reprezentáló osztály.
+ * Az ilyen típusú mezők minden esetben átjárhatók.
  */
 public class Floor extends Background {
-
-    public Floor() {}
 
     @Override
     public boolean isPassable() { return true; }

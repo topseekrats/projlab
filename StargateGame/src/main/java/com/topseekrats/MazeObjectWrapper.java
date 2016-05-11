@@ -6,6 +6,12 @@ import com.topseekrats.foreground.Foreground;
 import java.io.Serializable;
 import java.util.Stack;
 
+/**
+ * Egyetlen labirintusmezőt reprezentáló osztály.
+ * Egy mező alapvetően négy részre lett bontva.
+ * Kötelezően tartalmaz egy háttérobjektumot, opcionálisan pedig tartalmazhat
+ * előtérobjektumokat, játékosokat és replikátort.
+ */
 public class MazeObjectWrapper implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -14,8 +20,6 @@ public class MazeObjectWrapper implements Serializable {
     private Background background = null;
     private Stack<Foreground> foregrounds = new Stack<Foreground>();
     private Replicator replicator = null;
-
-    public MazeObjectWrapper() {}
 
     public MazeObjectWrapper(Background background) { this.background = background; }
 
