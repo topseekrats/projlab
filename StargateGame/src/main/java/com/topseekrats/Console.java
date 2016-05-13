@@ -1,8 +1,6 @@
 package com.topseekrats;
 
-import com.topseekrats.gui.Frame;
-
-import java.util.Arrays;
+import com.topseekrats.ui.Frame;
 
 
 /**
@@ -12,12 +10,7 @@ import java.util.Arrays;
 public class Console {
 
     public static void main(String[] args) {
-//        Frame jf = new Frame();
-        int[] a = new int[] {1,1};
-        int[] b = new int[] {1,1};
-        boolean e = Arrays.equals(a, b);
-
-        int i = 51;
+        Frame jf = new Frame();
     }
 
     public static void log(String s) { System.out.println(s); }

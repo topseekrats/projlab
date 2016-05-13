@@ -1,8 +1,7 @@
-package com.topseekrats.gui;
+package com.topseekrats.ui;
 
 import com.topseekrats.Maze;
 import com.topseekrats.Replicator;
-import sun.util.calendar.LocalGregorianCalendar;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -12,9 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
-/**
- * Created by Mark-PC10 on 2016. 04. 24..
- */
 public class Panel extends JPanel implements MouseMotionListener {
 
     private final MazePanel mazePanel;
@@ -28,7 +24,6 @@ public class Panel extends JPanel implements MouseMotionListener {
         setLayout(new BorderLayout());
 
         mazePanel = new MazePanel();
-        //Border border = BorderFactory.createLineBorder(Color.YELLOW, 5);
         Border border = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         mazePanel.setBorder(border);
         add(mazePanel, BorderLayout.CENTER);
@@ -63,8 +58,6 @@ public class Panel extends JPanel implements MouseMotionListener {
         timer.start();
 
     }
-
-
 
     public void mouseDragged(MouseEvent e) {
         mouseCoordinatesLabel.setText("x: "+e.getPoint().x+", y: "+e.getPoint().y);

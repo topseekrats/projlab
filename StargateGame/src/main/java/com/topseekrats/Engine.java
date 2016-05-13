@@ -37,8 +37,14 @@ public final class Engine {
         out.close();
     }
 
-    public static void load(String filename) throws IOException, ClassNotFoundException {
-        ObjectInputStream in = new ObjectInputStream(new FileInputStream(filename));
+    /**
+     *
+     * @param filePath betöltendő térkép fájl útvonala
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    public static void load(String filePath) throws IOException, ClassNotFoundException {
+        ObjectInputStream in = new ObjectInputStream(new FileInputStream(filePath));
         Maze temp = (Maze)in.readObject();
         in.close();
         Maze.getInstance().playField = temp.playField;

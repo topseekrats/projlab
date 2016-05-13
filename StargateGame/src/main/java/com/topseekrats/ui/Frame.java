@@ -1,13 +1,10 @@
-package com.topseekrats.gui;
+package com.topseekrats.ui;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-/**
- * Created by Mark-PC10 on 2016. 04. 24..
- */
 public class Frame extends JFrame {
 
     private Panel panel;
@@ -32,7 +29,6 @@ public class Frame extends JFrame {
 
         createBufferStrategy(3);
         repaint();
-
     }
 
     private void packAndCenter() {

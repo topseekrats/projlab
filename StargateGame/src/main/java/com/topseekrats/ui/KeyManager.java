@@ -1,14 +1,11 @@
-package com.topseekrats.gui;
+package com.topseekrats.ui;
 
 import com.topseekrats.*;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-/**
- * Created by Mark-PC10 on 2016. 04. 25..
- */
-public class KeyMngr implements KeyListener {
+public class KeyManager implements KeyListener {
     private boolean keyPressed = false;
     private boolean keyLeftPressed = false;
     private boolean keyRightPressed = false;
@@ -18,14 +15,14 @@ public class KeyMngr implements KeyListener {
     private boolean keyAPressed = false;
     private boolean keySPressed = false;
     private boolean keyDPressed = false;
-    private static KeyMngr instance;
+    private static KeyManager instance;
 
-    private KeyMngr() {
+    private KeyManager() {
     }
 
-    public static KeyMngr getInstance() {
+    public static KeyManager getInstance() {
         if (instance == null) {
-            instance = new KeyMngr();
+            instance = new KeyManager();
         }
         return instance;
     }
@@ -41,10 +38,6 @@ public class KeyMngr implements KeyListener {
         setKeySPressed(false);
         setKeyDPressed(false);
     }
-
-    /* (non-Javadoc)
-     * @see org.eclipse.swt.events.KeyListener#keyPressed(org.eclipse.swt.events.KeyEvent)
-     */
 
     /**
      * Billentyű lenyomása esetén fut le
