@@ -1,6 +1,7 @@
 package com.topseekrats.gui;
 
 import com.topseekrats.*;
+import com.topseekrats.Console;
 import com.topseekrats.background.*;
 import com.topseekrats.foreground.Item;
 import com.topseekrats.foreground.ItemType;
@@ -34,11 +35,11 @@ public class MazeFileReader {
         int[][] mapTest = null; // giveMapTest();
 
         try {
-            Log.log("file2int2D method: readFile "+fn+" starting...");
+            Console.log("file2int2D method: readFile "+fn+" starting...");
             mapTest = readFile(f);
-            Log.log("file2int2D method: readFile "+fn+" end");
+            Console.log("file2int2D method: readFile "+fn+" end");
         } catch (Exception e) {
-            Log.log("file2int2D method: Exception!!");
+            Console.log("file2int2D method: Exception!!");
             e.printStackTrace();
         }
 
@@ -92,10 +93,10 @@ public class MazeFileReader {
             mows[i] = playFieldRow;
         }
 
-        Log.log("mow size: "+mows.length);
-        Log.log("mow[0] size: "+mows[0].length);
+        Console.log("mow size: "+mows.length);
+        Console.log("mow[0] size: "+mows[0].length);
         Background bg = mows[0][0].getBackground();
-        Log.log("mow has: "+bg.toString());
+        Console.log("mow has: "+bg.toString());
 
         //int[][] mapTest = map;
         // ajtó - kapcsoló párok vannak; eltároljuk az utolsó olvasott ajtót a kapcsoló létrehozásához
@@ -136,7 +137,7 @@ public class MazeFileReader {
                         Maze.getInstance().actorsPosition[1][1] = j;
                         break;
                     case 7:
-                        Log.log("rep pos: "+i+";"+j);
+                        Console.log("rep pos: "+i+";"+j);
                         mows[i][j].setReplicator(new Replicator());
                         Maze.getInstance().replicatorPosition[0] = i;
                         Maze.getInstance().replicatorPosition[1] = j;
@@ -145,7 +146,7 @@ public class MazeFileReader {
                         int xPosRep = Maze.getInstance().replicatorPosition[0];
                         int yPosRep = Maze.getInstance().replicatorPosition[1];
                         Replicator rep = Maze.getInstance().playField[xPosRep][yPosRep].getReplicator();
-                        Log.log("rep pos: "+xPosRep+";"+yPosRep);
+                        Console.log("rep pos: "+xPosRep+";"+yPosRep);
                         break;
                     case 8:
                         mows[i][j].pushForeground(new Item(ItemType.BOX));
@@ -246,7 +247,7 @@ public class MazeFileReader {
                 c.printStackTrace();
             }
         } else {
-            Log.log("Fájlnév nincs megadva!");
+            Console.log("Fájlnév nincs megadva!");
         }
     }
 

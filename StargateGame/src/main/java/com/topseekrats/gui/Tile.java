@@ -1,6 +1,6 @@
 package com.topseekrats.gui;
 
-import com.topseekrats.Log;
+import com.topseekrats.Console;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -27,10 +27,10 @@ public class Tile {
             File file = new File(userDir + File.separator + fn);
             img = ImageIO.read(file);
         } catch (IOException e) {
-            Log.log("IOexc");
+            Console.log("IOexc");
             e.printStackTrace();
         } catch (NullPointerException e) {
-            Log.log("NULLexv");
+            Console.log("NULLexv");
             e.printStackTrace();
         }
         image = img;

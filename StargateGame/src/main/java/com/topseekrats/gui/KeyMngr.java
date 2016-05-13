@@ -52,37 +52,37 @@ public class KeyMngr implements KeyListener {
      */
     public void keyPressed(KeyEvent e) {
         setKeyPressed(true);
-        // Log.log("v keyPressed: "+e.getKeyCode());
+        // Console.log("v keyPressed: "+e.getKeyCode());
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            Log.log(" LEFT");
+            Console.log(" LEFT");
             setKeyLeftPressed(true);
         }
         else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            Log.log(" RIGHT");
+            Console.log(" RIGHT");
             setKeyRightPressed(true);
         }
         else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            Log.log(" UP");
+            Console.log(" UP");
             setKeyUpPressed(true);
         }
         else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            Log.log(" DOWN");
+            Console.log(" DOWN");
             setKeyDownPressed(true);
         }
         else if (e.getKeyCode() == KeyEvent.VK_W) {
-            Log.log(" W");
+            Console.log(" W");
             setKeyWPressed(true);
         }
         else if (e.getKeyCode() == KeyEvent.VK_A) {
-            Log.log(" A");
+            Console.log(" A");
             setKeyAPressed(true);
         }
         else if (e.getKeyCode() == KeyEvent.VK_S) {
-            Log.log(" S");
+            Console.log(" S");
             setKeySPressed(true);
         }
         else if (e.getKeyCode() == KeyEvent.VK_D) {
-            Log.log(" D");
+            Console.log(" D");
             setKeyDPressed(true);
         }
 
@@ -97,44 +97,44 @@ public class KeyMngr implements KeyListener {
      * @param e
      */
     public void keyReleased(KeyEvent e) {
-        // Log.log("^ keyReleased: "+e.getKeyCode());
+        // Console.log("^ keyReleased: "+e.getKeyCode());
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            // Log.log(" LEFT");
+            // Console.log(" LEFT");
             setKeyLeftPressed(false);
         }
         else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-            // Log.log(" RIGHT");
+            // Console.log(" RIGHT");
             setKeyRightPressed(false);
         }
         else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            // Log.log(" UP");
+            // Console.log(" UP");
             setKeyUpPressed(false);
         }
         else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            // Log.log(" DOWN");
+            // Console.log(" DOWN");
             setKeyDownPressed(false);
         }
         else if (e.getKeyCode() == KeyEvent.VK_W) {
-            // Log.log(" W");
+            // Console.log(" W");
             setKeyWPressed(false);
         }
         else if (e.getKeyCode() == KeyEvent.VK_A) {
-            // Log.log(" A");
+            // Console.log(" A");
             setKeyAPressed(false);
         }
         else if (e.getKeyCode() == KeyEvent.VK_S) {
-            // Log.log(" S");
+            // Console.log(" S");
             setKeySPressed(false);
         }
         else if (e.getKeyCode() == KeyEvent.VK_D) {
-            // Log.log(" D");
+            // Console.log(" D");
             setKeyDPressed(false);
         }
     }
 
 
     public void keyTyped(KeyEvent e) {
-        // Log.log("keyTyped: "+e.getKeyCode());
+        // Console.log("keyTyped: "+e.getKeyCode());
     }
 
 
@@ -144,11 +144,11 @@ public class KeyMngr implements KeyListener {
             Maze maze = Maze.getInstance();
             int x = maze.actorsPosition[0][0];
             int y = maze.actorsPosition[0][1];
-            // Log.log("x:"+x+" y:"+y);
+            // Console.log("x:"+x+" y:"+y);
             /*if (maze.playField[x][y].getActor(ActorType.COLONEL) != null) {
-                Log.log("van COLONEL");
+                Console.log("van COLONEL");
             } else {
-                Log.log("NINCS COLONEL!!");
+                Console.log("NINCS COLONEL!!");
             }*/
 
             maze.moveDirection[0] = MoveDirection.LEFT;
@@ -157,11 +157,11 @@ public class KeyMngr implements KeyListener {
 
             /*x = maze.actorsPosition[0][0];
             y = maze.actorsPosition[0][1];
-            // Log.log("ÚJ x:"+x+" y:"+y);
+            // Console.log("ÚJ x:"+x+" y:"+y);
             if (maze.playField[x][y].getActor(ActorType.COLONEL) != null) {
-                Log.log("van COLONEL");
+                Console.log("van COLONEL");
             } else {
-                Log.log("NINCS COLONEL!!");
+                Console.log("NINCS COLONEL!!");
             }*/
         }
     }

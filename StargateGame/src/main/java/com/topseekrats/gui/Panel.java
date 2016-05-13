@@ -48,7 +48,7 @@ public class Panel extends JPanel implements MouseMotionListener {
                     int xPosRep = Maze.getInstance().replicatorPosition[0];
                     int yPosRep = Maze.getInstance().replicatorPosition[1];
                     Replicator rep = Maze.getInstance().playField[xPosRep][yPosRep].getReplicator();
-                    // Log.log("rep pos: "+xPosRep+";"+yPosRep);
+                    // Console.log("rep pos: "+xPosRep+";"+yPosRep);
                     if (rep != null) {
                         rep.move();
                     }
