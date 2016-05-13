@@ -11,8 +11,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Random;
 
+/**
+ * A játékkal kapcsolatos általános műveletekért felelős osztály.
+ * Ilven műveletek pl. az új játék indítása, játék mentése, játék
+ * betöltése stb, melyek a teljes játékra hatással vannak.
+ */
 public final class Engine {
 
+    /**
+     *
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public static void newGame() throws IOException, ClassNotFoundException {
         load("maps/default.sgmap");
         Maze.getInstance().playField[2][2].setActor(0, new Actor(ActorType.COLONEL));
@@ -25,10 +35,6 @@ public final class Engine {
         ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("maps/save1.sgmap"));
         out.writeObject(Maze.getInstance());
         out.close();
-    }
-
-    public static void load() throws IOException, ClassNotFoundException {
-
     }
 
     public static void load(String filename) throws IOException, ClassNotFoundException {
@@ -53,28 +59,33 @@ public final class Engine {
             Maze.getInstance().playField[x][y].setActor(1, null);
         }
 
-        Log.log(actorType+" died");
+        Console.log(actorType+" died");
     }
 
     public static void draw(){
     }
 
     /**
-     * random ZPM generálása
+     * ZPM generálása egy véletlenszerű helye.
+     * A metódus figyelembe veszi, hogy ZPM kizárólag egy üres padlóra
+     * helyezhető el.
      */
-    public static void generateRandomZPM() {
+    public static void generateRandomZpm() {
         Random r = new Random();
-        int[] newZPMCoord = new int[2];
-        newZPMCoord[0] = r.nextInt(20);
-        newZPMCoord[1] = r.nextInt(20);
-        //Amíg nem találtunk olyan padlót, ami szabad, generáljuk a koordinátákat
-        while(!(Maze.getInstance().playField[newZPMCoord[0]][newZPMCoord[1]].getBackground() instanceof Floor) &&
-                !(Maze.getInstance().playField[newZPMCoord[0]][newZPMCoord[1]].getForegrounds().empty())){
-            newZPMCoord[0] = r.nextInt(20);
-            newZPMCoord[1] = r.nextInt(20);
-        }
-        Maze.getInstance().zpmOnMap += 1;
-        Maze.getInstance().playField[newZPMCoord[0]][newZPMCoord[1]].pushForeground(new Item(ItemType.ZPM));
+        int[] pos = new int[2];
+
+        // A pozíció addig változik, amíg nem egy üres padlóra mutat.
+        do {
+            pos[0] = r.nextInt(20);
+            pos[1] = r.nextInt(20);
+        } while(!(Maze.getInstance().playField[pos[0]][pos[1]].getBackground() instanceof Floor) &&
+                !(Maze.getInstance().playField[pos[0]][pos[1]].getForegrounds().empty()));
+
+        // Pályán levő ZPM-szám növelése.
+        ++Maze.getInstance().zpmOnMap;
+
+        // ZPM hozzáadása a megfelelő helyre.
+        Maze.getInstance().playField[pos[0]][pos[1]].pushForeground(new Item(ItemType.ZPM));
     }
 
     /**
@@ -92,15 +103,6 @@ public final class Engine {
             Engine.victory(ActorType.JAFFA);
         else
             Engine.draw();
-    }
-
-    /**
-     * Replikátor kivégzése golyó által
-     * @param replicatorPos replikátor jelenlegi pozíciója
-     */
-    public static void killReplicator(int[] replicatorPos) {
-        Maze.getInstance().replicatorLives = false;
-        Maze.getInstance().playField[replicatorPos[0]][replicatorPos[1]].setReplicator(null);
     }
 
     /**
