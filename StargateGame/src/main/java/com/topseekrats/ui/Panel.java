@@ -16,7 +16,7 @@ public class Panel extends JPanel implements MouseMotionListener {
     private final MazePanel mazePanel;
     private final JLabel mouseCoordinatesLabel;
     private final JLabel refreshLabelSetText;
-    public final static int INTERVAL = 500;
+    public final static int INTERVAL = 100;
     public static int timeInt = 0;
 
 

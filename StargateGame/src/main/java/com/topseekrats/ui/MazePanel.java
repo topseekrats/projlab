@@ -5,15 +5,18 @@ import com.topseekrats.ActorType;
 import com.topseekrats.Engine;
 import com.topseekrats.Maze;
 import com.topseekrats.MazeObjectWrapper;
+import com.topseekrats.MoveDirection;
 import com.topseekrats.background.*;
 import com.topseekrats.foreground.Item;
 import com.topseekrats.foreground.ItemType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 
-public class MazePanel extends JPanel {
+public class MazePanel extends JPanel implements KeyListener {
 
     public final int rowTitleNum = 20;
     public final int colTitleNum = 20;
@@ -35,13 +38,11 @@ public class MazePanel extends JPanel {
 
         tiles = new Tiles();
 
-        setPreferredSize(new Dimension(rowTitleNum*titleWidth, colTitleNum*titleHeight));
-        // listen to key events
-        addKeyListener(KeyManager.getInstance());
-
-        // Component is focusable so it can receive key events ...
+        setPreferredSize(new Dimension(rowTitleNum * titleWidth, colTitleNum * titleHeight));
         setFocusable(true);
         setFocusCycleRoot(true);
+
+        addKeyListener(this);
     }
 
     protected void paintComponent(Graphics g) {
@@ -97,4 +98,53 @@ public class MazePanel extends JPanel {
         }
     }
 
+    @Override
+    public void keyReleased(final KeyEvent e) {
+        Maze maze = Maze.getInstance();
+
+        boolean colonelMoves = false;
+        boolean jaffaMoves = false;
+
+        if (e.getKeyCode() == KeyEvent.VK_UP) {
+            maze.moveDirection[ActorType.COLONEL.ordinal()] = MoveDirection.UP;
+            colonelMoves = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            maze.moveDirection[ActorType.COLONEL.ordinal()] = MoveDirection.LEFT;
+            colonelMoves = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            maze.moveDirection[ActorType.COLONEL.ordinal()] = MoveDirection.DOWN;
+            colonelMoves = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            maze.moveDirection[ActorType.COLONEL.ordinal()] = MoveDirection.RIGHT;
+            colonelMoves = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_W) {
+            maze.moveDirection[ActorType.JAFFA.ordinal()] = MoveDirection.UP;
+            jaffaMoves = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_A) {
+            maze.moveDirection[ActorType.JAFFA.ordinal()] = MoveDirection.LEFT;
+            jaffaMoves = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_S) {
+            maze.moveDirection[ActorType.JAFFA.ordinal()] = MoveDirection.DOWN;
+            jaffaMoves = true;
+        } else if (e.getKeyCode() == KeyEvent.VK_D) {
+            maze.moveDirection[ActorType.JAFFA.ordinal()] = MoveDirection.RIGHT;
+            jaffaMoves = true;
+        }
+
+        if (colonelMoves) {
+            int[] pos = maze.actorsPosition[ActorType.COLONEL.ordinal()];
+            maze.playField[pos[0]][pos[1]].getActor(ActorType.COLONEL).move();
+        }
+
+        if (jaffaMoves) {
+            int[] pos = maze.actorsPosition[ActorType.JAFFA.ordinal()];
+            maze.playField[pos[0]][pos[1]].getActor(ActorType.JAFFA).move();
+        }
+    }
+
+    @Override
+    public void keyTyped(final KeyEvent e) {}
+
+    @Override
+    public void keyPressed(final KeyEvent e) {}
 }
