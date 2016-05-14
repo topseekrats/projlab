@@ -2,11 +2,14 @@ package com.topseekrats.ui;
 
 import com.topseekrats.Actor;
 import com.topseekrats.ActorType;
+import com.topseekrats.Console;
 import com.topseekrats.Engine;
 import com.topseekrats.Maze;
 import com.topseekrats.MazeObjectWrapper;
 import com.topseekrats.MoveDirection;
 import com.topseekrats.background.*;
+import com.topseekrats.foreground.Bullet;
+import com.topseekrats.foreground.BulletType;
 import com.topseekrats.foreground.Item;
 import com.topseekrats.foreground.ItemType;
 
@@ -28,10 +31,13 @@ public class MazePanel extends JPanel implements KeyListener {
     public MazePanel() {
         try {
             Engine.load("maps/default.sgmap");
+            Maze maze = Maze.getInstance();
             Maze.getInstance().playField[1][1].setActor(ActorType.COLONEL.ordinal(), new Actor(ActorType.COLONEL));
             Maze.getInstance().actorsPosition[ActorType.COLONEL.ordinal()] = new int[] {1, 1};
+            Maze.getInstance().moveDirection[ActorType.COLONEL.ordinal()] = MoveDirection.DOWN;
             Maze.getInstance().playField[18][18].setActor(ActorType.JAFFA.ordinal(), new Actor(ActorType.JAFFA));
             Maze.getInstance().actorsPosition[ActorType.JAFFA.ordinal()] = new int[] {18, 18};
+            Maze.getInstance().moveDirection[ActorType.JAFFA.ordinal()] = MoveDirection.LEFT;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -63,25 +69,47 @@ public class MazePanel extends JPanel implements KeyListener {
                 MazeObjectWrapper field = Maze.getInstance().playField[i][j];
 
                 // Háttérobjektum rajzolása.
-                if (field.getBackground() instanceof Cleft)
-                    g.drawImage(tiles.cleft, j * titleWidth, i * titleHeight, null);
-                else if (field.getBackground() instanceof Floor)
-                    g.drawImage(tiles.floor, j * titleWidth, i * titleHeight, null);
-                else if (field.getBackground() instanceof Switch)
-                    g.drawImage(tiles.switchButton, j * titleWidth, i * titleHeight, null);
-                else if (field.getBackground() instanceof Wall)
-                    g.drawImage(tiles.wall, j * titleWidth, i * titleHeight, null);
-                else if (field.getBackground().isPassable())
-                    g.drawImage(tiles.doorOpened, j * titleWidth, i * titleHeight, null);
+                if (field.getBackground() instanceof Cleft) {
+                    g.setColor(new Color(50, 40, 25));
+                    g.fillRect(j * titleWidth, i * titleHeight, titleWidth, titleHeight);
+                }
+                else if (field.getBackground() instanceof Floor) {
+                    g.setColor(new Color(195, 195, 195));
+                    g.fillRect(j * titleWidth, i * titleHeight, titleWidth, titleHeight);
+                }
+                else if (field.getBackground() instanceof Door) {
+                    if (field.getBackground().isPassable())
+                        g.drawImage(tiles.doorOpened, j * titleWidth, i * titleHeight, null);
+                    else
+                        g.drawImage(tiles.doorClosed, j * titleWidth, i * titleHeight, null);
+                }
+                else if (field.getBackground() instanceof Wall) {
+                    if (((Wall)field.getBackground()).isPortalCompatible())
+                        g.drawImage(tiles.wallSpecial, j * titleWidth, i * titleHeight, null);
+                    else
+                        g.drawImage(tiles.wallSimple, j * titleWidth, i * titleHeight, null);
+                }
                 else
-                    g.drawImage(tiles.doorClosed, j * titleWidth, i * titleHeight, null);
+                    g.drawImage(tiles.switchButton, j * titleWidth, i * titleHeight, new Color(195, 195, 195), null);
 
                 // Ha szükséges, előtérobjektum rajzolása.
                 if (!field.getForegrounds().empty()) {
-                    if (((Item)field.peekForeground()).getType() == ItemType.BOX)
-                        g.drawImage(tiles.box, j * titleWidth, i * titleHeight, null);
-                    else
-                        g.drawImage(tiles.zpm, j * titleWidth, i * titleHeight, null);
+                    if (field.peekForeground() instanceof Item) {
+                        if (((Item) field.peekForeground()).getType() == ItemType.BOX)
+                            g.drawImage(tiles.box, j * titleWidth, i * titleHeight, null);
+                        else
+                            g.drawImage(tiles.zpm, j * titleWidth, i * titleHeight, null);
+                    }
+                    else if (field.peekForeground() instanceof Bullet) {
+                        if (((Bullet)field.peekForeground()).getType() == BulletType.YELLOW)
+                            g.drawImage(tiles.portalYellow, j * titleWidth, i * titleHeight, null);
+                        else if (((Bullet)field.peekForeground()).getType() == BulletType.BLUE)
+                            g.drawImage(tiles.portalBlue, j * titleWidth, i * titleHeight, null);
+                        else if (((Bullet)field.peekForeground()).getType() == BulletType.GREEN)
+                            g.drawImage(tiles.portalGreen, j * titleWidth, i * titleHeight, null);
+                        else
+                            g.drawImage(tiles.portalRed, j * titleWidth, i * titleHeight, null);
+                    }
                 }
 
                 // Ha szükséges, replikátor rajzolása.
@@ -102,9 +130,12 @@ public class MazePanel extends JPanel implements KeyListener {
     public void keyReleased(final KeyEvent e) {
         Maze maze = Maze.getInstance();
 
-        boolean colonelMoves = false;
-        boolean jaffaMoves = false;
+        // Játékospozíciók lekérdezése.
+        int[] colonelPos = maze.actorsPosition[ActorType.COLONEL.ordinal()];
+        int[] jaffaPos = maze.actorsPosition[ActorType.JAFFA.ordinal()];
 
+        // Colonel mozgatása.
+        boolean colonelMoves = false;
         if (e.getKeyCode() == KeyEvent.VK_UP) {
             maze.moveDirection[ActorType.COLONEL.ordinal()] = MoveDirection.UP;
             colonelMoves = true;
@@ -117,7 +148,32 @@ public class MazePanel extends JPanel implements KeyListener {
         } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             maze.moveDirection[ActorType.COLONEL.ordinal()] = MoveDirection.RIGHT;
             colonelMoves = true;
-        } else if (e.getKeyCode() == KeyEvent.VK_W) {
+        }
+        if (colonelMoves) {
+            int[] pos = maze.actorsPosition[ActorType.COLONEL.ordinal()];
+            maze.playField[pos[0]][pos[1]].getActor(ActorType.COLONEL).move();
+        }
+
+        // Colonel lövés kezelése.
+        if (e.getKeyCode() == KeyEvent.VK_NUMPAD5)
+            maze.playField[colonelPos[0]][colonelPos[1]].getActor(ActorType.COLONEL).shoot();
+
+        // Colonel tölténytípus váltás kezelése.
+        if (e.getKeyCode() == KeyEvent.VK_NUMPAD2)
+            maze.playField[colonelPos[0]][colonelPos[1]].getActor(ActorType.COLONEL).changeBullet();
+
+
+        // Colonel tárgyfelvétel kezelése.
+        if (e.getKeyCode() == KeyEvent.VK_NUMPAD1)
+            maze.playField[colonelPos[0]][colonelPos[1]].getActor(ActorType.COLONEL).pickUp();
+
+        // Colonel doboz lerakás kezelése.
+        if (e.getKeyCode() == KeyEvent.VK_NUMPAD3)
+            maze.playField[colonelPos[0]][colonelPos[1]].getActor(ActorType.COLONEL).dropBox();
+
+        // Jaffa mozgatása.
+        boolean jaffaMoves = false;
+        if (e.getKeyCode() == KeyEvent.VK_W) {
             maze.moveDirection[ActorType.JAFFA.ordinal()] = MoveDirection.UP;
             jaffaMoves = true;
         } else if (e.getKeyCode() == KeyEvent.VK_A) {
@@ -130,16 +186,8 @@ public class MazePanel extends JPanel implements KeyListener {
             maze.moveDirection[ActorType.JAFFA.ordinal()] = MoveDirection.RIGHT;
             jaffaMoves = true;
         }
-
-        if (colonelMoves) {
-            int[] pos = maze.actorsPosition[ActorType.COLONEL.ordinal()];
-            maze.playField[pos[0]][pos[1]].getActor(ActorType.COLONEL).move();
-        }
-
-        if (jaffaMoves) {
-            int[] pos = maze.actorsPosition[ActorType.JAFFA.ordinal()];
-            maze.playField[pos[0]][pos[1]].getActor(ActorType.JAFFA).move();
-        }
+        if (jaffaMoves)
+            maze.playField[jaffaPos[0]][jaffaPos[1]].getActor(ActorType.JAFFA).move();
     }
 
     @Override

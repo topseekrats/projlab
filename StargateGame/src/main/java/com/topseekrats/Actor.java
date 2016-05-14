@@ -4,6 +4,7 @@ import com.topseekrats.background.*;
 import com.topseekrats.foreground.*;
 
 import java.util.Arrays;
+import java.util.Stack;
 
 /**
  * A játékost reprezentáló osztály.
@@ -244,17 +245,17 @@ public class Actor implements MazeObject {
         // Játékos pozíciójának lekérdezése.
         int[] pos = Maze.getInstance().actorsPosition[type.ordinal()];
 
-        // Az adott mező legfelső elemének vizsgálata.
-        Item item = (Item)Maze.getInstance().playField[pos[0]][pos[1]].peekForeground();
+        // Az adott mező előtérobjektumának lekérése.
+        Stack<Foreground> foregrounds = Maze.getInstance().playField[pos[0]][pos[1]].getForegrounds();
 
         // Ha a mező üres volt, nem történik semmi.
-        if (item == null) return;
+        if (foregrounds.peek() == null) return;
         // Ha dobozt venne fel, de már van nála, nem történik semmi.
-        else if (item.getType() == ItemType.BOX && this.item != null) return;
+        else if (((Item)foregrounds.peek()).getType() == ItemType.BOX && item != null) return;
 
         // Ha a felvett tárgy doboz.
-        if (item.getType() == ItemType.BOX) {
-            this.item = item;
+        if (((Item)foregrounds.peek()).getType() == ItemType.BOX) {
+            item = (Item)foregrounds.pop();
 
             // Mező háttérobjektumának lekérése.
             Background background = Maze.getInstance().playField[pos[0]][pos[1]].getBackground();
@@ -266,6 +267,7 @@ public class Actor implements MazeObject {
         else {
             // Játékos ZPM-számának növelése.
             ++zpmCount;
+            foregrounds.pop();
 
             // Összes felvett ZPM mennyiségének növelése.
             ++Maze.getInstance().zpmPickUpCounter;

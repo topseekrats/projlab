@@ -78,14 +78,12 @@ public final class Engine {
      */
     public static void generateRandomZpm() {
         Random r = new Random();
-        int[] pos = new int[2];
+        int[] pos = new int[] {r.nextInt(20),r.nextInt(20)};
 
         // A pozíció addig változik, amíg nem egy üres padlóra mutat.
-        do {
-            pos[0] = r.nextInt(20);
-            pos[1] = r.nextInt(20);
-        } while(!(Maze.getInstance().playField[pos[0]][pos[1]].getBackground() instanceof Floor) &&
-                !(Maze.getInstance().playField[pos[0]][pos[1]].getForegrounds().empty()));
+        while(!(Maze.getInstance().playField[pos[0]][pos[1]].getBackground() instanceof Floor) &&
+                !(Maze.getInstance().playField[pos[0]][pos[1]].getForegrounds().empty()))
+            pos = new int[] {r.nextInt(20),r.nextInt(20)};
 
         // Pályán levő ZPM-szám növelése.
         ++Maze.getInstance().zpmOnMap;
@@ -95,7 +93,7 @@ public final class Engine {
     }
 
     /**
-     * Eldönti, hogyan ért véget a játék
+     * Eldönti, hogyan ért véget a játék.
      */
     public static void finish() {
         int[] colPos = Maze.getInstance().actorsPosition[0];
