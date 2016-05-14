@@ -81,7 +81,7 @@ public final class Engine {
         int[] pos = new int[] {r.nextInt(20),r.nextInt(20)};
 
         // A pozíció addig változik, amíg nem egy üres padlóra mutat.
-        while(!(Maze.getInstance().playField[pos[0]][pos[1]].getBackground() instanceof Floor) &&
+        while(!(Maze.getInstance().playField[pos[0]][pos[1]].getBackground() instanceof Floor) ||
                 !(Maze.getInstance().playField[pos[0]][pos[1]].getForegrounds().empty()))
             pos = new int[] {r.nextInt(20),r.nextInt(20)};
 

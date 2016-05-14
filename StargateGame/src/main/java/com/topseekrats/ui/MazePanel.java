@@ -149,20 +149,20 @@ public class MazePanel extends JPanel implements KeyListener {
         }
 
         // Colonel lövés kezelése.
-        if (e.getKeyCode() == KeyEvent.VK_NUMPAD5)
+        if (e.getKeyCode() == KeyEvent.VK_P)
             maze.playField[colonelPos[0]][colonelPos[1]].getActor(ActorType.COLONEL).shoot();
 
         // Colonel tölténytípus váltás kezelése.
-        if (e.getKeyCode() == KeyEvent.VK_NUMPAD2)
+        if (e.getKeyCode() == KeyEvent.VK_L)
             maze.playField[colonelPos[0]][colonelPos[1]].getActor(ActorType.COLONEL).changeBullet();
 
 
         // Colonel tárgyfelvétel kezelése.
-        if (e.getKeyCode() == KeyEvent.VK_NUMPAD1)
+        if (e.getKeyCode() == KeyEvent.VK_O)
             maze.playField[colonelPos[0]][colonelPos[1]].getActor(ActorType.COLONEL).pickUp();
 
         // Colonel doboz lerakás kezelése.
-        if (e.getKeyCode() == KeyEvent.VK_NUMPAD3)
+        if (e.getKeyCode() == KeyEvent.VK_K)
             maze.playField[colonelPos[0]][colonelPos[1]].getActor(ActorType.COLONEL).dropBox();
 
         // Jaffa mozgatása.
@@ -182,6 +182,23 @@ public class MazePanel extends JPanel implements KeyListener {
         }
         if (jaffaMoves)
             maze.playField[jaffaPos[0]][jaffaPos[1]].getActor(ActorType.JAFFA).move();
+
+        // Jaffa lövés kezelése.
+        if (e.getKeyCode() == KeyEvent.VK_F)
+            maze.playField[jaffaPos[0]][jaffaPos[1]].getActor(ActorType.JAFFA).shoot();
+
+        // Jaffa tölténytípus váltás kezelése.
+        if (e.getKeyCode() == KeyEvent.VK_R)
+            maze.playField[jaffaPos[0]][jaffaPos[1]].getActor(ActorType.JAFFA).changeBullet();
+
+
+        // Jaffa tárgyfelvétel kezelése.
+        if (e.getKeyCode() == KeyEvent.VK_E)
+            maze.playField[jaffaPos[0]][jaffaPos[1]].getActor(ActorType.JAFFA).pickUp();
+
+        // Jaffa doboz lerakás kezelése.
+        if (e.getKeyCode() == KeyEvent.VK_Q)
+            maze.playField[jaffaPos[0]][jaffaPos[1]].getActor(ActorType.JAFFA).dropBox();
     }
 
     @Override
