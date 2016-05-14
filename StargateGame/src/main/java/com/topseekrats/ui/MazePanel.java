@@ -2,16 +2,12 @@ package com.topseekrats.ui;
 
 import com.topseekrats.Actor;
 import com.topseekrats.ActorType;
-import com.topseekrats.Console;
 import com.topseekrats.Engine;
 import com.topseekrats.Maze;
 import com.topseekrats.MazeObjectWrapper;
 import com.topseekrats.MoveDirection;
 import com.topseekrats.background.*;
-import com.topseekrats.foreground.Bullet;
-import com.topseekrats.foreground.BulletType;
-import com.topseekrats.foreground.Item;
-import com.topseekrats.foreground.ItemType;
+import com.topseekrats.foreground.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,8 +26,7 @@ public class MazePanel extends JPanel implements KeyListener {
 
     public MazePanel() {
         try {
-            Engine.load("maps/default.sgmap");
-            Maze maze = Maze.getInstance();
+            Engine.load("maps/map1.sgmap");
             Maze.getInstance().playField[1][1].setActor(ActorType.COLONEL.ordinal(), new Actor(ActorType.COLONEL));
             Maze.getInstance().actorsPosition[ActorType.COLONEL.ordinal()] = new int[] {1, 1};
             Maze.getInstance().moveDirection[ActorType.COLONEL.ordinal()] = MoveDirection.DOWN;
@@ -54,11 +49,8 @@ public class MazePanel extends JPanel implements KeyListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); // törlés
 
-        // drawBackground(g);
-        if (Maze.getInstance() != null && Maze.getInstance().playField.length > 0) {
-            drawMap(g);
-            repaint();
-        }
+        drawMap(g);
+        repaint();
     }
 
     private void drawMap(Graphics g) {
@@ -110,6 +102,8 @@ public class MazePanel extends JPanel implements KeyListener {
                         else
                             g.drawImage(tiles.portalRed, j * titleWidth, i * titleHeight, null);
                     }
+                    else
+                        g.drawImage(tiles.stargate, j * titleWidth, i * titleHeight, null);
                 }
 
                 // Ha szükséges, replikátor rajzolása.

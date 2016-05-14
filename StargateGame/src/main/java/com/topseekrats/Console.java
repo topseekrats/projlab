@@ -2,7 +2,6 @@ package com.topseekrats;
 
 import com.topseekrats.ui.Frame;
 
-
 /**
  * A játék indításáért, valamint a konzolra történő log-olásért felelős
  * osztály.

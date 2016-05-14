@@ -17,8 +17,7 @@ public class Tiles {
     public BufferedImage portalRed = null;
     public BufferedImage portalYellow = null;
     public BufferedImage replicator = null;
-    public BufferedImage stargateColonel = null;
-    public BufferedImage stargateJaffa = null;
+    public BufferedImage stargate = null;
     public BufferedImage switchButton = null;
     public BufferedImage wallSimple = null;
     public BufferedImage wallSpecial = null;
@@ -38,8 +37,7 @@ public class Tiles {
                 else if (f.getName().contains("portal_red")) portalRed = ImageIO.read(f);
                 else if (f.getName().contains("portal_yellow")) portalYellow = ImageIO.read(f);
                 else if (f.getName().contains("replicator")) replicator= ImageIO.read(f);
-                else if (f.getName().contains("stargate_col")) stargateColonel = ImageIO.read(f);
-                else if (f.getName().contains("stargate_jaf")) stargateJaffa = ImageIO.read(f);
+                else if (f.getName().contains("stargate")) stargate = ImageIO.read(f);
                 else if (f.getName().contains("switch")) switchButton = ImageIO.read(f);
                 else if (f.getName().contains("wall_simple")) wallSimple = ImageIO.read(f);
                 else if (f.getName().contains("wall_special")) wallSpecial = ImageIO.read(f);
