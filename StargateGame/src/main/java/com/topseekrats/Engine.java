@@ -26,15 +26,20 @@ public final class Engine {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public static void newGame() throws IOException, ClassNotFoundException {
-        load("StargateGame/maps/default.sgmap");
-        Maze.getInstance().playField[2][2].setActor(0, new Actor(ActorType.COLONEL));
-        Maze.getInstance().playField[19][19].setActor(1, new Actor(ActorType.JAFFA));
+    public static void newGame(String mapFile) throws IOException, ClassNotFoundException {
+        if (mapFile=="" || mapFile==null)
+            mapFile = "StargateGame/maps/default.sgmap";
+
+        load(mapFile);
+        Maze.getInstance().playField[1][1].setActor(0, new Actor(ActorType.COLONEL));
+        Maze.getInstance().playField[18][18].setActor(1, new Actor(ActorType.JAFFA));
         Maze.getInstance().playField[10][10].setReplicator(new Replicator());
         Maze.getInstance().replicatorLives = true;
-        Maze.getInstance().actorsPosition[0] = new int[] {2,2};
-        Maze.getInstance().actorsPosition[1] = new int[] {19,19};
+        Maze.getInstance().actorsPosition[0] = new int[] {1,1};
+        Maze.getInstance().actorsPosition[1] = new int[] {18,18};
         Maze.getInstance().replicatorPosition = new int[] {10,10};
+        end = false;
+        endType = 0;
     }
 
     public static void save() throws IOException {
@@ -55,8 +60,6 @@ public final class Engine {
         in.close();
         Maze.getInstance().playField = temp.playField;
         Maze.getInstance().zpmOnMap = temp.zpmOnMap;
-        Maze.getInstance().playField[10][10].setReplicator(new Replicator());
-        Maze.getInstance().replicatorPosition = new int[] {10,10};
     }
 
     /**

@@ -27,13 +27,7 @@ public class MazePanel extends JPanel implements KeyListener {
 
     public MazePanel() {
         try {
-            Engine.load("StargateGame/maps/map1.sgmap");
-            Maze.getInstance().playField[1][1].setActor(ActorType.COLONEL.ordinal(), new Actor(ActorType.COLONEL));
-            Maze.getInstance().actorsPosition[ActorType.COLONEL.ordinal()] = new int[] {1, 1};
-            Maze.getInstance().moveDirection[ActorType.COLONEL.ordinal()] = MoveDirection.DOWN;
-            Maze.getInstance().playField[18][18].setActor(ActorType.JAFFA.ordinal(), new Actor(ActorType.JAFFA));
-            Maze.getInstance().actorsPosition[ActorType.JAFFA.ordinal()] = new int[] {18, 18};
-            Maze.getInstance().moveDirection[ActorType.JAFFA.ordinal()] = MoveDirection.LEFT;
+            Engine.newGame("StargateGame/maps/default.sgmap");
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

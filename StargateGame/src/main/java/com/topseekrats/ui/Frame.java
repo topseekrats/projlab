@@ -1,9 +1,15 @@
 package com.topseekrats.ui;
 
+import com.topseekrats.Console;
+import com.topseekrats.Engine;
+
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Frame extends JFrame {
 
@@ -14,6 +20,8 @@ public class Frame extends JFrame {
 
         panel = new Panel();
         add(panel);
+
+        createMenuBar();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addWindowListener(
@@ -29,6 +37,59 @@ public class Frame extends JFrame {
 
         createBufferStrategy(3);
         repaint();
+    }
+
+    private void createMenuBar() {
+
+        JMenuBar menubar = new JMenuBar();
+
+        JMenu menuFile = new JMenu("File");
+
+        JMenuItem exitMenuItem = new JMenuItem("Exit");
+        exitMenuItem.setToolTipText("Exit application");
+        exitMenuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent event) {
+                System.exit(0);
+            }
+        });
+
+
+        // menu option - load
+        final JMenuItem loadItem = new JMenuItem("Load");
+
+        // JFileChooser with filter
+        JFileChooser fileChooser = new JFileChooser(".");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("sgmap files (*.sgmap)", "sgmap");
+        fileChooser.setFileFilter(filter);
+
+        loadItem.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent actionEvent) {
+                        int returnVal = fileChooser.showOpenDialog(new JFrame());
+                        if (returnVal == JFileChooser.APPROVE_OPTION) {
+                            File file = fileChooser.getSelectedFile();
+                            try {
+                                Console.log(file.getAbsolutePath());
+                                Console.log(new FileReader(file.getAbsolutePath()).toString());
+                                Engine.newGame(file.getAbsolutePath());
+                            } catch (IOException ex) {
+                                System.out.println("problem accessing file"+file.getAbsolutePath());
+                                ex.printStackTrace();
+                            } catch (ClassNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            System.out.println("File access cancelled by user.");
+                        }
+                    }
+                }
+        );
+
+        menuFile.add(loadItem);
+        menuFile.add(exitMenuItem);
+        menubar.add(menuFile);
+
+        setJMenuBar(menubar);
     }
 
     private void packAndCenter() {
