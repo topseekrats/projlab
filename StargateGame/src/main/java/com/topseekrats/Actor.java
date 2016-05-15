@@ -249,7 +249,7 @@ public class Actor implements MazeObject {
         Stack<Foreground> foregrounds = Maze.getInstance().playField[pos[0]][pos[1]].getForegrounds();
 
         // Ha a mező üres volt, nem történik semmi.
-        if (foregrounds.peek() == null) return;
+        if (foregrounds.isEmpty()) return;
         // Ha dobozt venne fel, de már van nála, nem történik semmi.
         else if (((Item)foregrounds.peek()).getType() == ItemType.BOX && item != null) return;
 

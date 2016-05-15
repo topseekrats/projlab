@@ -10,6 +10,7 @@ import com.topseekrats.background.*;
 import com.topseekrats.foreground.*;
 
 import javax.swing.*;
+import javax.swing.text.StringContent;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -26,7 +27,7 @@ public class MazePanel extends JPanel implements KeyListener {
 
     public MazePanel() {
         try {
-            Engine.load("maps/map1.sgmap");
+            Engine.load("StargateGame/maps/map1.sgmap");
             Maze.getInstance().playField[1][1].setActor(ActorType.COLONEL.ordinal(), new Actor(ActorType.COLONEL));
             Maze.getInstance().actorsPosition[ActorType.COLONEL.ordinal()] = new int[] {1, 1};
             Maze.getInstance().moveDirection[ActorType.COLONEL.ordinal()] = MoveDirection.DOWN;
@@ -50,7 +51,29 @@ public class MazePanel extends JPanel implements KeyListener {
         super.paintComponent(g); // törlés
 
         drawMap(g);
+        drawEnd(g);
         repaint();
+    }
+
+    private void drawEnd(Graphics g) {
+        if (Engine.end) {
+            switch (Engine.endType) {
+                case 0:
+                    g.drawImage(tiles.draw, 0, 0, null);
+                    break;
+                case 1:
+                    // Colonel wins
+                    g.drawImage(tiles.victory, 0, 0, null);
+                    break;
+                case 2:
+                    // Jaffa wins
+                    g.drawImage(tiles.lose, 0, 0, null);
+                    break;
+                default:
+                    //
+                    break;
+            }
+        }
     }
 
     private void drawMap(Graphics g) {

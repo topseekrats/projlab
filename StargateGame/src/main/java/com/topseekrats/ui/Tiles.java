@@ -22,10 +22,13 @@ public class Tiles {
     public BufferedImage wallSimple = null;
     public BufferedImage wallSpecial = null;
     public BufferedImage zpm = null;
+    public BufferedImage draw = null;
+    public BufferedImage lose = null;
+    public BufferedImage victory = null;
 
     public Tiles() {
         try {
-            File textureFolder = new File("textures");
+            File textureFolder = new File("StargateGame/textures");
             for (final File f : textureFolder.listFiles() ) {
                 if (f.getName().contains("box")) box = ImageIO.read(f);
                 else if (f.getName().contains("colonel")) colonel = ImageIO.read(f);
@@ -42,6 +45,9 @@ public class Tiles {
                 else if (f.getName().contains("wall_simple")) wallSimple = ImageIO.read(f);
                 else if (f.getName().contains("wall_special")) wallSpecial = ImageIO.read(f);
                 else if (f.getName().contains("zpm")) zpm = ImageIO.read(f);
+                else if (f.getName().contains("draw")) draw = ImageIO.read(f);
+                else if (f.getName().contains("lose")) lose = ImageIO.read(f);
+                else if (f.getName().contains("victory")) victory = ImageIO.read(f);
             }
         } catch (IOException | NullPointerException e) {
             e.printStackTrace();

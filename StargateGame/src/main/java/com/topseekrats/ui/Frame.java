@@ -8,7 +8,6 @@ import java.awt.event.WindowEvent;
 public class Frame extends JFrame {
 
     private Panel panel;
-//    private
 
     public Frame() {
         setTitle("Frame");

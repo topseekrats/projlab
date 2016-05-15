@@ -18,13 +18,16 @@ import java.util.Random;
  */
 public final class Engine {
 
+    public static boolean end = false;
+    public static int endType = 0;
+
     /**
      *
      * @throws IOException
      * @throws ClassNotFoundException
      */
     public static void newGame() throws IOException, ClassNotFoundException {
-        load("maps/default.sgmap");
+        load("StargateGame/maps/default.sgmap");
         Maze.getInstance().playField[2][2].setActor(0, new Actor(ActorType.COLONEL));
         Maze.getInstance().playField[19][19].setActor(1, new Actor(ActorType.JAFFA));
         Maze.getInstance().actorsPosition[0] = new int[] {2,2};
@@ -51,24 +54,43 @@ public final class Engine {
         Maze.getInstance().zpmOnMap = temp.zpmOnMap;
     }
 
+    /**
+     * A játék győzelemmel végetér:
+     * @param actorType
+     */
     public static void victory(ActorType actorType) {
+        Console.log(actorType + " wins");
+        end = true;
+        if (actorType == ActorType.COLONEL)
+        {
+            endType = 1;
+        } else if (actorType == ActorType.JAFFA) {
+            endType = 2;
+        }
+
     }
 
     public static void death(ActorType actorType) {
+        end = true;
         if (actorType == ActorType.COLONEL) {
             int x = Maze.getInstance().actorsPosition[0][0];
             int y = Maze.getInstance().actorsPosition[0][1];
             Maze.getInstance().playField[x][y].setActor(0, null);
+            endType = 2;
         } else if (actorType == ActorType.JAFFA) {
             int x = Maze.getInstance().actorsPosition[1][0];
             int y = Maze.getInstance().actorsPosition[1][1];
             Maze.getInstance().playField[x][y].setActor(1, null);
+            endType = 1;
         }
 
         Console.log(actorType+" died");
     }
 
     public static void draw(){
+        Console.log("draw");
+        end = true;
+        endType = 0;
     }
 
     /**
