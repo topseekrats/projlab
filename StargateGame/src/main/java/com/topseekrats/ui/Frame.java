@@ -44,7 +44,7 @@ public class Frame extends JFrame {
 
         JMenuBar menubar = new JMenuBar();
 
-        JMenu menuFile = new JMenu("File");
+        //JMenu menuFile = new JMenu("File");
 
         JMenuItem exitMenuItem = new JMenuItem("Exit");
         exitMenuItem.setToolTipText("Exit application");
@@ -87,7 +87,6 @@ public class Frame extends JFrame {
 
         // menu option - save
         final JMenuItem saveItem = new JMenuItem("Save");
-
         saveItem.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
@@ -98,16 +97,27 @@ public class Frame extends JFrame {
             }
         });
 
-        menuFile.add(loadItem);
-        menuFile.add(saveItem);
-        menuFile.add(exitMenuItem);
-        menubar.add(menuFile);
+        // menu option - help
+        final JMenuItem helpItem = new JMenuItem("Help");
+        helpItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                Help help = new Help();
+            }
+        });
+
+
+        menubar.add(loadItem);
+        menubar.add(saveItem);
+        menubar.add(helpItem);
+        menubar.add(exitMenuItem);
+        //menubar.add(menuFile);
 
         setJMenuBar(menubar);
     }
 
     private void packAndCenter() {
         pack();
+        setResizable(false);
 
         // Center frame on screen
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

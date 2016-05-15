@@ -12,6 +12,8 @@ public class Console {
         Frame jf = new Frame();
     }
 
-    public static void log(String s) { System.out.println(s); }
+    public static void log(String s) {
+        System.out.println(s);
+    }
 
 }

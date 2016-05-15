@@ -11,10 +11,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
-public class Panel extends JPanel implements MouseMotionListener {
+public class Panel extends JPanel {
 
     private final MazePanel mazePanel;
-    private final JLabel mouseCoordinatesLabel;
     private final JLabel refreshLabelSetText;
     public final static int INTERVAL = 100;
     public static int timeInt = 0;
@@ -30,10 +29,6 @@ public class Panel extends JPanel implements MouseMotionListener {
 
         refreshLabelSetText = new JLabel("last refresh: null");
         add(refreshLabelSetText, BorderLayout.SOUTH);
-
-        mouseCoordinatesLabel = new JLabel("x: 0, y: 0");
-        add(mouseCoordinatesLabel, BorderLayout.SOUTH);
-        addMouseMotionListener(this);
 
         Timer timer = new Timer(INTERVAL, new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -59,18 +54,8 @@ public class Panel extends JPanel implements MouseMotionListener {
 
     }
 
-    public void mouseDragged(MouseEvent e) {
-        mouseCoordinatesLabel.setText("x: "+e.getPoint().x+", y: "+e.getPoint().y);
-    }
-
-
-
-    public void mouseMoved(MouseEvent e) {
-        mouseCoordinatesLabel.setText("x: "+e.getPoint().x+", y: "+e.getPoint().y);
-    }
-
     public void refreshLabelSetText(String s) {
-        mouseCoordinatesLabel.setText("last refresh: "+s);
+        refreshLabelSetText.setText("last refresh: "+s);
     }
 
 }

@@ -63,7 +63,7 @@ public final class Engine {
         Maze temp = (Maze)in.readObject();
         in.close();
         Maze.getInstance().playField = temp.playField;
-        Maze.getInstance().zpmOnMap = 1;//temp.zpmOnMap;
+        Maze.getInstance().zpmOnMap = temp.zpmOnMap;
         /*Maze.getInstance().playField[1][1].setActor(0, new Actor(ActorType.COLONEL));
         Maze.getInstance().playField[18][18].setActor(1, new Actor(ActorType.JAFFA));
         Maze.getInstance().playField[10][10].setReplicator(new Replicator());*/
