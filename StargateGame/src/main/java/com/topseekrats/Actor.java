@@ -3,6 +3,7 @@ package com.topseekrats;
 import com.topseekrats.background.*;
 import com.topseekrats.foreground.*;
 
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Stack;
 
@@ -12,7 +13,7 @@ import java.util.Stack;
  * került megvalósításra. Ilyen cselekvés a mozgás, lövés, valamint a pályán
  * elhelyezett előtérobjektumokkal való interakció.
  */
-public class Actor implements MazeObject {
+public class Actor implements MazeObject, Serializable {
 
     private ActorType type;
     private Bullet bullet;

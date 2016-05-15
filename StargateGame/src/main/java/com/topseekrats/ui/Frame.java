@@ -8,6 +8,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -64,28 +65,41 @@ public class Frame extends JFrame {
         fileChooser.setFileFilter(filter);
 
         loadItem.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent actionEvent) {
-                        int returnVal = fileChooser.showOpenDialog(new JFrame());
-                        if (returnVal == JFileChooser.APPROVE_OPTION) {
-                            File file = fileChooser.getSelectedFile();
-                            try {
-                                Console.log(file.getAbsolutePath());
-                                Console.log(new FileReader(file.getAbsolutePath()).toString());
-                                Engine.newGame(file.getAbsolutePath());
-                            } catch (IOException ex) {
-                                System.out.println("problem accessing file"+file.getAbsolutePath());
-                                ex.printStackTrace();
-                            } catch (ClassNotFoundException e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            System.out.println("File access cancelled by user.");
-                        }
+            public void actionPerformed(ActionEvent actionEvent) {
+                int returnVal = fileChooser.showOpenDialog(new JFrame());
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    try {
+                        Console.log(file.getAbsolutePath());
+                        Console.log(new FileReader(file.getAbsolutePath()).toString());
+                        Engine.newGame(file.getAbsolutePath());
+                    } catch (IOException ex) {
+                        System.out.println("problem accessing file"+file.getAbsolutePath());
+                        ex.printStackTrace();
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
                     }
+                } else {
+                    System.out.println("File access cancelled by user.");
                 }
-        );
+            }
+        });
+
+        // menu option - save
+        final JMenuItem saveItem = new JMenuItem("Save");
+
+        saveItem.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent actionEvent) {
+                try {
+                    Engine.save();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         menuFile.add(loadItem);
+        menuFile.add(saveItem);
         menuFile.add(exitMenuItem);
         menubar.add(menuFile);
 

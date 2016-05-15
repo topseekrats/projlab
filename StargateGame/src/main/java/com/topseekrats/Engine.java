@@ -9,6 +9,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 /**
@@ -31,21 +33,23 @@ public final class Engine {
             mapFile = "StargateGame/maps/default.sgmap";
 
         load(mapFile);
-        Maze.getInstance().playField[1][1].setActor(0, new Actor(ActorType.COLONEL));
+        /*Maze.getInstance().playField[1][1].setActor(0, new Actor(ActorType.COLONEL));
         Maze.getInstance().playField[18][18].setActor(1, new Actor(ActorType.JAFFA));
         Maze.getInstance().playField[10][10].setReplicator(new Replicator());
         Maze.getInstance().replicatorLives = true;
         Maze.getInstance().actorsPosition[0] = new int[] {1,1};
         Maze.getInstance().actorsPosition[1] = new int[] {18,18};
-        Maze.getInstance().replicatorPosition = new int[] {10,10};
+        Maze.getInstance().replicatorPosition = new int[] {10,10};*/
         end = false;
         endType = 0;
     }
 
     public static void save() throws IOException {
-        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("maps/save1.sgmap"));
+        String saveFileName = "StargateGame/maps/save_"+new SimpleDateFormat("yyyyMMddhhmm").format(new Date())+".sgmap";
+        ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(saveFileName));
         out.writeObject(Maze.getInstance());
         out.close();
+        Console.log("File saved: "+saveFileName);
     }
 
     /**
@@ -59,7 +63,14 @@ public final class Engine {
         Maze temp = (Maze)in.readObject();
         in.close();
         Maze.getInstance().playField = temp.playField;
-        Maze.getInstance().zpmOnMap = temp.zpmOnMap;
+        Maze.getInstance().zpmOnMap = 1;//temp.zpmOnMap;
+        /*Maze.getInstance().playField[1][1].setActor(0, new Actor(ActorType.COLONEL));
+        Maze.getInstance().playField[18][18].setActor(1, new Actor(ActorType.JAFFA));
+        Maze.getInstance().playField[10][10].setReplicator(new Replicator());*/
+        Maze.getInstance().replicatorLives = true;
+        Maze.getInstance().actorsPosition[0] = temp.actorsPosition[0].clone();
+        Maze.getInstance().actorsPosition[1] = temp.actorsPosition[1].clone();
+        Maze.getInstance().replicatorPosition = temp.replicatorPosition.clone();
     }
 
     /**

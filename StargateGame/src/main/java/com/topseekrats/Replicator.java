@@ -2,6 +2,8 @@ package com.topseekrats;
 
 import com.topseekrats.background.Cleft;
 import com.topseekrats.background.Floor;
+
+import java.io.Serializable;
 import java.util.Random;
 
 /**
@@ -13,7 +15,7 @@ import java.util.Random;
  * Ha a replikátor szakadékba esik, akkor a szakadék normál mezővé alakul át,
  * és a replikátor eltűnik.
  */
-public class Replicator implements MazeObject {
+public class Replicator implements MazeObject, Serializable {
 
     private Random r = new Random();
 
