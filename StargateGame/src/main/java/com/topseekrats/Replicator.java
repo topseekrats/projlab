@@ -29,7 +29,7 @@ public class Replicator implements MazeObject {
     @Override
     public void move() {
         // Replikátor pozíciójának lekérdezése.
-        int[] oldPos = Maze.getInstance().replicatorPosition;
+        int[] oldPos = Maze.getInstance().replicatorPosition.clone();
         int[] newPos = oldPos.clone();
 
         // Replikátor mozgatása véletlenszerűen.

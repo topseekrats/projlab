@@ -30,8 +30,11 @@ public final class Engine {
         load("StargateGame/maps/default.sgmap");
         Maze.getInstance().playField[2][2].setActor(0, new Actor(ActorType.COLONEL));
         Maze.getInstance().playField[19][19].setActor(1, new Actor(ActorType.JAFFA));
+        Maze.getInstance().playField[10][10].setReplicator(new Replicator());
+        Maze.getInstance().replicatorLives = true;
         Maze.getInstance().actorsPosition[0] = new int[] {2,2};
         Maze.getInstance().actorsPosition[1] = new int[] {19,19};
+        Maze.getInstance().replicatorPosition = new int[] {10,10};
     }
 
     public static void save() throws IOException {
@@ -52,6 +55,8 @@ public final class Engine {
         in.close();
         Maze.getInstance().playField = temp.playField;
         Maze.getInstance().zpmOnMap = temp.zpmOnMap;
+        Maze.getInstance().playField[10][10].setReplicator(new Replicator());
+        Maze.getInstance().replicatorPosition = new int[] {10,10};
     }
 
     /**
@@ -62,34 +67,32 @@ public final class Engine {
         Console.log(actorType + " wins");
         end = true;
         if (actorType == ActorType.COLONEL)
-        {
             endType = 1;
-        } else if (actorType == ActorType.JAFFA) {
+        else if (actorType == ActorType.JAFFA)
             endType = 2;
-        }
-
     }
 
     public static void death(ActorType actorType) {
-        end = true;
-        if (actorType == ActorType.COLONEL) {
-            int x = Maze.getInstance().actorsPosition[0][0];
-            int y = Maze.getInstance().actorsPosition[0][1];
-            Maze.getInstance().playField[x][y].setActor(0, null);
-            endType = 2;
-        } else if (actorType == ActorType.JAFFA) {
-            int x = Maze.getInstance().actorsPosition[1][0];
-            int y = Maze.getInstance().actorsPosition[1][1];
-            Maze.getInstance().playField[x][y].setActor(1, null);
-            endType = 1;
+        if (!end) {
+            end = true;
+            if (actorType == ActorType.COLONEL) {
+                int x = Maze.getInstance().actorsPosition[0][0];
+                int y = Maze.getInstance().actorsPosition[0][1];
+                Maze.getInstance().playField[x][y].setActor(0, null);
+                endType = 2;
+            } else if (actorType == ActorType.JAFFA) {
+                int x = Maze.getInstance().actorsPosition[1][0];
+                int y = Maze.getInstance().actorsPosition[1][1];
+                Maze.getInstance().playField[x][y].setActor(1, null);
+                endType = 1;
+            }
         }
-
         Console.log(actorType+" died");
     }
 
     public static void draw(){
-        Console.log("draw");
         end = true;
+        Console.log("draw");
         endType = 0;
     }
 
@@ -122,13 +125,15 @@ public final class Engine {
         int[] jaffaPos = Maze.getInstance().actorsPosition[1];
         Actor colonel = Maze.getInstance().playField[colPos[0]][colPos[1]].getActor(ActorType.COLONEL);
         Actor jaffa = Maze.getInstance().playField[jaffaPos[0]][jaffaPos[1]].getActor(ActorType.JAFFA);
-
-        if(colonel.getZpmCount() > jaffa.getZpmCount())
-            Engine.victory(ActorType.COLONEL);
-        else if(colonel.getZpmCount() < jaffa.getZpmCount())
-            Engine.victory(ActorType.JAFFA);
-        else
-            Engine.draw();
+        if (!end) {
+            end = true;
+            if(colonel.getZpmCount() > jaffa.getZpmCount())
+                Engine.victory(ActorType.COLONEL);
+            else if(colonel.getZpmCount() < jaffa.getZpmCount())
+                Engine.victory(ActorType.JAFFA);
+            else
+                Engine.draw();
+        }
     }
 
     /**
