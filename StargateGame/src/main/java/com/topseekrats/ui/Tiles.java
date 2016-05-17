@@ -5,6 +5,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * A textúraképek betöltéséért és tárolásáért felelős osztály.
+ */
 public class Tiles {
 
     public BufferedImage box = null;
@@ -27,6 +30,9 @@ public class Tiles {
     public BufferedImage lose = null;
     public BufferedImage draw = null;
 
+    /**
+     * Tiles konstruktor.
+     */
     public Tiles() {
         try {
             File textureFolder = new File("textures");

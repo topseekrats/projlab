@@ -14,6 +14,9 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 
+/**
+ * Az egyes játékmezők tényleges kirajzolását végző osztály.
+ */
 public class MazePanel extends JPanel implements KeyListener {
 
     public final int rowTitleNum = 20;
@@ -23,6 +26,9 @@ public class MazePanel extends JPanel implements KeyListener {
 
     private Tiles tiles;
 
+    /**
+     * MazePanel konstruktor.
+     */
     public MazePanel() {
         try {
             Engine.newGame();
@@ -40,13 +46,18 @@ public class MazePanel extends JPanel implements KeyListener {
     }
 
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g); // törlés
+        super.paintComponent(g);
 
         drawMap(g);
         drawEnd(g);
         repaint();
     }
 
+    /**
+     * A játéktér rajzolását végző metódus.
+     *
+     * @param g
+     */
     private void drawMap(Graphics g) {
         // Teljes játéktér bejárása.
         for (int i = 0; i < Maze.getInstance().playField.length; i++) {
@@ -118,6 +129,11 @@ public class MazePanel extends JPanel implements KeyListener {
         }
     }
 
+    /**
+     * A játék végét jelző texturák kirajzolásáért felelős metódus.
+     *
+     * @param g
+     */
     private void drawEnd(Graphics g) {
         if (Engine.END) {
             switch (Engine.END_TYPE) {
@@ -140,6 +156,12 @@ public class MazePanel extends JPanel implements KeyListener {
         }
     }
 
+    /**
+     * A játékosok által végzett akciók a megfelelő billentyűk felengedésekor
+     * valósulnak meg. Jelen metódus az egyes események végrehajtását vezérli.
+     *
+     * @param e
+     */
     @Override
     public void keyReleased(final KeyEvent e) {
         if (Engine.END) return;

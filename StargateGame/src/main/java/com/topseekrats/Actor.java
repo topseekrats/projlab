@@ -308,19 +308,67 @@ public class Actor implements MazeObject, Serializable {
         // Portálok színének meghatározása.
         int color = bullet.getType().ordinal();
         int pairColor = -1;
+        int[] otherColors = new int[2];
         switch (bullet.getType()) {
             case YELLOW:
                 pairColor = BulletType.BLUE.ordinal();
+                otherColors = new int[] {BulletType.GREEN.ordinal(), BulletType.RED.ordinal()};
                 break;
             case BLUE:
                 pairColor = BulletType.YELLOW.ordinal();
+                otherColors = new int[] {BulletType.GREEN.ordinal(), BulletType.RED.ordinal()};
                 break;
             case GREEN:
                 pairColor = BulletType.RED.ordinal();
+                otherColors = new int[] {BulletType.YELLOW.ordinal(), BulletType.BLUE.ordinal()};
                 break;
             case RED:
                 pairColor = BulletType.GREEN.ordinal();
+                otherColors = new int[] {BulletType.YELLOW.ordinal(), BulletType.BLUE.ordinal()};
                 break;
+        }
+
+        // Ha a másik játékos egyik színű végpontjára lőtte.
+        if (Arrays.equals(pos, stargateEndPoints[otherColors[0]])) {
+            int[] otherPos = stargateEndPoints[otherColors[0]];
+
+            // Elem kivétele a veremből.
+            Foreground foreground = Maze.getInstance().playField[otherPos[0]][otherPos[1]].popForeground();
+
+            // Végpont kivétele a pozíció tároló tömbből.
+            stargateEndPoints[otherColors[0]] = new int[] {-1, -1};
+
+            // Ha aktív csillagkapu volt, párját eltüntetni és falakat visszaállítani.
+            if (foreground instanceof Stargate) {
+                ((Wall)Maze.getInstance().playField[otherPos[0]][otherPos[1]].getBackground()).changeHasStargate();
+
+                int[] anotherPos = stargateEndPoints[otherColors[1]];
+                Maze.getInstance().playField[anotherPos[0]][anotherPos[1]].popForeground();
+                ((Wall)Maze.getInstance().playField[anotherPos[0]][anotherPos[1]].getBackground()).changeHasStargate();
+
+                stargateEndPoints[otherColors[1]] = new int[] {-1, -1};
+            }
+        }
+        //
+        else if (Arrays.equals(pos, stargateEndPoints[otherColors[1]])) {
+            int[] otherPos = stargateEndPoints[otherColors[1]];
+
+            // Elem kivétele a veremből.
+            Foreground foreground = Maze.getInstance().playField[otherPos[0]][otherPos[1]].popForeground();
+
+            // Végpont kivétele a pozíció tároló tömbből.
+            stargateEndPoints[otherColors[1]] = new int[] {-1, -1};
+
+            // Ha aktív csillagkapu volt, párját eltüntetni és falakat visszaállítani.
+            if (foreground instanceof Stargate) {
+                ((Wall)Maze.getInstance().playField[otherPos[0]][otherPos[1]].getBackground()).changeHasStargate();
+
+                int[] anotherPos = stargateEndPoints[otherColors[0]];
+                Maze.getInstance().playField[anotherPos[0]][anotherPos[1]].popForeground();
+                ((Wall)Maze.getInstance().playField[anotherPos[0]][anotherPos[1]].getBackground()).changeHasStargate();
+
+                stargateEndPoints[otherColors[0]] = new int[] {-1, -1};
+            }
         }
 
         // Ha egyik fajta portál sincs a pályán.

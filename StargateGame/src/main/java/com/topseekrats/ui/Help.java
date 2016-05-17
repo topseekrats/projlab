@@ -4,7 +4,11 @@ import java.awt.*;
 
 import javax.swing.*;
 
+/**
+ * A játék irányítását tartalmazó panelt megvalósító osztály.
+ */
 public class Help extends JFrame {
+
     public static JTextArea textArea = null;
     private JPanel panel = null;
     private String hintString = "Colonel:\n" +
@@ -21,6 +25,9 @@ public class Help extends JFrame {
             "F - shoot\n" +
             "R - switch";
 
+    /**
+     * Help konstruktor.
+     */
     public Help() {
         setTitle("Help");
         panel = new JPanel(new BorderLayout());
@@ -43,6 +50,6 @@ public class Help extends JFrame {
 
         setLocation(newX, newY);
         setVisible(true);
-
     }
+
 }

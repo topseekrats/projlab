@@ -9,12 +9,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * A játékmezőt kirajzoló panelt tartalmazó panel osztálya.
+ * Itt került definiálásra a kirajzolást, valamint a replikátor mozgatását
+ * végző Timer.
+ */
 public class Panel extends JPanel {
 
     private final MazePanel mazePanel;
     public final static int INTERVAL = 100;
 
 
+    /**
+     * Panel konstruktor.
+     */
     public Panel() {
         setLayout(new BorderLayout());
 
@@ -23,20 +31,22 @@ public class Panel extends JPanel {
         mazePanel.setBorder(border);
         add(mazePanel, BorderLayout.CENTER);
 
+        // Timer konfigurálása.
         Timer timer = new Timer(INTERVAL, new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                if (Maze.getInstance().replicatorLives) {
-                    int xPosRep = Maze.getInstance().replicatorPosition[0];
-                    int yPosRep = Maze.getInstance().replicatorPosition[1];
-                    Replicator rep = Maze.getInstance().playField[xPosRep][yPosRep].getReplicator();
-                    if (rep != null) {
-                        rep.move();
-                    }
-                }
+                // Játéktér újrarajzolása.
                 mazePanel.repaint();
+
+                // Ha a replikátor él, akkor annak mozgatása.
+                if (!Maze.getInstance().replicatorLives) return;
+                int[] pos = Maze.getInstance().replicatorPosition;
+                Maze.getInstance().playField[pos[0]][pos[1]].getReplicator().move();
+
+
             }
         });
 
+        // Timer indítása.
         timer.start();
     }
 

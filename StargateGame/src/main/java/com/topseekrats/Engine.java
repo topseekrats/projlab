@@ -24,6 +24,8 @@ public final class Engine {
     private Engine() {}
 
     /**
+     * Új játék indítását végző metódus.
+     * Betölti az alap térképet, majd beállítja a szükséges változókat.
      *
      * @throws IOException
      * @throws ClassNotFoundException
@@ -44,6 +46,12 @@ public final class Engine {
         Maze.getInstance().replicatorLives = true;
     }
 
+    /**
+     * Aktuális állás fájlba mentését végző metódus.
+     *
+     * @param filePath mentendő fájl elérési útvonala
+     * @throws IOException
+     */
     public static void save(String filePath) throws IOException {
         String extension = filePath.substring(filePath.lastIndexOf(".") + 1, filePath.length());
         if (!extension.equals("sgmap"))
@@ -55,8 +63,9 @@ public final class Engine {
     }
 
     /**
+     * Korábban mentett állás betöltése.
      *
-     * @param filePath betöltendő térkép fájl útvonala
+     * @param filePath betöltendő fájl elérési útvonala
      * @throws IOException
      * @throws ClassNotFoundException
      */
@@ -79,27 +88,8 @@ public final class Engine {
         Maze.getInstance().moveDirection = temp.moveDirection;
     }
 
-    public static void victory(ActorType actorType) {
-        END = true;
-        if (actorType == ActorType.COLONEL) END_TYPE = 1;
-        else END_TYPE = 2;
-    }
-
-    public static void death(ActorType actorType) {
-        END = true;
-        int[] pos = Maze.getInstance().actorsPosition[actorType.ordinal()];
-        Maze.getInstance().playField[pos[0]][pos[1]].setActor(actorType.ordinal(), null);
-        if (actorType == ActorType.COLONEL) END_TYPE = 2;
-        else END_TYPE = 1;
-    }
-
-    public static void draw(){
-        END = true;
-        END_TYPE = 0;
-    }
-
     /**
-     * ZPM generálása egy véletlenszerű helye.
+     * ZPM generálása egy véletlenszerű helyre.
      * A metódus figyelembe veszi, hogy ZPM kizárólag egy üres padlóra
      * helyezhető el.
      */
@@ -138,12 +128,35 @@ public final class Engine {
     }
 
     /**
-     * Replikátor mozgatása
+     * Vesztes játékost beállító metódus.
+     *
+     * @param actorType a vesztes játékos típusa
      */
-    public static void replicatorMoving(){
-        while(Maze.getInstance().replicatorLives){
-            int[] pos = Maze.getInstance().replicatorPosition;
-            Maze.getInstance().playField[pos[0]][pos[1]].getReplicator().move();
-        }
+    public static void death(ActorType actorType) {
+        END = true;
+        int[] pos = Maze.getInstance().actorsPosition[actorType.ordinal()];
+        Maze.getInstance().playField[pos[0]][pos[1]].setActor(actorType.ordinal(), null);
+        if (actorType == ActorType.COLONEL) END_TYPE = 2;
+        else END_TYPE = 1;
     }
+
+    /**
+     * Nyertes játékost beállító metódus.
+     *
+     * @param actorType a nyertes játékos típusa
+     */
+    private static void victory(ActorType actorType) {
+        END = true;
+        if (actorType == ActorType.COLONEL) END_TYPE = 1;
+        else END_TYPE = 2;
+    }
+
+    /**
+     * Döntetlen eredményt beállító metódus.
+     */
+    private static void draw(){
+        END = true;
+        END_TYPE = 0;
+    }
+
 }

@@ -13,11 +13,17 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * A játék ablakát megjelenítő osztály.
+ */
 public class Frame extends JFrame {
 
     private Panel panel;
     private JMenuBar menuBar;
 
+    /**
+     * Frame konstruktor.
+     */
     public Frame() {
         setTitle("Frame");
 
@@ -40,17 +46,23 @@ public class Frame extends JFrame {
         });
     }
 
+    /**
+     * Menük és menüelemek létrehozása, konfigurációja.
+     */
     private void createMenuBar() {
         menuBar = new JMenuBar();
 
+        // Menük.
         JMenu fileMenu = new JMenu("File");
         JMenu gameMenu = new JMenu("Game");
 
+        // Menüelemek.
         JMenuItem newGame = new JMenuItem("New Game");
         JMenuItem save = new JMenuItem("Save");
         JMenuItem load = new JMenuItem("Load");
         JMenuItem help = new JMenuItem("Help");
 
+        // Új játék indítása.
         newGame.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -66,6 +78,7 @@ public class Frame extends JFrame {
             }
         });
 
+        // Játék mentése.
         save.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -87,6 +100,7 @@ public class Frame extends JFrame {
             }
         });
 
+        // Játék betöltése.
         load.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -106,6 +120,7 @@ public class Frame extends JFrame {
             }
         });
 
+        // Segítség megjelenítése.
         help.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -125,6 +140,9 @@ public class Frame extends JFrame {
         setJMenuBar(menuBar);
     }
 
+    /**
+     * Az alkalmazás ablakának pozícióját beállító metódus.
+     */
     private void packAndCenter() {
         pack();
 
