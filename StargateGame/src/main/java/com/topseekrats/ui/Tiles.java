@@ -17,18 +17,19 @@ public class Tiles {
     public BufferedImage portalRed = null;
     public BufferedImage portalYellow = null;
     public BufferedImage replicator = null;
-    public BufferedImage stargate = null;
+    public BufferedImage stargateColonel = null;
+    public BufferedImage stargateJaffa = null;
     public BufferedImage switchButton = null;
     public BufferedImage wallSimple = null;
     public BufferedImage wallSpecial = null;
     public BufferedImage zpm = null;
-    public BufferedImage draw = null;
+    public BufferedImage win = null;
     public BufferedImage lose = null;
-    public BufferedImage victory = null;
+    public BufferedImage draw = null;
 
     public Tiles() {
         try {
-            File textureFolder = new File("StargateGame/textures");
+            File textureFolder = new File("textures");
             for (final File f : textureFolder.listFiles() ) {
                 if (f.getName().contains("box")) box = ImageIO.read(f);
                 else if (f.getName().contains("colonel")) colonel = ImageIO.read(f);
@@ -40,14 +41,15 @@ public class Tiles {
                 else if (f.getName().contains("portal_red")) portalRed = ImageIO.read(f);
                 else if (f.getName().contains("portal_yellow")) portalYellow = ImageIO.read(f);
                 else if (f.getName().contains("replicator")) replicator= ImageIO.read(f);
-                else if (f.getName().contains("stargate")) stargate = ImageIO.read(f);
+                else if (f.getName().contains("stargate_col")) stargateColonel = ImageIO.read(f);
+                else if (f.getName().contains("stargate_jaf")) stargateJaffa = ImageIO.read(f);
                 else if (f.getName().contains("switch")) switchButton = ImageIO.read(f);
                 else if (f.getName().contains("wall_simple")) wallSimple = ImageIO.read(f);
                 else if (f.getName().contains("wall_special")) wallSpecial = ImageIO.read(f);
                 else if (f.getName().contains("zpm")) zpm = ImageIO.read(f);
-                else if (f.getName().contains("draw")) draw = ImageIO.read(f);
+                else if (f.getName().contains("win")) win = ImageIO.read(f);
                 else if (f.getName().contains("lose")) lose = ImageIO.read(f);
-                else if (f.getName().contains("victory")) victory = ImageIO.read(f);
+                else if (f.getName().contains("draw")) draw = ImageIO.read(f);
             }
         } catch (IOException | NullPointerException e) {
             e.printStackTrace();

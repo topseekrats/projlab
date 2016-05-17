@@ -17,6 +17,8 @@ import java.util.Random;
  */
 public class Replicator implements MazeObject, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private Random r = new Random();
 
     /**
@@ -31,7 +33,7 @@ public class Replicator implements MazeObject, Serializable {
     @Override
     public void move() {
         // Replikátor pozíciójának lekérdezése.
-        int[] oldPos = Maze.getInstance().replicatorPosition.clone();
+        int[] oldPos = Maze.getInstance().replicatorPosition;
         int[] newPos = oldPos.clone();
 
         // Replikátor mozgatása véletlenszerűen.

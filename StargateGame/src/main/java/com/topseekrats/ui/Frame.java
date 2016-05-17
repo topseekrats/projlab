@@ -1,125 +1,133 @@
 package com.topseekrats.ui;
 
-import com.topseekrats.Console;
 import com.topseekrats.Engine;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 
 public class Frame extends JFrame {
 
     private Panel panel;
+    private JMenuBar menuBar;
 
     public Frame() {
         setTitle("Frame");
 
         panel = new Panel();
-        add(panel);
-
+        this.add(panel);
         createMenuBar();
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        addWindowListener(
-                new WindowAdapter() {
-                    public void windowClosing(WindowEvent e) {
-                        System.exit(0);
-                    }
-                }
-        );
-
+        this.setResizable(false);
         packAndCenter();
-        setVisible(true);
+        this.setVisible(true);
 
         createBufferStrategy(3);
         repaint();
-    }
 
-    private void createMenuBar() {
-
-        JMenuBar menubar = new JMenuBar();
-
-        //JMenu menuFile = new JMenu("File");
-
-        JMenuItem exitMenuItem = new JMenuItem("Exit");
-        exitMenuItem.setToolTipText("Exit application");
-        exitMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent event) {
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
                 System.exit(0);
             }
         });
+    }
 
+    private void createMenuBar() {
+        menuBar = new JMenuBar();
 
-        // menu option - load
-        final JMenuItem loadItem = new JMenuItem("Load");
+        JMenu fileMenu = new JMenu("File");
+        JMenu gameMenu = new JMenu("Game");
 
-        // JFileChooser with filter
-        JFileChooser fileChooser = new JFileChooser(".");
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("sgmap files (*.sgmap)", "sgmap");
-        fileChooser.setFileFilter(filter);
+        JMenuItem newGame = new JMenuItem("New Game");
+        JMenuItem save = new JMenuItem("Save");
+        JMenuItem load = new JMenuItem("Load");
+        JMenuItem help = new JMenuItem("Help");
 
-        loadItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                int returnVal = fileChooser.showOpenDialog(new JFrame());
-                if (returnVal == JFileChooser.APPROVE_OPTION) {
+        newGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                int result = JOptionPane.showConfirmDialog(null, "Start a new game? Are you sure?", "Confirmation needed", JOptionPane.YES_NO_OPTION);
+                if (result == JOptionPane.YES_OPTION) {
+                    try {
+                        Engine.newGame();
+                    } catch (IOException | ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+
+            }
+        });
+
+        save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser("save");
+                fileChooser.setDialogTitle("Save");
+                fileChooser.setSelectedFile(new File("save.sgmap"));
+                fileChooser.setFileFilter(new FileNameExtensionFilter("sgmap files (*.sgmap)", "sgmap"));
+
+                int result = fileChooser.showSaveDialog(new JFrame());
+                if (result == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
                     try {
-                        Console.log(file.getAbsolutePath());
-                        Console.log(new FileReader(file.getAbsolutePath()).toString());
-                        Engine.newGame(file.getAbsolutePath());
+                        Engine.save(file.getPath());
                     } catch (IOException ex) {
-                        System.out.println("problem accessing file"+file.getAbsolutePath());
                         ex.printStackTrace();
-                    } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
                     }
-                } else {
-                    System.out.println("File access cancelled by user.");
+                }
+
+            }
+        });
+
+        load.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                JFileChooser fileChooser = new JFileChooser("save");
+                fileChooser.setDialogTitle("Load");
+                fileChooser.setFileFilter(new FileNameExtensionFilter("sgmap files (*.sgmap)", "sgmap"));
+
+                int result = fileChooser.showOpenDialog(new JFrame());
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    try {
+                        Engine.load(file.getPath());
+                    } catch (IOException | ClassNotFoundException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         });
 
-        // menu option - save
-        final JMenuItem saveItem = new JMenuItem("Save");
-        saveItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                try {
-                    Engine.save();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        help.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                new Help();
             }
         });
 
-        // menu option - help
-        final JMenuItem helpItem = new JMenuItem("Help");
-        helpItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent actionEvent) {
-                Help help = new Help();
-            }
-        });
+        fileMenu.add(save);
+        fileMenu.add(load);
 
+        gameMenu.add(newGame);
+        gameMenu.add(help);
 
-        menubar.add(loadItem);
-        menubar.add(saveItem);
-        menubar.add(helpItem);
-        menubar.add(exitMenuItem);
-        //menubar.add(menuFile);
+        menuBar.add(fileMenu);
+        menuBar.add(gameMenu);
 
-        setJMenuBar(menubar);
+        setJMenuBar(menuBar);
     }
 
     private void packAndCenter() {
         pack();
-        setResizable(false);
 
-        // Center frame on screen
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension frameSize = getSize();
 

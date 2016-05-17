@@ -15,6 +15,8 @@ import java.util.Stack;
  */
 public class Actor implements MazeObject, Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private ActorType type;
     private Bullet bullet;
     private Item item;
@@ -153,6 +155,10 @@ public class Actor implements MazeObject, Serializable {
                 // Egyébként portál vagy csillagkapu megfelelő elhelyezése.
                 portalManager(bulletPos);
                 return;
+            // Ha átjárható fal, vagyis olyan fal, amin éppen csillagkapu van.
+            } else if (background instanceof Wall) {
+                portalManager(bulletPos);
+                return;
             }
 
             // Ha a lövedék replikátorba csapódik, akkor a replikátor meghal.
@@ -250,7 +256,7 @@ public class Actor implements MazeObject, Serializable {
         Stack<Foreground> foregrounds = Maze.getInstance().playField[pos[0]][pos[1]].getForegrounds();
 
         // Ha a mező üres volt, nem történik semmi.
-        if (foregrounds.isEmpty()) return;
+        if (foregrounds.empty()) return;
         // Ha dobozt venne fel, de már van nála, nem történik semmi.
         else if (((Item)foregrounds.peek()).getType() == ItemType.BOX && item != null) return;
 
@@ -296,6 +302,8 @@ public class Actor implements MazeObject, Serializable {
     private void portalManager(int[] pos) {
         // Csillagkapu-koordináták lekérdezése.
         int[][] stargateEndPoints = Maze.getInstance().stargateEndPoints;
+
+
 
         // Portálok színének meghatározása.
         int color = bullet.getType().ordinal();
@@ -348,14 +356,14 @@ public class Actor implements MazeObject, Serializable {
             // Ha a két portál két külön helyen van.
             else {
                 // Csillagkapu létrehozása az éppen kilőtt portál helyére.
-                Maze.getInstance().playField[pos[0]][pos[1]].pushForeground(new Stargate(stargateEndPoints[pairColor]));
+                Maze.getInstance().playField[pos[0]][pos[1]].pushForeground(new Stargate(stargateEndPoints[pairColor], type));
 
                 // Sima portál eltüntetése a falról.
                 int[] pairPos = stargateEndPoints[pairColor];
                 Maze.getInstance().playField[pairPos[0]][pairPos[1]].popForeground();
 
                 // Csillagkapu létrehozása a már meglévő portál helyére.
-                Maze.getInstance().playField[pairPos[0]][pairPos[1]].pushForeground(new Stargate(stargateEndPoints[color]));
+                Maze.getInstance().playField[pairPos[0]][pairPos[1]].pushForeground(new Stargate(stargateEndPoints[color], type));
 
                 // Portálok mezőin levő falak átjárhatóvá tétele.
                 ((Wall)Maze.getInstance().playField[pos[0]][pos[1]].getBackground()).changeHasStargate();
@@ -388,7 +396,7 @@ public class Actor implements MazeObject, Serializable {
             // Ha egy üres speciális falra lőtte.
             else {
                 // Csillagkapu létrehozása az új portál helyére és fal átjáratóvá tétele.
-                Maze.getInstance().playField[pos[0]][pos[1]].pushForeground(new Stargate(stargateEndPoints[pairColor]));
+                Maze.getInstance().playField[pos[0]][pos[1]].pushForeground(new Stargate(stargateEndPoints[pairColor], type));
                 ((Wall)Maze.getInstance().playField[pos[0]][pos[1]].getBackground()).changeHasStargate();
 
                 // Meglévő Csillagkapu párkoordinátáinak módosítása.

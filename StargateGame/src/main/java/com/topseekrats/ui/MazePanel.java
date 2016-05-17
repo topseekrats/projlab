@@ -1,6 +1,5 @@
 package com.topseekrats.ui;
 
-import com.topseekrats.Actor;
 import com.topseekrats.ActorType;
 import com.topseekrats.Engine;
 import com.topseekrats.Maze;
@@ -10,7 +9,6 @@ import com.topseekrats.background.*;
 import com.topseekrats.foreground.*;
 
 import javax.swing.*;
-import javax.swing.text.StringContent;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -27,7 +25,7 @@ public class MazePanel extends JPanel implements KeyListener {
 
     public MazePanel() {
         try {
-            Engine.newGame("StargateGame/maps/default.sgmap");
+            Engine.newGame();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -47,27 +45,6 @@ public class MazePanel extends JPanel implements KeyListener {
         drawMap(g);
         drawEnd(g);
         repaint();
-    }
-
-    private void drawEnd(Graphics g) {
-        if (Engine.end) {
-            switch (Engine.endType) {
-                case 0:
-                    g.drawImage(tiles.draw, 0, 0, null);
-                    break;
-                case 1:
-                    // Colonel wins
-                    g.drawImage(tiles.victory, 0, 0, null);
-                    break;
-                case 2:
-                    // Jaffa wins
-                    g.drawImage(tiles.lose, 0, 0, null);
-                    break;
-                default:
-                    //
-                    break;
-            }
-        }
     }
 
     private void drawMap(Graphics g) {
@@ -104,7 +81,7 @@ public class MazePanel extends JPanel implements KeyListener {
                 // Ha szükséges, előtérobjektum rajzolása.
                 if (!field.getForegrounds().empty()) {
                     if (field.peekForeground() instanceof Item) {
-                        if (((Item) field.peekForeground()).getType() == ItemType.BOX)
+                        if (((Item)field.peekForeground()).getType() == ItemType.BOX)
                             g.drawImage(tiles.box, j * titleWidth, i * titleHeight, null);
                         else
                             g.drawImage(tiles.zpm, j * titleWidth, i * titleHeight, null);
@@ -119,8 +96,12 @@ public class MazePanel extends JPanel implements KeyListener {
                         else
                             g.drawImage(tiles.portalRed, j * titleWidth, i * titleHeight, null);
                     }
-                    else
-                        g.drawImage(tiles.stargate, j * titleWidth, i * titleHeight, null);
+                    else {
+                        if (((Stargate)field.peekForeground()).getOwner() == ActorType.COLONEL)
+                            g.drawImage(tiles.stargateColonel, j * titleWidth, i * titleHeight, null);
+                        else
+                            g.drawImage(tiles.stargateJaffa, j * titleWidth, i * titleHeight, null);
+                    }
                 }
 
                 // Ha szükséges, replikátor rajzolása.
@@ -137,8 +118,32 @@ public class MazePanel extends JPanel implements KeyListener {
         }
     }
 
+    private void drawEnd(Graphics g) {
+        if (Engine.END) {
+            switch (Engine.END_TYPE) {
+                case 0:
+                    // Döntetlen.
+                    g.drawImage(tiles.draw, 0, 0, null);
+                    break;
+                case 1:
+                    // Colonel nyer.
+                    g.drawImage(tiles.win, 0, 0, null);
+                    break;
+                case 2:
+                    // Colonel veszít.
+                    g.drawImage(tiles.lose, 0, 0, null);
+                    break;
+                default:
+                    //
+                    break;
+            }
+        }
+    }
+
     @Override
     public void keyReleased(final KeyEvent e) {
+        if (Engine.END) return;
+
         Maze maze = Maze.getInstance();
 
         // Játékospozíciók lekérdezése.

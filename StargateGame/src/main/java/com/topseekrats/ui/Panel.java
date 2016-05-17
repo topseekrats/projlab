@@ -8,15 +8,11 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;
 
 public class Panel extends JPanel {
 
     private final MazePanel mazePanel;
-    private final JLabel refreshLabelSetText;
     public final static int INTERVAL = 100;
-    public static int timeInt = 0;
 
 
     public Panel() {
@@ -27,35 +23,21 @@ public class Panel extends JPanel {
         mazePanel.setBorder(border);
         add(mazePanel, BorderLayout.CENTER);
 
-        refreshLabelSetText = new JLabel("last refresh: null");
-        add(refreshLabelSetText, BorderLayout.SOUTH);
-
         Timer timer = new Timer(INTERVAL, new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                //Refresh the panel
-                // Replicator mozgatása
                 if (Maze.getInstance().replicatorLives) {
                     int xPosRep = Maze.getInstance().replicatorPosition[0];
                     int yPosRep = Maze.getInstance().replicatorPosition[1];
                     Replicator rep = Maze.getInstance().playField[xPosRep][yPosRep].getReplicator();
-                    // Console.log("rep pos: "+xPosRep+";"+yPosRep);
                     if (rep != null) {
                         rep.move();
                     }
                 }
                 mazePanel.repaint();
-                timeInt += INTERVAL/100;
-                refreshLabelSetText(Integer.toString(timeInt));
-
             }
         });
 
         timer.start();
-
-    }
-
-    public void refreshLabelSetText(String s) {
-        refreshLabelSetText.setText("last refresh: "+s);
     }
 
 }

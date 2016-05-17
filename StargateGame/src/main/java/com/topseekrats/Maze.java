@@ -11,7 +11,7 @@ public class Maze implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** Az aktuálisan pályán levő ZPM-ek száma. */
-    public int zpmOnMap = 15;
+    public int zpmOnMap = 10;
 
     /** ZPM felvételek számláló változó. */
     public int zpmPickUpCounter = 0;

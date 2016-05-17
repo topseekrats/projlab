@@ -1,19 +1,14 @@
 package com.topseekrats.ui;
 
-import javax.swing.*;
-import javax.swing.text.DefaultCaret;
 import java.awt.*;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
-/**
- * Created by Mark-PC on 2016.05.15..
- */
+import javax.swing.*;
+
 public class Help extends JFrame {
     public static JTextArea textArea = null;
     private JPanel panel = null;
     private String hintString = "Colonel:\n" +
-            "arrows - move\n" +
+            "Arrows - move\n" +
             "K - drop box\n" +
             "O - pick up item\n" +
             "P - shoot\n" +

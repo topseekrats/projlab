@@ -1,6 +1,7 @@
 package com.topseekrats.foreground;
 
 import com.topseekrats.Actor;
+import com.topseekrats.ActorType;
 import com.topseekrats.Maze;
 
 /**
@@ -16,14 +17,21 @@ public class Stargate extends Foreground {
     /** A csillagkapu párjának koordinátái. */
     private int[] pairCoords;
 
+    /** A csillagkaput kilövő játékos. */
+    private ActorType owner;
+
     /**
      * CSillagkapu konstruktor.
      *
      * @param pairCoords kapupár koordinátái
      */
-    public Stargate(int[] pairCoords) { this.pairCoords = pairCoords; }
+    public Stargate(int[] pairCoords, ActorType owner) {
+        this.pairCoords = pairCoords;
+        this.owner = owner;
+    }
 
     public void setPairCoords(int[] pairCoords) { this.pairCoords = pairCoords; }
+    public ActorType getOwner() { return owner; }
 
     /**
      * Játékos egyik végpontból a másikba helyezése.
