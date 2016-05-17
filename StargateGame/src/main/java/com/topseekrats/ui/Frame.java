@@ -149,10 +149,7 @@ public class Frame extends JFrame {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Dimension frameSize = getSize();
 
-        int newX = (screenSize.width - frameSize.width) / 2;
-        int newY = (screenSize.height - frameSize.height) / 2;
-
-        setLocation(newX, newY);
+        setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
     }
 
 }

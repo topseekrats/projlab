@@ -9,46 +9,48 @@ import javax.swing.*;
  */
 public class Help extends JFrame {
 
-    public static JTextArea textArea = null;
-    private JPanel panel = null;
-    private String hintString = "Colonel:\n" +
-            "Arrows - move\n" +
-            "K - drop box\n" +
-            "O - pick up item\n" +
-            "P - shoot\n" +
-            "L - switch\n" +
-            "\n" +
-            "Jaffa:\n" +
-            "WASD - move\n" +
-            "Q - drop box\n" +
-            "E - pick up item\n" +
-            "F - shoot\n" +
-            "R - switch";
+    public static final String HINT = "<html>Colonel:<br>"
+            + "Arrows - Move<br>"
+            + "K - Drop box<br>"
+            + "O - Pick up item<br>"
+            + "P - Shoot<br>"
+            +"L - Change Bullet<br><br>"
+            + "Jaffa:<br>"
+            + "WASD - Move<br>"
+            + "Q - Drop box<br>"
+            + "E - Pick up item<br>"
+            + "F - Shoot<br>"
+            + "R - Change bullet</html>";
+
+    private JPanel panel;
+    private JLabel label;
 
     /**
      * Help konstruktor.
      */
     public Help() {
         setTitle("Help");
-        panel = new JPanel(new BorderLayout());
-
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        textArea = new JTextArea();
-
-        textArea.setEditable(false);
-        textArea.setText(hintString);
-        panel.add(textArea);
-
-        add(panel);
-        setLayout(new FlowLayout());
+        setLayout(new GridBagLayout());
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setResizable(false);
+
+        label = new JLabel(HINT);
+        label.setFont(new Font("Verdana", 1, 20));
+
+        panel = new JPanel();
+        panel.add(label);
+
+        add(panel, new GridBagConstraints());
+
         pack();
 
-        int newX = 50;
-        int newY = 100;
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension frameSize = getSize();
 
-        setLocation(newX, newY);
+        setLocation((screenSize.width - frameSize.width) / 2, (screenSize.height - frameSize.height) / 2);
+        setSize(300, 450);
+
         setVisible(true);
     }
 
