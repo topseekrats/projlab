@@ -1,7 +1,7 @@
 package com.topseekrats.ui;
 
+import com.topseekrats.Engine;
 import com.topseekrats.Maze;
-import com.topseekrats.Replicator;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -42,7 +42,7 @@ public class Panel extends JPanel {
                 mazePanel.repaint();
 
                 // Ha a replikátor él, akkor annak mozgatása.
-                if (Maze.getInstance().replicatorLives && timerBuffer == 500) {
+                if (!Engine.END && Maze.getInstance().replicatorLives && timerBuffer == 500) {
                     timerBuffer = 0;
                     int[] pos = Maze.getInstance().replicatorPosition;
                     Maze.getInstance().playField[pos[0]][pos[1]].getReplicator().move();
