@@ -16,8 +16,10 @@ import java.awt.event.ActionListener;
  */
 public class Panel extends JPanel {
 
-    private final MazePanel mazePanel;
     public final static int INTERVAL = 100;
+
+    private int timerBuffer = 0;
+    private final MazePanel mazePanel;
 
 
     /**
@@ -34,15 +36,17 @@ public class Panel extends JPanel {
         // Timer konfigurálása.
         Timer timer = new Timer(INTERVAL, new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
+                timerBuffer += INTERVAL;
+
                 // Játéktér újrarajzolása.
                 mazePanel.repaint();
 
                 // Ha a replikátor él, akkor annak mozgatása.
-                if (!Maze.getInstance().replicatorLives) return;
-                int[] pos = Maze.getInstance().replicatorPosition;
-                Maze.getInstance().playField[pos[0]][pos[1]].getReplicator().move();
-
-
+                if (Maze.getInstance().replicatorLives && timerBuffer == 500) {
+                    timerBuffer = 0;
+                    int[] pos = Maze.getInstance().replicatorPosition;
+                    Maze.getInstance().playField[pos[0]][pos[1]].getReplicator().move();
+                }
             }
         });
 

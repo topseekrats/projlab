@@ -14,7 +14,7 @@ public class Help extends JFrame {
             + "K - Drop box<br>"
             + "O - Pick up item<br>"
             + "P - Shoot<br>"
-            +"L - Change Bullet<br><br>"
+            + "L - Change Bullet<br><br>"
             + "Jaffa:<br>"
             + "WASD - Move<br>"
             + "Q - Drop box<br>"

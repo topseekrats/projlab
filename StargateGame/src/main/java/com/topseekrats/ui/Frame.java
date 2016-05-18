@@ -25,7 +25,7 @@ public class Frame extends JFrame {
      * Frame konstruktor.
      */
     public Frame() {
-        setTitle("Frame");
+        setTitle("Stargate Game");
 
         panel = new Panel();
         this.add(panel);
